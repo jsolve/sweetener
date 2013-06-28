@@ -4,7 +4,7 @@ public class DeepCopyException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public DeepCopyException(String message) {
-		super(message);
+	public DeepCopyException(String message2) {
+		super(message2); 
 	}
 }
