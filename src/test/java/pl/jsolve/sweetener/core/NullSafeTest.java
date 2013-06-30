@@ -29,7 +29,7 @@ public class NullSafeTest {
     }
     
     @Test
-    public void shouldReturnNewDoubleForNullValue() throws Exception {
+    public void shouldReturnNewDoubleForNullValue() {
 	// given
 	Double d = null;
 	
@@ -41,7 +41,7 @@ public class NullSafeTest {
     }
     
     @Test
-    public void shouldReturnNewIntegerForNullValue() throws Exception {
+    public void shouldReturnNewIntegerForNullValue() {
 	// given
 	Integer value = null;
 	

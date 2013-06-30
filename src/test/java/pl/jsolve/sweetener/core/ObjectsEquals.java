@@ -2,6 +2,7 @@ package pl.jsolve.sweetener.core;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Address;
@@ -10,11 +11,18 @@ import pl.jsolve.sweetener.collection.data.Person;
 
 public class ObjectsEquals {
 
-    private Person firstPerson = new Person("John", "Sky", 31, new Company("Jsolve", new Address("street1", "city1")), null);
-    private Person secondPerson = new Person("Marry", "Duke", 45, new Company("Oracle", new Address("street1", "Jsolve")), null);
+    private Person firstPerson;
+    private Person secondPerson;
+
+    @Before
+    public void setUp() {
+	firstPerson = new Person("John", "Sky", 31, new Company("Jsolve", new Address("street1", "city1")), null);
+	secondPerson = new Person("Marry", "Duke", 45, new Company("Oracle", new Address("street1", "Jsolve")), null);
+
+    }
 
     @Test
-    public void shouldCompareTwoNullObjects() throws Exception {
+    public void shouldCompareTwoNullObjects() {
 	// given
 	String s1 = null;
 	String s2 = null;
@@ -27,7 +35,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoObjectsWhenFirstObjectIsNull() throws Exception {
+    public void shouldCompareTwoObjectsWhenFirstObjectIsNull() {
 	// given
 	String s1 = null;
 	String s2 = "";
@@ -40,7 +48,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoObjectsWhenSecondObjectIsNull() throws Exception {
+    public void shouldCompareTwoObjectsWhenSecondObjectIsNull() {
 	// given
 	String s1 = "";
 	String s2 = null;
@@ -53,7 +61,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoNotNullObjects() throws Exception {
+    public void shouldCompareTwoNotNullObjects() {
 	// given
 	String s1 = "a";
 	String s2 = "a";
@@ -66,7 +74,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoPerson() throws Exception {
+    public void shouldCompareTwoPerson() {
 	// given : prepared two person objects
 
 	// when
@@ -77,7 +85,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoPersonWithNullValue() throws Exception {
+    public void shouldCompareTwoPersonWithNullValue() {
 	// given : prepared two person objects
 
 	// when
@@ -88,7 +96,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoPersonWithTwoIdenticalPaths() throws Exception {
+    public void shouldCompareTwoPersonWithTwoIdenticalPaths() {
 	// given : prepared two person objects
 
 	// when
@@ -99,7 +107,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoPersonWithTwoPaths() throws Exception {
+    public void shouldCompareTwoPersonWithTwoPaths() {
 	// given : prepared two person objects
 
 	// when
@@ -110,7 +118,7 @@ public class ObjectsEquals {
     }
 
     @Test
-    public void shouldCompareTwoPersonWithTwoDiferentPaths() throws Exception {
+    public void shouldCompareTwoPersonWithTwoDiferentPaths() {
 	// given : prepared two person objects
 
 	// when
