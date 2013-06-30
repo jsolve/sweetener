@@ -17,10 +17,10 @@ import pl.jsolve.sweetener.criteria.Restriction.RestrictionLevel;
 public class CriteriaTest {
 
     @Test
-    public void shouldSortListOfRestrictionByRestrictionLevel() throws Exception {
+    public void shouldSortListOfRestrictionByRestrictionLevel() {
 	// given
-	Criteria criteria = Criteria.newCriteria().add(Restrictions.eq("name", "John")).add(Restrictions.isNotNull("lastName"))
-		.add(Restrictions.notEq("age", 35)).add(Restrictions.isNull("company"));
+	Criteria criteria = Criteria.newCriteria().add(Restrictions.equals("name", "John")).add(Restrictions.isNotNull("lastName"))
+		.add(Restrictions.notEquals("age", 35)).add(Restrictions.isNull("company"));
 
 	// when
 	List<Restriction> sortedRestrictions = criteria.getSortedRestrictions();
@@ -31,9 +31,9 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByNotNullRestriction() throws Exception {
+    public void shouldFilterGivenCollectionByNotNullRestriction() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
 	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.isNotNull("company")));
@@ -43,9 +43,9 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByNotNullRestrictionForNestedObject() throws Exception {
+    public void shouldFilterGivenCollectionByNotNullRestrictionForNestedObject() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
 	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.isNotNull("company.name")));
@@ -55,9 +55,9 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByNotNullRestrictionForNestedObject2() throws Exception {
+    public void shouldFilterGivenCollectionByNotNullRestrictionForNestedObject2() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
 	Collection<Person> filteredList = Collections.filter(people,
@@ -68,24 +68,24 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByEqWithIgnoringCase() throws Exception {
+    public void shouldFilterGivenCollectionByEqWithIgnoringCase() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.eq("name", "Marry")));
+	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.equals("name", "Marry")));
 
 	// then
 	assertThat(filteredList).hasSize(1);
     }
 
     @Test
-    public void shouldFilterGivenCollectionByEq() throws Exception {
+    public void shouldFilterGivenCollectionByEq() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.eq("age", 27)));
+	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.equals("age", 27)));
 
 	// then
 	assertThat(filteredList).hasSize(1);
@@ -94,12 +94,12 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByNotEqWithIgnoringCase() throws Exception {
+    public void shouldFilterGivenCollectionByNotEqWithIgnoringCase() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.notEq("name", "marry", true)));
+	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.notEquals("name", "marry", true)));
 
 	// then
 	assertThat(filteredList).hasSize(3);
@@ -108,9 +108,9 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByGreater() throws Exception {
+    public void shouldFilterGivenCollectionByGreater() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
 	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.greater("age", 27)));
@@ -120,11 +120,11 @@ public class CriteriaTest {
 	assertThat(filteredList).onProperty("name").contains("John", "Marry", "Peter");
 	assertThat(filteredList).onProperty("lastName").contains("Sky", "Duke", "Hunt");
     }
-    
+
     @Test
-    public void shouldFilterGivenCollectionByLess() throws Exception {
+    public void shouldFilterGivenCollectionByLess() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
 	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.less("age", 27)));
@@ -132,39 +132,39 @@ public class CriteriaTest {
 	// then
 	assertThat(filteredList).hasSize(0);
     }
-    
+
     @Test
-    public void shouldFilterGivenCollectionByEqOrGreater() throws Exception {
+    public void shouldFilterGivenCollectionByEqOrGreater() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.greaterOrEq("age", 31)));
+	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.greaterOrEquals("age", 31)));
 
 	// then
 	assertThat(filteredList).hasSize(3);
 	assertThat(filteredList).onProperty("name").contains("John", "Marry", "Peter");
 	assertThat(filteredList).onProperty("lastName").contains("Sky", "Duke", "Hunt");
     }
-    
+
     @Test
-    public void shouldFilterGivenCollectionByEqOrLess() throws Exception {
+    public void shouldFilterGivenCollectionByEqOrLess() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.lessOrEq("age", 27)));
+	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.lessOrEquals("age", 27)));
 
 	// then
 	assertThat(filteredList).hasSize(1);
 	assertThat(filteredList).onProperty("name").contains("John");
 	assertThat(filteredList).onProperty("lastName").contains("Wolf");
     }
-    
+
     @Test
-    public void shouldFilterGivenCollectionByLike() throws Exception {
+    public void shouldFilterGivenCollectionByLike() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
 	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.like("name", "ar")));
@@ -176,9 +176,9 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByNotLike() throws Exception {
+    public void shouldFilterGivenCollectionByNotLike() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
 	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.notLike("name", "ar")));
@@ -187,80 +187,84 @@ public class CriteriaTest {
 	assertThat(filteredList).hasSize(3);
 	assertThat(filteredList).onProperty("name").contains("John", "John", "Peter");
 	assertThat(filteredList).onProperty("lastName").contains("Wolf", "Sky", "Hunt");
-    } //categoryOfDrivingLicense
+    } // categoryOfDrivingLicense
 
     @Test
-    public void shouldFilterGivenCollectionByContains() throws Exception {
+    public void shouldFilterGivenCollectionByContains() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.contains("categoriesOfDrivingLicense", "B")));
+	Collection<Person> filteredList = Collections.filter(people,
+		Criteria.newCriteria().add(Restrictions.contains("categoriesOfDrivingLicense", "B")));
 
 	// then
 	assertThat(filteredList).hasSize(3);
 	assertThat(filteredList).onProperty("name").contains("John", "Marry", "Peter");
 	assertThat(filteredList).onProperty("lastName").contains("Sky", "Duke", "Hunt");
     }
-    
+
     @Test
-    public void shouldFilterGivenCollectionByContainsForAnyObject() throws Exception {
+    public void shouldFilterGivenCollectionByContainsForAnyObject() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.containsAny("categoriesOfDrivingLicense", "A", "D")));
+	Collection<Person> filteredList = Collections.filter(people,
+		Criteria.newCriteria().add(Restrictions.containsAny("categoriesOfDrivingLicense", "A", "D")));
 
 	// then
 	assertThat(filteredList).hasSize(2);
 	assertThat(filteredList).onProperty("name").contains("Marry", "Peter");
 	assertThat(filteredList).onProperty("lastName").contains("Duke", "Hunt");
     }
-    
+
     @Test
-    public void shouldFilterGivenCollectionByNotContains() throws Exception {
+    public void shouldFilterGivenCollectionByNotContains() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.notContains("categoriesOfDrivingLicense", "A", "B")));
+	Collection<Person> filteredList = Collections.filter(people,
+		Criteria.newCriteria().add(Restrictions.notContains("categoriesOfDrivingLicense", "A", "B")));
 
 	// then
 	assertThat(filteredList).hasSize(3);
 	assertThat(filteredList).onProperty("name").contains("John", "John", "Peter");
 	assertThat(filteredList).onProperty("lastName").contains("Wolf", "Sky", "Hunt");
     }
-    
+
     @Test
-    public void shouldFilterGivenCollectionByNotContainsForAnyObjects() throws Exception {
+    public void shouldFilterGivenCollectionByNotContainsForAnyObjects() {
 	// given
-	List<Person> people = prepareListOfPerson();
+	List<Person> people = prepareListOfPeople();
 
 	// when
-	Collection<Person> filteredList = Collections.filter(people, Criteria.newCriteria().add(Restrictions.notContains("categoriesOfDrivingLicense", "A", "B")));
+	Collection<Person> filteredList = Collections.filter(people,
+		Criteria.newCriteria().add(Restrictions.notContains("categoriesOfDrivingLicense", "A", "B")));
 
 	// then
 	assertThat(filteredList).hasSize(3);
 	assertThat(filteredList).onProperty("name").contains("John", "John");
 	assertThat(filteredList).onProperty("lastName").contains("Wolf", "Sky");
     }
-    
-    private List<Person> prepareListOfPerson() {
+
+    private List<Person> prepareListOfPeople() {
 	List<Person> people = new ArrayList<Person>();
-	
+
 	people.add(new Person("John", "Wolf", 27, null, null));
 	people.add(new Person("John", "Sky", 31, new Company("EA", new Address("street1", "city1")), prepareListOfCategories("B")));
 	people.add(new Person("Marry", "Duke", 45, new Company("Oracle", new Address("street2", null)), prepareListOfCategories("A", "B")));
 	people.add(new Person("Peter", "Hunt", 41, null, prepareListOfCategories("B", "D")));
 	return people;
     }
-    
-    private List<String> prepareListOfCategories(String ... values) {
+
+    private List<String> prepareListOfCategories(String... values) {
 	List<String> categories = new ArrayList<String>();
-	for(String s : values) {
+	for (String s : values) {
 	    categories.add(s);
 	}
 	return categories;
     }
-    
+
 }

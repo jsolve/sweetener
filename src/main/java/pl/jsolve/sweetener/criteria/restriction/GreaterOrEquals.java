@@ -3,12 +3,12 @@ package pl.jsolve.sweetener.criteria.restriction;
 import pl.jsolve.sweetener.criteria.Restriction;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
 
-public class GreaterOrEq implements Restriction {
+public class GreaterOrEquals implements Restriction {
 
     private final String fieldName;
     private final Number value;
 
-    public GreaterOrEq(String fieldName, Number value) {
+    public GreaterOrEquals(String fieldName, Number value) {
 	this.fieldName = fieldName;
 	this.value = value;
     }

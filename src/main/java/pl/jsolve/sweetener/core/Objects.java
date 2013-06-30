@@ -45,12 +45,11 @@ public class Objects {
 		    boolean isLastNestedObject = (i == fieldsName.length - 1);
 		    if (isLastNestedObject) {
 			return getValueOfField(o, field);
-		    } else {
-			o = getValueOfField(o, field);
-			levelOfNestedObject++;
-			if (o == null) {
-			    return null;
-			}
+		    }
+		    o = getValueOfField(o, field);
+		    levelOfNestedObject++;
+		    if (o == null) {
+			return null;
 		    }
 		}
 	    }

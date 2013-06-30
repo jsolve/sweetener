@@ -50,9 +50,8 @@ public class NotLike implements Restriction {
     private boolean satisfiesString(String fieldValue) {
 	if (ignoreCase) {
 	    return fieldValue.toLowerCase().contains(((String) value).toLowerCase());
-	} else {
-	    return fieldValue.contains((String) value);
 	}
+	return fieldValue.contains((String) value);
     }
 
 }

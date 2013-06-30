@@ -49,10 +49,9 @@ public class Like implements Restriction {
 
     private boolean satisfiesString(String fieldValue) {
 	if (ignoreCase) {
-	  return  fieldValue.toLowerCase().contains(((String) value).toLowerCase());
-	} else {
-	    return fieldValue.contains((String) value);
+	    return fieldValue.toLowerCase().contains(((String) value).toLowerCase());
 	}
+	return fieldValue.contains((String) value);
     }
 
 }
