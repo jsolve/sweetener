@@ -9,3 +9,4 @@ Main categories:
 
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
+* [ThrowableAssertions](https://github.com/jsolve/sweetener/wiki/ThrowableAssertions)
