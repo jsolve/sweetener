@@ -1,6 +1,6 @@
 package pl.jsolve.sweetener.builder;
 
-import static pl.jsolve.sweetener.nullsafe.NullSafeUtils.nullSafeToString;
+import static pl.jsolve.sweetener.core.Objects.nullSafeToString;
 
 import java.lang.reflect.Field;
 
