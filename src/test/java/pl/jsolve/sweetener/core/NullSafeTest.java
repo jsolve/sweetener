@@ -1,16 +1,15 @@
-package pl.jsolve.sweetener.nullsafe;
+package pl.jsolve.sweetener.core;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static pl.jsolve.sweetener.nullsafe.NullSafeUtils.nullSafe;
-import static pl.jsolve.sweetener.nullsafe.NullSafeUtils.nullSafeToString;
+import static pl.jsolve.sweetener.core.Objects.nullSafe;
+import static pl.jsolve.sweetener.core.Objects.nullSafeToString;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aCaptainAmerica;
 
 import org.junit.Test;
 
-import pl.jsolve.sweetener.nullsafe.OnNullBehavior;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
-public class NullSafeUtilsTest {
+public class NullSafeTest {
 
     private static final int ZERO = 0;
     private static final Object NULL_OBJECT = null;
@@ -27,6 +26,30 @@ public class NullSafeUtilsTest {
 
 	// then
 	assertThat(result).isEqualTo(captainAmerica.toString());
+    }
+    
+    @Test
+    public void shouldReturnNewDoubleForNullValue() throws Exception {
+	// given
+	Double d = null;
+	
+	// when
+	d = Objects.nullSafeDouble(d);
+	
+	// then
+	assertThat(d).isZero();
+    }
+    
+    @Test
+    public void shouldReturnNewIntegerForNullValue() throws Exception {
+	// given
+	Integer value = null;
+	
+	// when
+	value = Objects.nullSafeInteger(value);
+	
+	// then
+	assertThat(value).isZero();
     }
 
     @Test
