@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.nullsafe;
+package pl.jsolve.sweetener.core;
 
 public interface OnNullBehavior<T> {
 
