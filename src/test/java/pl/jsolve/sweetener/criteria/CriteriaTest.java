@@ -187,7 +187,7 @@ public class CriteriaTest {
 	assertThat(filteredList).hasSize(3);
 	assertThat(filteredList).onProperty("name").contains("John", "John", "Peter");
 	assertThat(filteredList).onProperty("lastName").contains("Wolf", "Sky", "Hunt");
-    } // categoryOfDrivingLicense
+    }
 
     @Test
     public void shouldFilterGivenCollectionByContains() {
