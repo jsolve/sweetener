@@ -6,6 +6,7 @@ Sweetener is a project created by Jsolve group. It provides a set of classes to 
 Main categories:
 * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
 * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
+* [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
 
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
