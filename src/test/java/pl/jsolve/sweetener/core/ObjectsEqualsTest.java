@@ -9,7 +9,7 @@ import pl.jsolve.sweetener.collection.data.Address;
 import pl.jsolve.sweetener.collection.data.Company;
 import pl.jsolve.sweetener.collection.data.Person;
 
-public class ObjectsEquals {
+public class ObjectsEqualsTest {
 
     private Person firstPerson;
     private Person secondPerson;

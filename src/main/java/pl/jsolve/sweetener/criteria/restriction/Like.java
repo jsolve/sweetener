@@ -21,6 +21,7 @@ public class Like implements Restriction {
 	this.ignoreCase = ignoreCase;
     }
 
+    @Override
     public String getFieldName() {
 	return fieldName;
     }
@@ -33,10 +34,12 @@ public class Like implements Restriction {
 	return ignoreCase;
     }
 
+    @Override
     public RestrictionLevel getRestrictionLevel() {
 	return RestrictionLevel.MEDIUM;
     }
 
+    @Override
     public boolean satisfies(Object fieldValue) {
 	if (fieldValue != null) {
 	    if (!(fieldValue instanceof String)) {
@@ -49,9 +52,8 @@ public class Like implements Restriction {
 
     private boolean satisfiesString(String fieldValue) {
 	if (ignoreCase) {
-	    return fieldValue.toLowerCase().contains(((String) value).toLowerCase());
+	    return fieldValue.toLowerCase().contains(value.toLowerCase());
 	}
-	return fieldValue.contains((String) value);
+	return fieldValue.contains(value);
     }
-
 }

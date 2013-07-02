@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import pl.jsolve.sweetener.comparer.Comparer;
 import pl.jsolve.sweetener.comparer.byId.ComparableById;
-import pl.jsolve.sweetener.comparer.byId.CompererById;
+import pl.jsolve.sweetener.comparer.byId.ComparerById;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class ComparerByIdTest {
@@ -22,7 +22,7 @@ public class ComparerByIdTest {
     @Test
     public void shouldCompareTwoHeroesWithSameId() {
 	// given
-	Comparer<Hero> heroesComparerById = new CompererById<>();
+	Comparer<Hero> heroesComparerById = new ComparerById<>();
 	Hero hulk = aHulk().withId(ID).build();
 	Hero captainAmerica = aCaptainAmerica().withId(SAME_ID).build();
 
@@ -36,7 +36,7 @@ public class ComparerByIdTest {
     @Test
     public void shouldCompareTwoHeroesWithDifferentIds() {
 	// given
-	Comparer<Hero> heroesComparerById = new CompererById<>();
+	Comparer<Hero> heroesComparerById = new ComparerById<>();
 	Hero hulk = aHulk().withId(ID).build();
 	Hero captainAmerica = aCaptainAmerica().withId(DIFFERENT_ID).build();
 
@@ -50,7 +50,7 @@ public class ComparerByIdTest {
     @Test
     public void shouldCompareTwoComparableByIdObjectsWithSameId() {
 	// given
-	Comparer<ComparableById> comparerById = new CompererById<>();
+	Comparer<ComparableById> comparerById = new ComparerById<>();
 	ComparableById comparableById = createMockedComparableByIdObjectWithId(ID);
 	ComparableById comparableByIdWithSameId = createMockedComparableByIdObjectWithId(SAME_ID);
 
@@ -64,7 +64,7 @@ public class ComparerByIdTest {
     @Test
     public void shouldCompareTwoComparableByIdObjectsWithDifferentIds() {
 	// given
-	Comparer<ComparableById> comparerById = new CompererById<>();
+	Comparer<ComparableById> comparerById = new ComparerById<>();
 	ComparableById comparableById = createMockedComparableByIdObjectWithId(ID);
 	ComparableById comparableByIdWithDifferentId = createMockedComparableByIdObjectWithId(DIFFERENT_ID);
 

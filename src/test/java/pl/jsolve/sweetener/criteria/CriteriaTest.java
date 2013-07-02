@@ -250,7 +250,7 @@ public class CriteriaTest {
     }
 
     private List<Person> prepareListOfPeople() {
-	List<Person> people = new ArrayList<Person>();
+	List<Person> people = new ArrayList<>();
 
 	people.add(new Person("John", "Wolf", 27, null, null));
 	people.add(new Person("John", "Sky", 31, new Company("EA", new Address("street1", "city1")), prepareListOfCategories("B")));
@@ -260,7 +260,7 @@ public class CriteriaTest {
     }
 
     private List<String> prepareListOfCategories(String... values) {
-	List<String> categories = new ArrayList<String>();
+	List<String> categories = new ArrayList<>();
 	for (String s : values) {
 	    categories.add(s);
 	}

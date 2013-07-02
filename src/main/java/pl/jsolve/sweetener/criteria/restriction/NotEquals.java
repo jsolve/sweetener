@@ -21,6 +21,7 @@ public class NotEquals implements Restriction {
 	this.ignoreCase = ignoreCase;
     }
 
+    @Override
     public String getFieldName() {
 	return fieldName;
     }
@@ -33,10 +34,12 @@ public class NotEquals implements Restriction {
 	return ignoreCase;
     }
 
+    @Override
     public RestrictionLevel getRestrictionLevel() {
 	return RestrictionLevel.MEDIUM;
     }
 
+    @Override
     public boolean satisfies(Object fieldValue) {
 	if (fieldValue != null) {
 	    if (fieldValue instanceof String) {
@@ -54,7 +57,6 @@ public class NotEquals implements Restriction {
 	if (ignoreCase) {
 	    return !fieldValue.equalsIgnoreCase((String) value);
 	}
-	return !fieldValue.equals((String) value);
+	return !fieldValue.equals(value);
     }
-
 }

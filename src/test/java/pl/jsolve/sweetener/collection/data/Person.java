@@ -9,7 +9,7 @@ public class Person {
     private String lastName;
     private int age;
     private Company company;
-    private List<String> categoriesOfDrivingLicense = new ArrayList<String>();
+    private List<String> categoriesOfDrivingLicense = new ArrayList<>();
 
     public Person() {
     }

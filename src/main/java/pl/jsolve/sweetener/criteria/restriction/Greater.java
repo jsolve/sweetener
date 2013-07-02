@@ -13,6 +13,7 @@ public class Greater implements Restriction {
 	this.value = value;
     }
 
+    @Override
     public String getFieldName() {
 	return fieldName;
     }
@@ -21,10 +22,12 @@ public class Greater implements Restriction {
 	return value;
     }
 
+    @Override
     public RestrictionLevel getRestrictionLevel() {
 	return RestrictionLevel.LOW;
     }
 
+    @Override
     public boolean satisfies(Object fieldValue) {
 	if (fieldValue != null) {
 	    if (!(fieldValue instanceof Number)) {

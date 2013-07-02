@@ -17,6 +17,7 @@ public class Contains implements Restriction {
 	this.value = value;
     }
 
+    @Override
     public String getFieldName() {
 	return fieldName;
     }
@@ -29,10 +30,12 @@ public class Contains implements Restriction {
 	return value;
     }
 
+    @Override
     public RestrictionLevel getRestrictionLevel() {
 	return RestrictionLevel.LOW;
     }
 
+    @Override
     public boolean satisfies(Object fieldValue) {
 	if (fieldValue == null) {
 	    return false;
@@ -43,9 +46,8 @@ public class Contains implements Restriction {
 	Collection<?> fieldValueAsCollection = ((Collection<?>) fieldValue);
 	if (exactlyAllObjects) {
 	    return forExactlyAllObjects(fieldValueAsCollection);
-	} else {
-	    return forAnyObject(fieldValueAsCollection);
 	}
+	return forAnyObject(fieldValueAsCollection);
     }
 
     private boolean forExactlyAllObjects(Collection<?> fieldValueAsCollection) {

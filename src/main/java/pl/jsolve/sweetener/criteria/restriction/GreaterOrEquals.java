@@ -13,6 +13,7 @@ public class GreaterOrEquals implements Restriction {
 	this.value = value;
     }
 
+    @Override
     public String getFieldName() {
 	return fieldName;
     }
@@ -21,10 +22,12 @@ public class GreaterOrEquals implements Restriction {
 	return value;
     }
 
+    @Override
     public RestrictionLevel getRestrictionLevel() {
 	return RestrictionLevel.LOW;
     }
 
+    @Override
     public boolean satisfies(Object fieldValue) {
 	if (fieldValue != null) {
 	    if (!(fieldValue instanceof Number)) {
@@ -34,5 +37,4 @@ public class GreaterOrEquals implements Restriction {
 	}
 	return false;
     }
-
 }

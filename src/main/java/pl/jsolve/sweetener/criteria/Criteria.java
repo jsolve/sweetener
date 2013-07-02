@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Criteria {
 
-    private List<Restriction> restrictions = new ArrayList<Restriction>();
+    private final List<Restriction> restrictions = new ArrayList<>();
 
     private Criteria() {
     }

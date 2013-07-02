@@ -17,6 +17,7 @@ public class NotContains implements Restriction {
 	this.value = value;
     }
 
+    @Override
     public String getFieldName() {
 	return fieldName;
     }
@@ -29,10 +30,12 @@ public class NotContains implements Restriction {
 	return value;
     }
 
+    @Override
     public RestrictionLevel getRestrictionLevel() {
 	return RestrictionLevel.LOW;
     }
 
+    @Override
     public boolean satisfies(Object fieldValue) {
 	if (fieldValue == null) { // null indicates that collection does not
 				  // contain any objects
@@ -50,5 +53,4 @@ public class NotContains implements Restriction {
 	}
 	return numberOfObject != value.length;
     }
-
 }

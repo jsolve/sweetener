@@ -21,6 +21,7 @@ public class NotLike implements Restriction {
 	this.ignoreCase = ignoreCase;
     }
 
+    @Override
     public String getFieldName() {
 	return fieldName;
     }
@@ -33,10 +34,12 @@ public class NotLike implements Restriction {
 	return ignoreCase;
     }
 
+    @Override
     public RestrictionLevel getRestrictionLevel() {
 	return RestrictionLevel.MEDIUM;
     }
 
+    @Override
     public boolean satisfies(Object fieldValue) {
 	if (fieldValue != null) {
 	    if (!(fieldValue instanceof String)) {
@@ -53,5 +56,4 @@ public class NotLike implements Restriction {
 	}
 	return fieldValue.contains((String) value);
     }
-
 }

@@ -11,7 +11,7 @@ import pl.jsolve.sweetener.criteria.Restriction;
 public class Collections {
 
     public static <T> Collection<T> filter(Collection<T> collection, Criteria criteria) {
-	List<T> result = new ArrayList<T>();
+	List<T> result = new ArrayList<>();
 	for (T t : collection) {
 	    if (checkIfElementSatisfiesConditions(t, criteria)) {
 		result.add(t);

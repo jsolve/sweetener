@@ -3,8 +3,6 @@ package pl.jsolve.sweetener.core;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -21,7 +19,6 @@ public class Objects {
 	throw new AssertionError("Using constructor of this class is prohibited.");
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T deepCopy(T o) {
 	try {
 	    initialObjectMapper();
@@ -62,7 +59,8 @@ public class Objects {
 	    }
 	    clazz = clazz.getSuperclass();
 	}
-	throw new AccessToFieldException(String.format("The field %s does not exist", fieldsName[levelOfNestedObject]));
+	throw new AccessToFieldException(String.format("The field %s does not exist",
+		fieldsName[levelOfNestedObject]));
     }
 
     private static Field getDeclaredField(String fieldName, Class<?> clazz) {
@@ -78,7 +76,8 @@ public class Objects {
 	    field.setAccessible(true);
 	    return field.get(o);
 	} catch (Exception e) {
-	    throw new AccessToFieldException(String.format("Exception during getting value of %s field", field.getName()));
+	    throw new AccessToFieldException(String.format("Exception during getting value of %s field",
+		    field.getName()));
 	}
     }
 
