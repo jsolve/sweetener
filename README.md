@@ -13,3 +13,7 @@ Main categories:
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
 * [ThrowableAssertions](https://github.com/jsolve/sweetener/wiki/ThrowableAssertions)
+    
+<br>
+___
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jsolve/sweetener/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
