@@ -3,7 +3,7 @@ Sweetener
 
 Sweetener is a project created by Jsolve group. It provides a set of classes to facilitate the work with the Java language.
 
-Current status: <img src="https://jsolve.ci.cloudbees.com/buildStatus/icon?job=Jsolve"/>
+Current status: [![ScreenShot](https://jsolve.ci.cloudbees.com/buildStatus/icon?job=Jsolve)](https://jsolve.ci.cloudbees.com/job/Jsolve/)
 
 Main categories:
 * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
