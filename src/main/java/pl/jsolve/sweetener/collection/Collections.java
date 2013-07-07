@@ -33,13 +33,13 @@ public class Collections {
 		if (from < 0) {
 			throw new InvalidArgumentException("The 'From' value cannot be negative");
 		}
-		if (from > countOfElements) {
+		if (from > countOfElements - 1) {
 			throw new InvalidArgumentException("The 'From' value cannot be greater than size of collection");
 		}
 		if (from > to) {
 			throw new InvalidArgumentException("The 'From' value cannot be greater than the 'to' value");
 		}
-		if (to > countOfElements) {
+		if (to > countOfElements - 1) {
 			throw new InvalidArgumentException("The 'To' value cannot be greater than size of collection");
 		}
 		Collection<T> result = createNewInstanceOfCollection(collection.getClass());
@@ -67,5 +67,14 @@ public class Collections {
 			}
 		}
 		return true;
+	}
+
+	public static <T> Pagination<T> paginate(Collection<T> collection, int page, int resultsPerPage) {
+		int totalElements = collection.size();
+		int from = page * resultsPerPage;
+		int to = from + resultsPerPage;
+		to = to > totalElements ? totalElements : to;
+		Collection<T> elementsOfPage = truncate(collection, from, to - 1);
+		return new Pagination<T>(page, resultsPerPage, totalElements, elementsOfPage);
 	}
 }
