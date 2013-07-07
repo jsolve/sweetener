@@ -53,9 +53,8 @@ public class Reflections {
 		    if (isLastNestedObject) {
 			setValue(field, object, value);
 			return;
-		    } else {
-			createValueIfNull(object, field);
 		    }
+		    createValueIfNull(object, field);
 		    object = getValueOfField(object, field);
 		    levelOfNestedObject++;
 		}
@@ -111,7 +110,7 @@ public class Reflections {
     }
 
     public static List<Class<?>> getClasses(Object object) {
-	List<Class<?>> classes = new ArrayList<Class<?>>();
+	List<Class<?>> classes = new ArrayList<>();
 	Class<?> clazz = object.getClass();
 	classes.add(clazz);
 	while (!Object.class.equals(clazz)) {
@@ -122,7 +121,7 @@ public class Reflections {
     }
 
     public static List<Field> getFields(Object object) {
-	List<Field> fields = new ArrayList<Field>();
+	List<Field> fields = new ArrayList<>();
 	Class<?> clazz = object.getClass();
 	while (!Object.class.equals(clazz)) {
 	    Field[] arrayOfFields = clazz.getDeclaredFields();
@@ -135,7 +134,7 @@ public class Reflections {
     }
 
     public static List<Annotation> getAnnotations(Object object) {
-	List<Annotation> annotations = new ArrayList<Annotation>();
+	List<Annotation> annotations = new ArrayList<>();
 	Class<?> clazz = object.getClass();
 	while (!Object.class.equals(clazz)) {
 	    Annotation[] arrayOfAnnotations = clazz.getDeclaredAnnotations();
@@ -148,7 +147,7 @@ public class Reflections {
     }
 
     public static List<Constructor<?>> getConstructors(Object object) {
-	List<Constructor<?>> constructors = new ArrayList<Constructor<?>>();
+	List<Constructor<?>> constructors = new ArrayList<>();
 	Class<?> clazz = object.getClass();
 	while (!Object.class.equals(clazz)) {
 	    Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
@@ -161,7 +160,7 @@ public class Reflections {
     }
 
     public static List<Method> getMethods(Object object) {
-	List<Method> methods = new ArrayList<Method>();
+	List<Method> methods = new ArrayList<>();
 	Class<?> clazz = object.getClass();
 	while (!Object.class.equals(clazz)) {
 	    Method[] declaredMethods = clazz.getDeclaredMethods();
