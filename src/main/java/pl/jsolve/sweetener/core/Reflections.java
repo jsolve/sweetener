@@ -25,9 +25,9 @@ public class Reflections {
 		if (field != null) {
 		    boolean isLastNestedObject = (i == fieldsName.length - 1);
 		    if (isLastNestedObject) {
-			return getValueOfField(o, field);
+			return getValueField(o, field);
 		    }
-		    o = getValueOfField(o, field);
+		    o = getValueField(o, field);
 		    levelOfNestedObject++;
 		    if (o == null) {
 			return null;
@@ -36,7 +36,7 @@ public class Reflections {
 	    }
 	    clazz = clazz.getSuperclass();
 	}
-	throw new AccessToFieldException(String.format("The field %s does not exist", fieldsName[levelOfNestedObject]));
+	throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
     }
 
     public static void setFieldValue(Object object, String stringOfFieldsName, Object value) {
@@ -55,18 +55,18 @@ public class Reflections {
 			return;
 		    }
 		    createValueIfNull(object, field);
-		    object = getValueOfField(object, field);
+		    object = getValueField(object, field);
 		    levelOfNestedObject++;
 		}
 	    }
 	    clazz = clazz.getSuperclass();
 	}
-	throw new AccessToFieldException(String.format("The field %s does not exist", fieldsName[levelOfNestedObject]));
+	throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
     }
 
     private static void createValueIfNull(Object object, Field field) {
 	try {
-	    Object valueOfField = getValueOfField(object, field);
+	    Object valueOfField = getValueField(object, field);
 	    if (valueOfField == null) {
 		Object newInstance = field.getType().newInstance();
 		field.setAccessible(true);
@@ -87,12 +87,12 @@ public class Reflections {
 	}
     }
 
-    private static Object getValueOfField(Object o, Field field) {
+    private static Object getValueField(Object o, Field field) {
 	try {
 	    field.setAccessible(true);
 	    return field.get(o);
 	} catch (Exception e) {
-	    throw new AccessToFieldException(String.format("Exception during getting value of %s field", field.getName()));
+	    throw new AccessToFieldException("Exception during getting value of %s field", field.getName());
 	} finally {
 	    field.setAccessible(false);
 	}
@@ -103,7 +103,7 @@ public class Reflections {
 	    field.setAccessible(true);
 	    field.set(object, value);
 	} catch (Exception e) {
-	    throw new AccessToFieldException(String.format("Exception during setting value of %s field", field.getName()));
+	    throw new AccessToFieldException("Exception during setting value of %s field", field.getName());
 	} finally {
 	    field.setAccessible(false);
 	}

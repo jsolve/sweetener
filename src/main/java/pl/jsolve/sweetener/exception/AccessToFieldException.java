@@ -7,4 +7,8 @@ public class AccessToFieldException extends RuntimeException {
     public AccessToFieldException(String message) {
 	super(message);
     }
+    
+    public AccessToFieldException(String template, Object ... args) {
+	  super(String.format(template, args));
+    }
 }
