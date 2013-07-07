@@ -1,6 +1,8 @@
 package pl.jsolve.sweetener.collection;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.criteria.Criteria;
@@ -33,13 +35,13 @@ public class Collections {
 		if (from < 0) {
 			throw new InvalidArgumentException("The 'From' value cannot be negative");
 		}
-		if (from > countOfElements) {
+		if (from > countOfElements - 1) {
 			throw new InvalidArgumentException("The 'From' value cannot be greater than size of collection");
 		}
 		if (from > to) {
 			throw new InvalidArgumentException("The 'From' value cannot be greater than the 'to' value");
 		}
-		if (to > countOfElements) {
+		if (to > countOfElements - 1) {
 			throw new InvalidArgumentException("The 'To' value cannot be greater than size of collection");
 		}
 		Collection<T> result = createNewInstanceOfCollection(collection.getClass());
@@ -67,5 +69,31 @@ public class Collections {
 			}
 		}
 		return true;
+	}
+
+	public static <T> Pagination<T> paginate(Collection<T> collection, int page, int resultsPerPage) {
+		int totalElements = collection.size();
+		int from = page * resultsPerPage;
+		int to = getTo(resultsPerPage, totalElements, from);
+		Collection<T> elementsOfPage = truncate(collection, from, to);
+		return new Pagination<T>(page, resultsPerPage, totalElements, elementsOfPage);
+	}
+
+	public static <T> ChoppedElements<T> chopElements(Collection<T> collection, int resultsPerPage) {
+		int totalElements = collection.size();
+		int numberOfPages = (totalElements + resultsPerPage - 1) / resultsPerPage;
+		List<Collection<T>> listOfPages = new ArrayList<>();
+		for (int i = 0; i < numberOfPages; i++) {
+			Collection<T> elementsOfPage = truncate(collection, i * resultsPerPage,
+					getTo(resultsPerPage, totalElements, i * resultsPerPage));
+			listOfPages.add(elementsOfPage);
+		}
+		return new ChoppedElements<T>(0, resultsPerPage, totalElements, listOfPages);
+	}
+
+	private static int getTo(int resultsPerPage, int totalElements, int from) {
+		int to = from + resultsPerPage;
+		to = to > totalElements - 1 ? totalElements : to;
+		return to-1;
 	}
 }
