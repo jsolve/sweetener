@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import pl.jsolve.sweetener.core.Objects;
+import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.criteria.Criteria;
 import pl.jsolve.sweetener.criteria.Restriction;
 
@@ -22,7 +22,7 @@ public class Collections {
 
     private static boolean checkIfElementSatisfiesConditions(Object o, Criteria criteria) {
 	for (Restriction restriction : criteria.getSortedRestrictions()) {
-	    Object fieldValue = Objects.getFieldValue(o, restriction.getFieldName());
+	    Object fieldValue = Reflections.getFieldValue(o, restriction.getFieldName());
 	    if (!restriction.satisfies(fieldValue)) {
 		return false;
 	    }
