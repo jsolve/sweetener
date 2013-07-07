@@ -9,6 +9,7 @@ Main categories:
 * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
 * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
 * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
+* [Reflections] (https://github.com/jsolve/sweetener/wiki/Reflections)
 
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
@@ -17,3 +18,4 @@ For unit tests:
 <br>
 ___
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jsolve/sweetener/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
