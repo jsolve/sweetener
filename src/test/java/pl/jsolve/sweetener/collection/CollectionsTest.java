@@ -104,6 +104,20 @@ public class CollectionsTest {
 	}
 
 	@Test
+	public void shouldTruncateCollection2() {
+		// given
+		int from = 0;
+		int to = 8;
+
+		// when
+		List<String> truncatedCollection = Collections.truncate(values, from, to);
+
+		// then
+		assertThat(truncatedCollection).hasSize(9);
+		assertThat(truncatedCollection).containsSequence("B", "C", "D", "E", "F", "G", "H", "I");
+	}
+
+	@Test
 	public void shouldTruncateCollectionWhenSecondParameterIsNegative() {
 		// given
 		int from = 0;
@@ -116,7 +130,7 @@ public class CollectionsTest {
 		assertThat(truncatedCollection).hasSize(9);
 		assertThat(truncatedCollection).containsSequence("A", "B", "C", "D", "E", "F", "G", "H", "I");
 	}
-	
+
 	@Test
 	public void shouldTruncateCollectionWhenSecondParameterIsNegative2() {
 		// given
@@ -130,4 +144,156 @@ public class CollectionsTest {
 		assertThat(truncatedCollection).hasSize(2);
 		assertThat(truncatedCollection).containsSequence("A", "B");
 	}
+
+	@Test
+	public void shouldPaginateTheCollection() {
+		// given
+		int page = 0;
+		int resultsPerPage = 3;
+
+		// when
+		Pagination<String> pagination = Collections.paginate(values, page, resultsPerPage);
+
+		// then
+		assertThat(pagination.getPage()).isEqualTo(page);
+		assertThat(pagination.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(pagination.getTotalElements()).isEqualTo(9);
+		assertThat(pagination.getNumberOfPages()).isEqualTo(3);
+		assertThat(pagination.getElementsOfPage()).containsOnly("A", "B", "C");
+	}
+
+	@Test
+	public void shouldPaginateTheCollection2() {
+		// given
+		int page = 2;
+		int resultsPerPage = 4;
+
+		// when
+		Pagination<String> pagination = Collections.paginate(values, page, resultsPerPage);
+
+		// then
+		assertThat(pagination.getPage()).isEqualTo(page);
+		assertThat(pagination.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(pagination.getTotalElements()).isEqualTo(9);
+		assertThat(pagination.getNumberOfPages()).isEqualTo(3);
+		assertThat(pagination.getElementsOfPage()).containsOnly("I");
+	}
+
+	@Test
+	public void shouldPaginateTheCollection3() {
+		// given
+		int page = 0;
+		int resultsPerPage = 40;
+
+		// when
+		Pagination<String> pagination = Collections.paginate(values, page, resultsPerPage);
+
+		// then
+		assertThat(pagination.getPage()).isEqualTo(page);
+		assertThat(pagination.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(pagination.getTotalElements()).isEqualTo(9);
+		assertThat(pagination.getNumberOfPages()).isEqualTo(1);
+		assertThat(pagination.getElementsOfPage()).containsOnly("A", "B", "C", "D", "E", "F", "G", "H", "I");
+	}
+
+	@Test
+	public void shouldChopCollection() {
+		// given
+		int resultsPerPage = 40;
+
+		// when
+		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+
+		// then
+		assertThat(choppedElements.getPage()).isEqualTo(0);
+		assertThat(choppedElements.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(choppedElements.getTotalElements()).isEqualTo(9);
+		assertThat(choppedElements.getNumberOfPages()).isEqualTo(1);
+		assertThat(choppedElements.getListOfPages()).hasSize(1);
+		assertThat(choppedElements.getElementsOfPage()).containsOnly("A", "B", "C", "D", "E", "F", "G", "H", "I");
+	}
+
+	@Test
+	public void shouldChopCollection2() {
+		// given
+		int resultsPerPage = 3;
+
+		// when
+		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+
+		// then
+		assertThat(choppedElements.getPage()).isEqualTo(0);
+		assertThat(choppedElements.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(choppedElements.getTotalElements()).isEqualTo(9);
+		assertThat(choppedElements.getNumberOfPages()).isEqualTo(3);
+		assertThat(choppedElements.getListOfPages()).hasSize(3);
+		assertThat(choppedElements.getElementsOfPage()).containsOnly("A", "B", "C");
+	}
+
+	@Test
+	public void shouldChopCollection3() {
+		// given
+		int resultsPerPage = 3;
+
+		// when
+		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+		choppedElements.setPage(2);
+
+		// then
+		assertThat(choppedElements.getPage()).isEqualTo(2);
+		assertThat(choppedElements.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(choppedElements.getTotalElements()).isEqualTo(9);
+		assertThat(choppedElements.getNumberOfPages()).isEqualTo(3);
+		assertThat(choppedElements.getListOfPages()).hasSize(3);
+		assertThat(choppedElements.getElementsOfPage()).containsOnly("G", "H", "I");
+	}
+
+	@Test
+	public void shouldChopCollection4() {
+		// given
+		int resultsPerPage = 4;
+
+		// when
+		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+		choppedElements.setPage(2);
+
+		// then
+		assertThat(choppedElements.getPage()).isEqualTo(2);
+		assertThat(choppedElements.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(choppedElements.getTotalElements()).isEqualTo(9);
+		assertThat(choppedElements.getNumberOfPages()).isEqualTo(3);
+		assertThat(choppedElements.getListOfPages()).hasSize(3);
+		assertThat(choppedElements.getElementsOfPage()).containsOnly("I");
+	}
+
+	@Test
+	public void shouldChopCollection5() {
+		// given
+		int resultsPerPage = 4;
+
+		// when
+		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+
+		// then
+		assertThat(choppedElements.getPage()).isEqualTo(0);
+		assertThat(choppedElements.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(choppedElements.getTotalElements()).isEqualTo(9);
+		assertThat(choppedElements.getNumberOfPages()).isEqualTo(3);
+		assertThat(choppedElements.getListOfPages()).hasSize(3);
+
+		// first page
+		assertThat(choppedElements.getElementsOfPage()).containsOnly("A", "B", "C", "D");
+
+		choppedElements.nextPage();
+
+		// second page
+		assertThat(choppedElements.getElementsOfPage()).containsOnly("E", "F", "G", "H");
+
+		choppedElements.nextPage();
+
+		// third page
+		assertThat(choppedElements.getElementsOfPage()).containsOnly("I");
+
+	}
+
 }
