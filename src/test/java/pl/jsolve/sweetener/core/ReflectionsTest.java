@@ -12,11 +12,12 @@ import java.util.List;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
-import pl.jsolve.sweetener.mapper.MapExactlyTo;
+import pl.jsolve.sweetener.mapper.annotation.MapExactlyTo;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class ReflectionsTest {
 
+	private static final String HERO_ID_FIELD_NAME = "id";
 	private static final String GETTER_METHODS_PREFIX = "get";
 	private static final String HERO_GET_NICKNAME_METHOD_NAME = "getNickname";
 	private static final String HERO_GET_LAST_NAME_METHOD_NAME = "getLastName";
@@ -121,13 +122,13 @@ public class ReflectionsTest {
 	public void shouldGetAllAnnotatedFields() throws Exception {
 		// given
 		Hero hero = aHero().build();
-		Field heroNicknameField = hero.getClass().getDeclaredField(HERO_NICKNAME_FIELD_NAME);
+		Field heroIdField = hero.getClass().getDeclaredField(HERO_ID_FIELD_NAME);
 
 		// when
 		List<Field> fields = Reflections.getFieldsAnnotatedBy(hero, MapExactlyTo.class);
 
 		// then
-		assertThat(fields).as("hero class has `nickname` field annotated by MapExactlyTo").containsOnly(heroNicknameField);
+		assertThat(fields).as("hero class has `id` field annotated by MapExactlyTo").contains(heroIdField);
 	}
 
 	@Test

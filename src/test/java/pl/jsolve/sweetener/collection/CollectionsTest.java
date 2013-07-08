@@ -21,7 +21,7 @@ public class CollectionsTest {
 
 	@Before
 	public void setUp() {
-		values = new ArrayList<String>();
+		values = new ArrayList<>();
 		values.add("A");
 		values.add("B");
 		values.add("C");
@@ -116,7 +116,7 @@ public class CollectionsTest {
 		assertThat(truncatedCollection).hasSize(9);
 		assertThat(truncatedCollection).containsSequence("A", "B", "C", "D", "E", "F", "G", "H", "I");
 	}
-	
+
 	@Test
 	public void shouldTruncateCollectionWhenSecondParameterIsNegative2() {
 		// given

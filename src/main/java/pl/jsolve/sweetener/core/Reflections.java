@@ -8,10 +8,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 import pl.jsolve.sweetener.exception.AccessToFieldException;
+import pl.jsolve.sweetener.exception.InstanceCreationException;
 
 public class Reflections {
 
 	private final static String DOT = "\\.";
+	private final Object object;
+
+	public static Reflections onObject(Object object) {
+		return new Reflections(object);
+	}
+
+	private Reflections(Object object) {
+		this.object = object;
+	}
 
 	public static Object getFieldValue(Object o, String stringOfFieldsName) {
 
@@ -21,13 +31,13 @@ public class Reflections {
 		while (!Object.class.equals(clazz)) {
 
 			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = getDeclaredField(fieldsName[i], o.getClass());
+				Field field = onObject(o).getDeclaredField(fieldsName[i]);
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
-						return getValueField(o, field);
+						return onObject(o).getFieldValue(field);
 					}
-					o = getValueField(o, field);
+					o = onObject(o).getFieldValue(field);
 					levelOfNestedObject++;
 					if (o == null) {
 						return null;
@@ -47,15 +57,15 @@ public class Reflections {
 		while (!Object.class.equals(clazz)) {
 
 			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = getDeclaredField(fieldsName[i], object.getClass());
+				Field field = onObject(object).getDeclaredField(fieldsName[i]);
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
-						setValue(field, object, value);
+						onObject(object).setField(field, value);
 						return;
 					}
-					createValueIfNull(object, field);
-					object = getValueField(object, field);
+					onObject(object).createValueIfNull(field);
+					object = onObject(object).getFieldValue(field);
 					levelOfNestedObject++;
 				}
 			}
@@ -64,41 +74,22 @@ public class Reflections {
 		throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
 	}
 
-	private static void createValueIfNull(Object object, Field field) {
+	public Reflections createValueIfNull(Field field) {
 		try {
-			Object valueOfField = getValueField(object, field);
+			Object valueOfField = getFieldValue(field);
 			if (valueOfField == null) {
 				Object newInstance = field.getType().newInstance();
 				field.setAccessible(true);
 				field.set(object, newInstance);
 			}
 		} catch (Exception ex) {
-
 		} finally {
 			field.setAccessible(false);
 		}
+		return this;
 	}
 
-	private static Field getDeclaredField(String fieldName, Class<?> clazz) {
-		try {
-			return clazz.getDeclaredField(fieldName);
-		} catch (Exception ex) {
-			return null;
-		}
-	}
-
-	private static Object getValueField(Object o, Field field) {
-		try {
-			field.setAccessible(true);
-			return field.get(o);
-		} catch (Exception e) {
-			throw new AccessToFieldException("Exception during getting value of %s field", field.getName());
-		} finally {
-			field.setAccessible(false);
-		}
-	}
-
-	private static void setValue(Field field, Object object, Object value) {
+	public Reflections setField(Field field, Object value) {
 		try {
 			field.setAccessible(true);
 			field.set(object, value);
@@ -106,6 +97,26 @@ public class Reflections {
 			throw new AccessToFieldException("Exception during setting value of %s field", field.getName());
 		} finally {
 			field.setAccessible(false);
+		}
+		return this;
+	}
+
+	public Object getFieldValue(Field field) {
+		try {
+			field.setAccessible(true);
+			return field.get(object);
+		} catch (Exception e) {
+			throw new AccessToFieldException("Exception during getting value of %s field", field.getName());
+		} finally {
+			field.setAccessible(false);
+		}
+	}
+
+	public Field getDeclaredField(String fieldName) {
+		try {
+			return object.getClass().getDeclaredField(fieldName);
+		} catch (Exception ex) {
+			return null;
 		}
 	}
 
@@ -155,17 +166,23 @@ public class Reflections {
 		});
 	}
 
-	public static List<Annotation> getAnnotations(Object object) {
+	public static List<Annotation> getAnnotationsSatisfyingCondtion(Object object, Condition<Annotation> condition) {
 		List<Annotation> annotations = new LinkedList<>();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Annotation[] arrayOfAnnotations = clazz.getDeclaredAnnotations();
-			for (Annotation arrayOfAnnotation : arrayOfAnnotations) {
-				annotations.add(arrayOfAnnotation);
+			for (Annotation annotation : arrayOfAnnotations) {
+				if (condition == null || condition.isSatisfied(annotation)) {
+					annotations.add(annotation);
+				}
 			}
 			clazz = clazz.getSuperclass();
 		}
 		return annotations;
+	}
+
+	public static List<Annotation> getAnnotations(Object object) {
+		return getAnnotationsSatisfyingCondtion(object, null);
 	}
 
 	public static List<Constructor<?>> getConstructorsSatisfyingCondtion(Object object, Condition<Constructor<?>> condition) {
@@ -214,5 +231,13 @@ public class Reflections {
 				return declaredMethod.isAnnotationPresent(annotation);
 			}
 		});
+	}
+
+	public static <T> T tryToCreateNewInstance(Class<T> clazz) {
+		try {
+			return clazz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new InstanceCreationException("Could not create an instance of class " + clazz, e);
+		}
 	}
 }

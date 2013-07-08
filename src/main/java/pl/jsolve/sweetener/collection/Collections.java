@@ -50,7 +50,6 @@ public class Collections {
 		return (T) result;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static <T> Collection<T> createNewInstanceOfCollection(Class<?> clazz) {
 		try {
 			return (Collection<T>) clazz.newInstance();
