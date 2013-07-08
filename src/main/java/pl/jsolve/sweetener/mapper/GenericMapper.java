@@ -1,15 +1,15 @@
 package pl.jsolve.sweetener.mapper;
 
-import static pl.jsolve.sweetener.core.Reflections.getFieldsAnnotatedBy;
-
 import java.lang.reflect.Field;
 import java.util.List;
+
+import pl.jsolve.sweetener.core.Reflections;
 
 public final class GenericMapper {
 
 	public static <T, V> V map(T object, Class<V> targetClass) throws Exception {
 		throwExceptionWhenIsNotMappableToTargetClass(object, targetClass);
-		List<Field> fieldsAnnotatedByMapExactlyTo = getFieldsAnnotatedBy(object, MapExactlyTo.class);
+		List<Field> fieldsAnnotatedByMapExactlyTo = Reflections.getFieldsAnnotatedBy(object, MapExactlyTo.class);
 		V target = targetClass.newInstance();
 		for (Field field : fieldsAnnotatedByMapExactlyTo) {
 			String targetFieldName = getMapExactlyToValue(field);
