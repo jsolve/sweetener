@@ -37,5 +37,8 @@ public class AnnotationDrivenMapperTest {
 
 		// then
 		assertThat(result.getId()).isEqualTo(heroSnapshot.getId());
+		assertThat(result.getFirstName()).as("firstName field is not annotated for mapping").isNull();
+		assertThat(result.getLastName()).as("lastName field is not annotated for mapping").isNull();
+		assertThat(result.getNickname()).as("nickanme field is not annotated for mapping").isNull();
 	}
 }

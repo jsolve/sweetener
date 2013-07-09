@@ -10,6 +10,8 @@ import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
 
 public class ComplexMapperTest {
 
+	private static final String SPACE = " ";
+	private static final int ANY_NUMBER = 1337;
 	private static final long ID = 2L;
 
 	@Test
@@ -20,7 +22,7 @@ public class ComplexMapperTest {
 
 			@Override
 			public HeroSnapshot map(Hero source, HeroSnapshot target) {
-				target.setName(source.getFirstName() + " " + source.getLastName());
+				target.setName(source.getFirstName() + SPACE + source.getLastName());
 				return target;
 			}
 		});
@@ -29,8 +31,8 @@ public class ComplexMapperTest {
 		HeroSnapshot result = heroToHeroSnapshotMapper.map(captainAmerica);
 
 		// then
-		assertThat(result.getId()).as("hero uses mapping adnotations").isEqualTo(captainAmerica.getId());
-		assertThat(result.getName()).isEqualTo(captainAmerica.getFirstName() + " " + captainAmerica.getLastName());
+		assertThat(result.getId()).as("id field has mapping annotations").isEqualTo(captainAmerica.getId());
+		assertThat(result.getName()).isEqualTo(captainAmerica.getFirstName() + SPACE + captainAmerica.getLastName());
 	}
 
 	@Test
@@ -40,7 +42,7 @@ public class ComplexMapperTest {
 		ComplexMapper<Hero, HeroSnapshot> heroToHeroSnapshotMapper = new ComplexMapper<>(new MappingStrategy<Hero, HeroSnapshot>() {
 			@Override
 			public HeroSnapshot map(Hero source, HeroSnapshot target) {
-				target.setId(source.getId() * 10);
+				target.setId(source.getId() + ANY_NUMBER);
 				return target;
 			}
 		});
@@ -48,7 +50,7 @@ public class ComplexMapperTest {
 		HeroSnapshot result = heroToHeroSnapshotMapper.map(captainAmerica);
 
 		// then
-		assertThat(result.getId()).isEqualTo(captainAmerica.getId() * 10);
+		assertThat(result.getId()).isEqualTo(captainAmerica.getId() + ANY_NUMBER);
 	}
 
 	@Test
@@ -61,8 +63,8 @@ public class ComplexMapperTest {
 
 			@Override
 			public Hero map(HeroSnapshot source, Hero target) {
-				target.setFirstName(source.getName().split(" ")[0]);
-				target.setLastName(source.getName().split(" ")[1]);
+				target.setFirstName(source.getName().split(SPACE)[0]);
+				target.setLastName(source.getName().split(SPACE)[1]);
 				return target;
 			}
 		});
@@ -71,7 +73,7 @@ public class ComplexMapperTest {
 		Hero result = heroSnapshotToHeroMapper.map(heroSnapshot);
 
 		// then
-		assertThat(result.getId()).as("heroSnapshot uses mapping adnotations").isEqualTo(heroSnapshot.getId());
-		assertThat(result.getFirstName() + " " + result.getLastName()).isEqualTo(heroSnapshot.getName());
+		assertThat(result.getId()).as("id field has mapping adnotations").isEqualTo(heroSnapshot.getId());
+		assertThat(result.getFirstName() + SPACE + result.getLastName()).isEqualTo(heroSnapshot.getName());
 	}
 }

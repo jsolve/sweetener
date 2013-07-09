@@ -1,7 +1,5 @@
 package pl.jsolve.sweetener.mapper;
 
-import pl.jsolve.sweetener.core.Objects;
-import pl.jsolve.sweetener.core.OnNullStrategy;
 import pl.jsolve.sweetener.core.Reflections;
 
 public class ComplexMapper<S, T> {
@@ -13,15 +11,7 @@ public class ComplexMapper<S, T> {
 	}
 
 	public final T map(S source) {
-		final Class<T> targetClass = getMapMethodReturnType();
-		T target = tryToExecuteAnnotationDrivenMapper(source, targetClass);
-		target = Objects.nullSafe(target, new OnNullStrategy<T>() {
-
-			@Override
-			public T onNull() {
-				return Reflections.tryToCreateNewInstance(targetClass);
-			}
-		});
+		T target = tryToExecuteAnnotationDrivenMapper(source, getMapMethodReturnType());
 		return mappingStrategy.map(source, target);
 	}
 
@@ -33,6 +23,6 @@ public class ComplexMapper<S, T> {
 		if (targetClass != null && AnnotationDrivenMapper.isMappableToTargetClass(source, targetClass)) {
 			return AnnotationDrivenMapper.map(source, targetClass);
 		}
-		return null;
+		return Reflections.tryToCreateNewInstance(targetClass);
 	}
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotation.MapExactlyTo;
 import pl.jsolve.sweetener.mapper.annotation.MappableTo;
-import pl.jsolve.sweetener.mapper.exception.AnnotationDrivenMapperException;
+import pl.jsolve.sweetener.mapper.exception.MappingException;
 
 public final class AnnotationDrivenMapper {
 
@@ -30,9 +30,8 @@ public final class AnnotationDrivenMapper {
 	}
 
 	private static <T, V> void throwExceptionWhenIsNotMappableToTargetClass(T object, Class<V> targetClass) {
-		MappableTo mappableTo = object.getClass().getAnnotation(MappableTo.class);
-		if (mappableTo == null || mappableTo.value() != targetClass) {
-			throw new AnnotationDrivenMapperException("%s is not mappable to %s", object.getClass(), targetClass);
+		if (!isMappableToTargetClass(object, targetClass)) {
+			throw new MappingException("%s is not mappable to %s", object.getClass(), targetClass);
 		}
 	}
 
@@ -42,7 +41,7 @@ public final class AnnotationDrivenMapper {
 
 	private static void throwExceptionWhenTargetFieldIsNull(Class<?> targetClass, Field targetField, String targetFieldName) {
 		if (targetField == null) {
-			throw new AnnotationDrivenMapperException("Class %s does not contain field %s", targetClass, targetFieldName);
+			throw new MappingException("Class %s does not contain field %s", targetClass, targetFieldName);
 		}
 	}
 }

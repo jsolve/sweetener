@@ -82,7 +82,7 @@ public class ReflectionsTest {
 		List<Class<?>> classes = Reflections.getClassesSatisfyingCondition(person, classesOtherThanObjectCondition);
 
 		// then
-		assertThat(classes).containsOnly(Person.class);
+		assertThat(classes).excludes(Object.class);
 	}
 
 	@Test
@@ -101,9 +101,6 @@ public class ReflectionsTest {
 	public void shouldGetFieldsSatisfyingCondition() throws Exception {
 		// given
 		Hero hero = aHero().build();
-		Field heroNicknameField = hero.getClass().getDeclaredField(HERO_NICKNAME_FIELD_NAME);
-		Field heroFirstNameField = hero.getClass().getDeclaredField(HERO_FIRST_NAME_FIELD_NAME);
-		Field heroLastNameField = hero.getClass().getDeclaredField(HERO_LAST_NAME_FIELD_NAME);
 		Condition<Field> fieldContainingNameCondition = new Condition<Field>() {
 			@Override
 			public boolean isSatisfied(Field field) {
@@ -115,6 +112,9 @@ public class ReflectionsTest {
 		List<Field> fields = Reflections.getFieldsSatisfyingCondition(hero, fieldContainingNameCondition);
 
 		// then
+		Field heroNicknameField = hero.getClass().getDeclaredField(HERO_NICKNAME_FIELD_NAME);
+		Field heroFirstNameField = hero.getClass().getDeclaredField(HERO_FIRST_NAME_FIELD_NAME);
+		Field heroLastNameField = hero.getClass().getDeclaredField(HERO_LAST_NAME_FIELD_NAME);
 		assertThat(fields).containsOnly(heroNicknameField, heroFirstNameField, heroLastNameField);
 	}
 
@@ -122,12 +122,12 @@ public class ReflectionsTest {
 	public void shouldGetAllAnnotatedFields() throws Exception {
 		// given
 		Hero hero = aHero().build();
-		Field heroIdField = hero.getClass().getDeclaredField(HERO_ID_FIELD_NAME);
 
 		// when
 		List<Field> fields = Reflections.getFieldsAnnotatedBy(hero, MapExactlyTo.class);
 
 		// then
+		Field heroIdField = hero.getClass().getDeclaredField(HERO_ID_FIELD_NAME);
 		assertThat(fields).as("hero class has `id` field annotated by MapExactlyTo").contains(heroIdField);
 	}
 
@@ -202,10 +202,6 @@ public class ReflectionsTest {
 	public void shouldGetMethodsSatisfyingCondtion() throws Exception {
 		// given
 		Hero hero = aHero().build();
-		Method heroGetIdMethod = hero.getClass().getDeclaredMethod(HERO_GET_ID_METHOD_NAME);
-		Method heroGetFirstNameMethod = hero.getClass().getDeclaredMethod(HERO_GET_FIRST_NAME_METHOD_NAME);
-		Method heroGetLastNameMethod = hero.getClass().getDeclaredMethod(HERO_GET_LAST_NAME_METHOD_NAME);
-		Method heroGetNicknameMethod = hero.getClass().getDeclaredMethod(HERO_GET_NICKNAME_METHOD_NAME);
 		Condition<Method> getterMethodsCondition = new Condition<Method>() {
 			@Override
 			public boolean isSatisfied(Method method) {
@@ -217,6 +213,10 @@ public class ReflectionsTest {
 		List<Method> methods = Reflections.getMethodsSatisfyingCondtion(hero, getterMethodsCondition);
 
 		// then
+		Method heroGetIdMethod = hero.getClass().getDeclaredMethod(HERO_GET_ID_METHOD_NAME);
+		Method heroGetFirstNameMethod = hero.getClass().getDeclaredMethod(HERO_GET_FIRST_NAME_METHOD_NAME);
+		Method heroGetLastNameMethod = hero.getClass().getDeclaredMethod(HERO_GET_LAST_NAME_METHOD_NAME);
+		Method heroGetNicknameMethod = hero.getClass().getDeclaredMethod(HERO_GET_NICKNAME_METHOD_NAME);
 		assertThat(methods).contains(heroGetIdMethod, heroGetFirstNameMethod, heroGetLastNameMethod, heroGetNicknameMethod);
 	}
 
