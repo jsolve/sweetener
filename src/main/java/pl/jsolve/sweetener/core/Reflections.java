@@ -10,17 +10,12 @@ import java.util.List;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
 import pl.jsolve.sweetener.exception.InstanceCreationException;
 
-public class Reflections {
+public final class Reflections {
 
 	private final static String DOT = "\\.";
-	private final Object object;
 
-	public static Reflections onObject(Object object) {
-		return new Reflections(object);
-	}
-
-	private Reflections(Object object) {
-		this.object = object;
+	private Reflections() {
+		throw new AssertionError("Using constructor of this class is prohibited.");
 	}
 
 	public static Object getFieldValue(Object o, String stringOfFieldsName) {
@@ -31,13 +26,13 @@ public class Reflections {
 		while (!Object.class.equals(clazz)) {
 
 			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = onObject(o).getDeclaredField(fieldsName[i]);
+				Field field = getDeclaredField(o, fieldsName[i]);
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
-						return onObject(o).getFieldValue(field);
+						return getFieldValue(o, field);
 					}
-					o = onObject(o).getFieldValue(field);
+					o = getFieldValue(o, field);
 					levelOfNestedObject++;
 					if (o == null) {
 						return null;
@@ -57,15 +52,15 @@ public class Reflections {
 		while (!Object.class.equals(clazz)) {
 
 			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = onObject(object).getDeclaredField(fieldsName[i]);
+				Field field = getDeclaredField(object, fieldsName[i]);
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
-						onObject(object).setField(field, value);
+						setField(object, field, value);
 						return;
 					}
-					onObject(object).createValueIfNull(field);
-					object = onObject(object).getFieldValue(field);
+					createValueIfNull(object, field);
+					object = getFieldValue(object, field);
 					levelOfNestedObject++;
 				}
 			}
@@ -74,9 +69,9 @@ public class Reflections {
 		throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
 	}
 
-	public Reflections createValueIfNull(Field field) {
+	private static void createValueIfNull(Object object, Field field) {
 		try {
-			Object valueOfField = getFieldValue(field);
+			Object valueOfField = getFieldValue(object, field);
 			if (valueOfField == null) {
 				Object newInstance = field.getType().newInstance();
 				field.setAccessible(true);
@@ -86,10 +81,9 @@ public class Reflections {
 		} finally {
 			field.setAccessible(false);
 		}
-		return this;
 	}
 
-	public Reflections setField(Field field, Object value) {
+	private static void setField(Object object, Field field, Object value) {
 		try {
 			field.setAccessible(true);
 			field.set(object, value);
@@ -98,10 +92,9 @@ public class Reflections {
 		} finally {
 			field.setAccessible(false);
 		}
-		return this;
 	}
 
-	public Object getFieldValue(Field field) {
+	private static Object getFieldValue(Object object, Field field) {
 		try {
 			field.setAccessible(true);
 			return field.get(object);
@@ -112,7 +105,7 @@ public class Reflections {
 		}
 	}
 
-	public Field getDeclaredField(String fieldName) {
+	private static Field getDeclaredField(Object object, String fieldName) {
 		try {
 			return object.getClass().getDeclaredField(fieldName);
 		} catch (Exception ex) {

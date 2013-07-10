@@ -73,7 +73,7 @@ public class ComplexMapperTest {
 		Hero result = heroSnapshotToHeroMapper.map(heroSnapshot);
 
 		// then
-		assertThat(result.getId()).as("id field has mapping adnotations").isEqualTo(heroSnapshot.getId());
+		assertThat(result.getId()).as("id field has mapping annotations").isEqualTo(heroSnapshot.getId());
 		assertThat(result.getFirstName() + SPACE + result.getLastName()).isEqualTo(heroSnapshot.getName());
 	}
 }

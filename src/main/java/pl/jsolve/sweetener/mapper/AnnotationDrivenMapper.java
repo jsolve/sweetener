@@ -10,6 +10,10 @@ import pl.jsolve.sweetener.mapper.exception.MappingException;
 
 public final class AnnotationDrivenMapper {
 
+	private AnnotationDrivenMapper() {
+		throw new AssertionError("Using constructor of this class is prohibited.");
+	}
+
 	public static <T, V> boolean isMappableToTargetClass(T object, Class<V> targetClass) {
 		MappableTo mappableTo = object.getClass().getAnnotation(MappableTo.class);
 		return mappableTo != null && mappableTo.value() == targetClass;
@@ -19,12 +23,11 @@ public final class AnnotationDrivenMapper {
 		throwExceptionWhenIsNotMappableToTargetClass(sourceObject, targetClass);
 		List<Field> fieldsAnnotatedByMapExactlyTo = Reflections.getFieldsAnnotatedBy(sourceObject, MapExactlyTo.class);
 		V targetObject = Reflections.tryToCreateNewInstance(targetClass);
-		for (Field field : fieldsAnnotatedByMapExactlyTo) {
-			String targetFieldName = getMapExactlyToAnnotationValue(field);
-			Field targetField = Reflections.onObject(targetObject).getDeclaredField(targetFieldName);
-			throwExceptionWhenTargetFieldIsNull(targetClass, targetField, targetFieldName);
-			Object sourceObjectFieldValue = Reflections.onObject(sourceObject).getFieldValue(field);
-			Reflections.onObject(targetObject).setField(targetField, sourceObjectFieldValue);
+		for (Field annotatedField : fieldsAnnotatedByMapExactlyTo) {
+			String targetFieldName = getMapExactlyToAnnotationValue(annotatedField);
+			Object sourceObjectFieldValue = Reflections.getFieldValue(sourceObject, annotatedField.getName());
+			throwExceptionWhenTargetFieldIsNotPresent(targetClass, targetFieldName);
+			Reflections.setFieldValue(targetObject, targetFieldName, sourceObjectFieldValue);
 		}
 		return targetObject;
 	}
@@ -39,8 +42,10 @@ public final class AnnotationDrivenMapper {
 		return field.getAnnotation(MapExactlyTo.class).value();
 	}
 
-	private static void throwExceptionWhenTargetFieldIsNull(Class<?> targetClass, Field targetField, String targetFieldName) {
-		if (targetField == null) {
+	private static void throwExceptionWhenTargetFieldIsNotPresent(Class<?> targetClass, String targetFieldName) {
+		try {
+			targetClass.getDeclaredField(targetFieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
 			throw new MappingException("Class %s does not contain field %s", targetClass, targetFieldName);
 		}
 	}
