@@ -167,7 +167,7 @@ public class ReflectionsTest {
 		};
 
 		// when
-		List<Constructor<?>> constructors = Reflections.getConstructorsSatisfyingCondtion(person,
+		List<Constructor<?>> constructors = Reflections.getConstructorsSatisfyingCondition(person,
 				constructorsWithoutParametersCondition);
 
 		// then
@@ -210,7 +210,7 @@ public class ReflectionsTest {
 		};
 
 		// when
-		List<Method> methods = Reflections.getMethodsSatisfyingCondtion(hero, getterMethodsCondition);
+		List<Method> methods = Reflections.getMethodsSatisfyingCondition(hero, getterMethodsCondition);
 
 		// then
 		Method heroGetIdMethod = hero.getClass().getDeclaredMethod(HERO_GET_ID_METHOD_NAME);

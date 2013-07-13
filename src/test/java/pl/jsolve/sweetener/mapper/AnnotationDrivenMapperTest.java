@@ -4,7 +4,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
-import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aHulk;
 
 import org.junit.Test;
 
@@ -50,20 +49,16 @@ public class AnnotationDrivenMapperTest {
 
 	@Test
 	public void shouldThrowExceptionWhenMappingToUnmappableObject() {
-		// given
-		final Hero hero = aHulk().build();
-		String expectedMessage = String.format("%s is not mappable to %s", Hero.class, Person.class);
-
 		// when
 		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
 
 			@Override
 			public void operate() throws Exception {
-				AnnotationDrivenMapper.map(hero, Person.class);
+				AnnotationDrivenMapper.map(new Hero(), Person.class);
 			}
 		});
 
 		// then
-		assertThrowable(caughtException).withMessage(expectedMessage).as("Hero is not mappable to Person class").isThrown();
+		assertThrowable(caughtException).withMessage(Hero.class + " is not mappable to " + Person.class).isThrown();
 	}
 }

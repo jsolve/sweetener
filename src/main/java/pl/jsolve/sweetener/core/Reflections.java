@@ -1,10 +1,12 @@
 package pl.jsolve.sweetener.core;
 
+import static pl.jsolve.sweetener.core.ConditionFactory.createAlwaysSatisfiedCondition;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import pl.jsolve.sweetener.exception.AccessToFieldException;
@@ -12,7 +14,12 @@ import pl.jsolve.sweetener.exception.InstanceCreationException;
 
 public final class Reflections {
 
-	private final static String DOT = "\\.";
+	private static final String DOT = "\\.";
+	private static final Condition<Class<?>> ALWAYS_SATISFIED_CLASS_CONDITION = createAlwaysSatisfiedCondition();
+	private static final Condition<Field> ALWAYS_SATISFIED_FIELD_CONDITION = createAlwaysSatisfiedCondition();
+	private static final Condition<Annotation> ALWAYS_SATISFIED_ANNOTATION_CONDITION = createAlwaysSatisfiedCondition();
+	private static final Condition<Constructor<?>> ALWAYS_SATISFIED_CONSTRUCTOR_CONDITION = createAlwaysSatisfiedCondition();
+	private static final Condition<Method> ALWAYS_SATISFIED_METHOD_CONDITION = createAlwaysSatisfiedCondition();
 
 	private Reflections() {
 		throw new AssertionError("Using constructor of this class is prohibited.");
@@ -114,12 +121,12 @@ public final class Reflections {
 	}
 
 	public static List<Class<?>> getClassesSatisfyingCondition(Object object, Condition<Class<?>> classesCondition) {
-		List<Class<?>> classes = new LinkedList<>();
+		List<Class<?>> classes = new ArrayList<>();
 		Class<?> clazz = object.getClass();
 		classes.add(clazz);
 		while (!Object.class.equals(clazz)) {
 			clazz = clazz.getSuperclass();
-			if (classesCondition == null || classesCondition.isSatisfied(clazz)) {
+			if (classesCondition.isSatisfied(clazz)) {
 				classes.add(clazz);
 			}
 		}
@@ -127,16 +134,16 @@ public final class Reflections {
 	}
 
 	public static List<Class<?>> getClasses(Object object) {
-		return getClassesSatisfyingCondition(object, null);
+		return getClassesSatisfyingCondition(object, ALWAYS_SATISFIED_CLASS_CONDITION);
 	}
 
 	public static List<Field> getFieldsSatisfyingCondition(Object object, Condition<Field> fieldCondition) {
-		List<Field> fields = new LinkedList<>();
+		List<Field> fields = new ArrayList<>();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Field[] arrayOfFields = clazz.getDeclaredFields();
 			for (Field field : arrayOfFields) {
-				if (fieldCondition == null || fieldCondition.isSatisfied(field)) {
+				if (fieldCondition.isSatisfied(field)) {
 					fields.add(field);
 				}
 			}
@@ -146,7 +153,7 @@ public final class Reflections {
 	}
 
 	public static List<Field> getFields(Object object) {
-		return getFieldsSatisfyingCondition(object, null);
+		return getFieldsSatisfyingCondition(object, ALWAYS_SATISFIED_FIELD_CONDITION);
 	}
 
 	public static List<Field> getFieldsAnnotatedBy(Object object, final Class<? extends Annotation> annotation) {
@@ -159,13 +166,13 @@ public final class Reflections {
 		});
 	}
 
-	public static List<Annotation> getAnnotationsSatisfyingCondtion(Object object, Condition<Annotation> condition) {
-		List<Annotation> annotations = new LinkedList<>();
+	public static List<Annotation> getAnnotationsSatisfyingCondition(Object object, Condition<Annotation> condition) {
+		List<Annotation> annotations = new ArrayList<>();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Annotation[] arrayOfAnnotations = clazz.getDeclaredAnnotations();
 			for (Annotation annotation : arrayOfAnnotations) {
-				if (condition == null || condition.isSatisfied(annotation)) {
+				if (condition.isSatisfied(annotation)) {
 					annotations.add(annotation);
 				}
 			}
@@ -175,16 +182,16 @@ public final class Reflections {
 	}
 
 	public static List<Annotation> getAnnotations(Object object) {
-		return getAnnotationsSatisfyingCondtion(object, null);
+		return getAnnotationsSatisfyingCondition(object, ALWAYS_SATISFIED_ANNOTATION_CONDITION);
 	}
 
-	public static List<Constructor<?>> getConstructorsSatisfyingCondtion(Object object, Condition<Constructor<?>> condition) {
-		List<Constructor<?>> constructors = new LinkedList<>();
+	public static List<Constructor<?>> getConstructorsSatisfyingCondition(Object object, Condition<Constructor<?>> condition) {
+		List<Constructor<?>> constructors = new ArrayList<>();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
 			for (Constructor<?> declaredConstructor : declaredConstructors) {
-				if (condition == null || condition.isSatisfied(declaredConstructor)) {
+				if (condition.isSatisfied(declaredConstructor)) {
 					constructors.add(declaredConstructor);
 				}
 			}
@@ -194,16 +201,16 @@ public final class Reflections {
 	}
 
 	public static List<Constructor<?>> getConstructors(Object object) {
-		return getConstructorsSatisfyingCondtion(object, null);
+		return getConstructorsSatisfyingCondition(object, ALWAYS_SATISFIED_CONSTRUCTOR_CONDITION);
 	}
 
-	public static List<Method> getMethodsSatisfyingCondtion(Object object, Condition<Method> methodsCondition) {
-		List<Method> methods = new LinkedList<>();
+	public static List<Method> getMethodsSatisfyingCondition(Object object, Condition<Method> methodsCondition) {
+		List<Method> methods = new ArrayList<>();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Method[] declaredMethods = clazz.getDeclaredMethods();
 			for (Method declaredMethod : declaredMethods) {
-				if (methodsCondition == null || methodsCondition.isSatisfied(declaredMethod)) {
+				if (methodsCondition.isSatisfied(declaredMethod)) {
 					methods.add(declaredMethod);
 				}
 			}
@@ -213,11 +220,11 @@ public final class Reflections {
 	}
 
 	public static List<Method> getMethods(Object object) {
-		return getMethodsSatisfyingCondtion(object, null);
+		return getMethodsSatisfyingCondition(object, ALWAYS_SATISFIED_METHOD_CONDITION);
 	}
 
 	public static List<Method> getMethodsAnnotatedBy(Object object, final Class<? extends Annotation> annotation) {
-		return getMethodsSatisfyingCondtion(object, new Condition<Method>() {
+		return getMethodsSatisfyingCondition(object, new Condition<Method>() {
 
 			@Override
 			public boolean isSatisfied(Method declaredMethod) {
