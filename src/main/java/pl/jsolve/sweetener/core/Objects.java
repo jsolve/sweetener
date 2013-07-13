@@ -2,16 +2,13 @@ package pl.jsolve.sweetener.core;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import pl.jsolve.sweetener.exception.AccessToFieldException;
 import pl.jsolve.sweetener.exception.DeepCopyException;
 
 public class Objects {
 
-    private final static String DOT = "\\.";
     private final static String EMPTY_STRING = "";
     private static ObjectMapper mapper;
 
@@ -61,7 +58,7 @@ public class Objects {
 	return (nullableFloat == null) ? 0.0f : nullableFloat;
     }
 
-    public static <T> T nullSafe(T nullableObject, OnNullBehavior<T> onNullObjectBevior) {
+    public static <T> T nullSafe(T nullableObject, OnNullStrategy<T> onNullObjectBevior) {
 	return (nullableObject == null) ? onNullObjectBevior.onNull() : nullableObject;
     }
 

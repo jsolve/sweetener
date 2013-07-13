@@ -67,7 +67,7 @@ public class NullSafeTest {
 	Hero captainAmerica = aCaptainAmerica().build();
 
 	// when
-	Hero result = nullSafe(captainAmerica, new OnNullBehavior<Hero>() {
+	Hero result = nullSafe(captainAmerica, new OnNullStrategy<Hero>() {
 
 	    @Override
 	    public Hero onNull() {
@@ -82,7 +82,7 @@ public class NullSafeTest {
     @Test
     public void shouldReturnNewHeroWhenPassedIsNull() {
 	// when
-	Hero result = nullSafe(NULL_HERO, new OnNullBehavior<Hero>() {
+	Hero result = nullSafe(NULL_HERO, new OnNullStrategy<Hero>() {
 
 	    @Override
 	    public Hero onNull() {
@@ -97,7 +97,7 @@ public class NullSafeTest {
     @Test
     public void shouldReturnNewObjectWhenPassedIsNull() {
 	// when
-	Object result = nullSafe(NULL_OBJECT, new OnNullBehavior<Object>() {
+	Object result = nullSafe(NULL_OBJECT, new OnNullStrategy<Object>() {
 
 	    @Override
 	    public Object onNull() {
@@ -112,7 +112,7 @@ public class NullSafeTest {
     @Test
     public void shouldReturnZeroWhenPassedIntegerIsNull() {
 	// when
-	Integer result = nullSafe(NULL_INTEGER, new OnNullBehavior<Integer>() {
+	Integer result = nullSafe(NULL_INTEGER, new OnNullStrategy<Integer>() {
 
 	    @Override
 	    public Integer onNull() {
