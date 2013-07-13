@@ -1,6 +1,6 @@
 package pl.jsolve.sweetener.core;
 
-public interface OnNullBehavior<T> {
+public interface OnNullStrategy<T> {
 
     T onNull();
 }

@@ -21,7 +21,7 @@ public class CollectionsTest {
 
 	@Before
 	public void setUp() {
-		values = new ArrayList<String>();
+		values = new ArrayList<>();
 		values.add("A");
 		values.add("B");
 		values.add("C");
