@@ -10,6 +10,7 @@ Main categories:
 * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
 * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
 * [Reflections] (https://github.com/jsolve/sweetener/wiki/Reflections)
+* [Mapper](https://github.com/jsolve/sweetener/wiki/Mapper)
 
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
