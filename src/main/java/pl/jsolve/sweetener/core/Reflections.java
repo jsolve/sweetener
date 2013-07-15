@@ -68,9 +68,6 @@ public final class Reflections {
 						return;
 					}
 					createValueIfNull(object, field);
-					if (getFieldValue(object, field) == null) {
-						System.err.println();
-					}
 					object = getFieldValue(object, field);
 					nestedClass = object.getClass();
 					levelOfNestedObject++;
