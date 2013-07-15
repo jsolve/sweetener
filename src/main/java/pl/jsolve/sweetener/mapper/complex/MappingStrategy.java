@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper;
+package pl.jsolve.sweetener.mapper.complex;
 
 public interface MappingStrategy<S, T> {
 

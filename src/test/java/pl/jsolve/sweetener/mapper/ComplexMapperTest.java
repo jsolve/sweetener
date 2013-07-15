@@ -5,6 +5,8 @@ import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aCaptainAm
 
 import org.junit.Test;
 
+import pl.jsolve.sweetener.mapper.complex.ComplexMapper;
+import pl.jsolve.sweetener.mapper.complex.MappingStrategy;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
 
