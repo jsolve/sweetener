@@ -1,6 +1,7 @@
-package pl.jsolve.sweetener.mapper;
+package pl.jsolve.sweetener.mapper.complex;
 
 import pl.jsolve.sweetener.core.Reflections;
+import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
 
 public class ComplexMapper<S, T> {
 

@@ -1,12 +1,10 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
-import pl.jsolve.sweetener.mapper.annotation.MapExactlyTo;
 
 public class Address {
 
-	@MapExactlyTo("address")
 	private String street;
-	private String city;
+	private City city;
 
 	public String getStreet() {
 		return street;
@@ -16,11 +14,11 @@ public class Address {
 		this.street = street;
 	}
 
-	public String getCity() {
+	public City getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 
