@@ -31,19 +31,20 @@ public final class Reflections {
 		int levelOfNestedObject = 0;
 		Class<?> clazz = o.getClass();
 		while (!Object.class.equals(clazz)) {
-
+			Class<?> nestedClass = clazz;
 			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = getDeclaredField(o, fieldsName[i]);
+				Field field = getDeclaredField(nestedClass, fieldsName[i]);
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
 						return getFieldValue(o, field);
 					}
 					o = getFieldValue(o, field);
-					levelOfNestedObject++;
 					if (o == null) {
 						return null;
 					}
+					nestedClass = o.getClass();
+					levelOfNestedObject++;
 				}
 			}
 			clazz = clazz.getSuperclass();
@@ -57,9 +58,9 @@ public final class Reflections {
 		int levelOfNestedObject = 0;
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
-
+			Class<?> nestedClass = clazz;
 			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = getDeclaredField(object, fieldsName[i]);
+				Field field = getDeclaredField(nestedClass, fieldsName[i]);
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
@@ -68,6 +69,7 @@ public final class Reflections {
 					}
 					createValueIfNull(object, field);
 					object = getFieldValue(object, field);
+					nestedClass = object.getClass();
 					levelOfNestedObject++;
 				}
 			}
@@ -112,9 +114,9 @@ public final class Reflections {
 		}
 	}
 
-	private static Field getDeclaredField(Object object, String fieldName) {
+	private static Field getDeclaredField(Class<?> clazz, String fieldName) {
 		try {
-			return object.getClass().getDeclaredField(fieldName);
+			return clazz.getDeclaredField(fieldName);
 		} catch (Exception ex) {
 			return null;
 		}

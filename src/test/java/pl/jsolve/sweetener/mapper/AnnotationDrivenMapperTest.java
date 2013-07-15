@@ -67,7 +67,6 @@ public class AnnotationDrivenMapperTest {
 	}
 	
 	@Test
-	@Ignore
 	public void shouldMapStudentToStudentSnapshot() {
 		// given
 		Student student = prepareStudent();

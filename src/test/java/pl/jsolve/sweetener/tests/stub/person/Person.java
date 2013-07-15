@@ -1,6 +1,7 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
 import pl.jsolve.sweetener.mapper.annotation.MapExactlyTo;
+import pl.jsolve.sweetener.mapper.annotation.NestedMapping;
 
 public class Person {
 
@@ -10,6 +11,7 @@ public class Person {
 	private String lastName;
 	@MapExactlyTo("age")
 	private int age;
+	@NestedMapping
 	private Address address;
 
 	public String getFirstName() {

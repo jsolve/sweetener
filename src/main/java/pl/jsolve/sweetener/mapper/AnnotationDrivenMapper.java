@@ -6,6 +6,7 @@ import java.util.List;
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotation.MapExactlyTo;
 import pl.jsolve.sweetener.mapper.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotation.NestedMapping;
 import pl.jsolve.sweetener.mapper.exception.MappingException;
 
 public final class AnnotationDrivenMapper {
@@ -17,12 +18,28 @@ public final class AnnotationDrivenMapper {
 	public static <T, V> V map(T sourceObject, Class<V> targetClass) {
 		throwExceptionWhenIsNotMappableToTargetClass(sourceObject, targetClass);
 		List<Field> fieldsAnnotatedByMapExactlyTo = Reflections.getFieldsAnnotatedBy(sourceObject, MapExactlyTo.class);
+
 		V targetObject = Reflections.tryToCreateNewInstance(targetClass);
 		for (Field annotatedField : fieldsAnnotatedByMapExactlyTo) {
 			String targetFieldName = getMapExactlyToAnnotationValue(annotatedField);
 			throwExceptionWhenTargetFieldIsNotPresent(targetClass, targetFieldName);
 			Object sourceObjectFieldValue = Reflections.getFieldValue(sourceObject, annotatedField.getName());
 			Reflections.setFieldValue(targetObject, targetFieldName, sourceObjectFieldValue);
+		}
+		// this is solution for one level nested object! It should be changed!
+		List<Field> nestedMapping = Reflections.getFieldsAnnotatedBy(sourceObject, NestedMapping.class);
+		for (Field nestedField : nestedMapping) {
+			Object fieldValue = Reflections.getFieldValue(sourceObject, nestedField.getName());
+			List<Field> fieldsAnnotatedBy = Reflections.getFieldsAnnotatedBy(fieldValue, MapExactlyTo.class);
+			for (Field annotatedField : fieldsAnnotatedBy) {
+				String targetFieldName = getMapExactlyToAnnotationValue(annotatedField);
+				throwExceptionWhenTargetFieldIsNotPresent(targetClass, targetFieldName);
+				String stringOfFieldsName = nestedField.getName() + "." + annotatedField.getName();
+				Object sourceObjectFieldValue = Reflections.getFieldValue(sourceObject,
+						stringOfFieldsName);
+				Reflections.setFieldValue(targetObject, targetFieldName, sourceObjectFieldValue);
+			}
+
 		}
 		return targetObject;
 	}
