@@ -31,7 +31,7 @@ public final class AnnotationDrivenMapper {
 		return targetObject;
 	}
 
-	public static <V, T> void applyAllMappings(T sourceObject, V targetObject) {
+	private static <V, T> void applyAllMappings(T sourceObject, V targetObject) {
 		for (AnnotationMapping mapping : MAPPINGS) {
 			mapping.apply(sourceObject, targetObject);
 		}
