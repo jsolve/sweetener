@@ -1,10 +1,12 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
-
 public class City {
 
 	private String name;
 	private long population;
+
+	public City() {
+	}
 
 	public City(String name, long population) {
 		this.name = name;

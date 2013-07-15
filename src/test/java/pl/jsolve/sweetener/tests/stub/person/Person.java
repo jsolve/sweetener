@@ -8,13 +8,10 @@ public class Person {
 
 	@MapExactlyTo("firstName")
 	private String firstName;
-
 	@MapExactlyTo("lastName")
 	private String lastName;
-
 	@MapExactlyTo("age")
 	private int age;
-
 	@NestedMappings({
 		@MapNested(fromNested = "city.name", to = "address"),
 		@MapNested(fromNested = "city.population", to = "population")

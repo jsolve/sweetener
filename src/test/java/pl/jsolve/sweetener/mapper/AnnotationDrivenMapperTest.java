@@ -97,4 +97,34 @@ public class AnnotationDrivenMapperTest {
 		student.setAddress(address);
 		return student;
 	}
+
+	@Test
+	public void shouldMapStudentSnapshotToStudent() {
+		// given
+		StudentSnapshot studentSnapshot = prepareStudentSnapshot();
+
+		// when
+		Student student = AnnotationDrivenMapper.map(studentSnapshot, Student.class);
+
+		// then
+		assertThat(student.getFirstName()).isEqualTo(studentSnapshot.getFirstName());
+		assertThat(student.getLastName()).isEqualTo(studentSnapshot.getLastName());
+		assertThat(student.getAge()).isEqualTo(studentSnapshot.getAge());
+		assertThat(student.getSemester()).isEqualTo(studentSnapshot.getSemester());
+		assertThat(student.getAddress().getCity().getName()).isEqualTo(studentSnapshot.getAddress());
+		assertThat(student.getAddress().getStreet()).isEqualTo(studentSnapshot.getStreet());
+		assertThat(student.getAddress().getCity().getPopulation()).isEqualTo(studentSnapshot.getPopulation());
+	}
+
+	private StudentSnapshot prepareStudentSnapshot() {
+		StudentSnapshot studentSnapshot = new StudentSnapshot();
+		studentSnapshot.setFirstName("Steve");
+		studentSnapshot.setLastName("Rogers");
+		studentSnapshot.setAge(31);
+		studentSnapshot.setSemester(4);
+		studentSnapshot.setAddress("Los Angeles");
+		studentSnapshot.setStreet("Sunset Boulevard");
+		studentSnapshot.setPopulation(4022450L);
+		return studentSnapshot;
+	}
 }

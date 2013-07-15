@@ -68,6 +68,9 @@ public final class Reflections {
 						return;
 					}
 					createValueIfNull(object, field);
+					if (getFieldValue(object, field) == null) {
+						System.err.println();
+					}
 					object = getFieldValue(object, field);
 					nestedClass = object.getClass();
 					levelOfNestedObject++;
@@ -87,6 +90,7 @@ public final class Reflections {
 				field.set(object, newInstance);
 			}
 		} catch (Exception ex) {
+			new InstanceCreationException("Could not create new instance of " + field.getType(), ex);
 		} finally {
 			field.setAccessible(false);
 		}
