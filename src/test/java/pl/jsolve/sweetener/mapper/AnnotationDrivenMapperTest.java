@@ -5,6 +5,7 @@ import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThro
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
@@ -12,6 +13,9 @@ import pl.jsolve.sweetener.mapper.exception.MappingException;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
+import pl.jsolve.sweetener.tests.stub.person.Address;
+import pl.jsolve.sweetener.tests.stub.person.Student;
+import pl.jsolve.sweetener.tests.stub.person.StudentSnapshot;
 
 public class AnnotationDrivenMapperTest {
 
@@ -60,5 +64,35 @@ public class AnnotationDrivenMapperTest {
 
 		// then
 		assertThrowable(caughtException).withMessage(Hero.class + " is not mappable to " + Person.class).isThrown();
+	}
+	
+	@Test
+	@Ignore
+	public void shouldMapStudentToStudentSnapshot() {
+		// given
+		Student student = prepareStudent();
+		
+		// when
+		StudentSnapshot studentSnapshot = AnnotationDrivenMapper.map(student, StudentSnapshot.class);
+
+		// then
+		assertThat(studentSnapshot.getFirstName()).isEqualTo("John");
+		assertThat(studentSnapshot.getLastName()).isEqualTo("White");
+		assertThat(studentSnapshot.getSemester()).isEqualTo(3);
+		assertThat(studentSnapshot.getAge()).isEqualTo(20);
+		assertThat(studentSnapshot.getAddress()).isEqualTo("street1");
+	}
+
+	private Student prepareStudent() {
+		Student student = new Student();
+		student.setFirstName("John");
+		student.setLastName("White");
+		student.setSemester(3);
+		student.setAge(20);
+		Address address = new Address();
+		address.setStreet("street1");
+		address.setCity("city1");
+		student.setAddress(address);
+		return student;
 	}
 }
