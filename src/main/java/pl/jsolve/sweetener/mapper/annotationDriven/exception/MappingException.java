@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.exception;
+package pl.jsolve.sweetener.mapper.annotationDriven.exception;
 
 public class MappingException extends RuntimeException {
 

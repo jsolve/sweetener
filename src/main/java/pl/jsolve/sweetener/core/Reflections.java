@@ -97,7 +97,7 @@ public final class Reflections {
 			field.setAccessible(true);
 			field.set(object, value);
 		} catch (Exception e) {
-			throw new AccessToFieldException("Exception during setting value of %s field", field.getName());
+			throw new AccessToFieldException("Exception during setting value of %s field\n%s", field.getName(), e.getMessage());
 		} finally {
 			field.setAccessible(false);
 		}

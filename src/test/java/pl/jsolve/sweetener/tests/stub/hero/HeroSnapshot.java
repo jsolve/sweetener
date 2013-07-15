@@ -1,7 +1,7 @@
 package pl.jsolve.sweetener.tests.stub.hero;
 
-import pl.jsolve.sweetener.mapper.annotation.MapExactlyTo;
-import pl.jsolve.sweetener.mapper.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 
 @MappableTo(Hero.class)
 public class HeroSnapshot {

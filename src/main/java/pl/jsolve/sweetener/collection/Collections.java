@@ -75,7 +75,7 @@ public class Collections {
 		int from = page * resultsPerPage;
 		int to = getTo(resultsPerPage, totalElements, from);
 		Collection<T> elementsOfPage = truncate(collection, from, to);
-		return new Pagination<T>(page, resultsPerPage, totalElements, elementsOfPage);
+		return new Pagination<>(page, resultsPerPage, totalElements, elementsOfPage);
 	}
 
 	public static <T> ChoppedElements<T> chopElements(Collection<T> collection, int resultsPerPage) {
@@ -87,7 +87,7 @@ public class Collections {
 					getTo(resultsPerPage, totalElements, i * resultsPerPage));
 			listOfPages.add(elementsOfPage);
 		}
-		return new ChoppedElements<T>(0, resultsPerPage, totalElements, listOfPages);
+		return new ChoppedElements<>(0, resultsPerPage, totalElements, listOfPages);
 	}
 
 	private static int getTo(int resultsPerPage, int totalElements, int from) {

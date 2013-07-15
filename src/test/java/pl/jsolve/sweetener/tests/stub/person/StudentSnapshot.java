@@ -7,6 +7,8 @@ public class StudentSnapshot {
 	private int age;
 	private String address;
 	private int semester;
+	private long population;
+	private String street;
 
 	public String getFirstName() {
 		return firstName;
@@ -46,6 +48,22 @@ public class StudentSnapshot {
 
 	public void setSemester(int semester) {
 		this.semester = semester;
+	}
+
+	public long getPopulation() {
+		return population;
+	}
+
+	public void setPopulation(long population) {
+		this.population = population;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
 }
