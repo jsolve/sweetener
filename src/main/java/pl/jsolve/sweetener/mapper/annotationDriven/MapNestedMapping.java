@@ -25,17 +25,22 @@ class MapNestedMapping implements AnnotationMapping {
 
 	public final <S, T> void applyOnFieldWithAnnotation(S sourceObject, T targetObject, Field field, MapNested mapNestedAnnotation) {
 		String targetFieldName = mapNestedAnnotation.to();
-		throwExceptionWhenTargetFieldIsNotPresent(targetObject, targetFieldName);
-		String sourceObjectFieldName = field.getName() + DOT + mapNestedAnnotation.fromNested();
+		throwExceptionWhenFieldIsNotPresent(targetObject, targetFieldName);
+		String sourceObjectFieldName = getSourceObjectNestedFieldName(field, mapNestedAnnotation);
+		throwExceptionWhenFieldIsNotPresent(sourceObject, sourceObjectFieldName);
 		Object sourceObjectFieldValue = Reflections.getFieldValue(sourceObject, sourceObjectFieldName);
 		Reflections.setFieldValue(targetObject, targetFieldName, sourceObjectFieldValue);
 	}
 
-	private static void throwExceptionWhenTargetFieldIsNotPresent(Object targetObject, String targetFieldName) {
+	private String getSourceObjectNestedFieldName(Field field, MapNested mapNestedAnnotation) {
+		return field.getName() + DOT + mapNestedAnnotation.fromNested();
+	}
+
+	private static void throwExceptionWhenFieldIsNotPresent(Object object, String fieldName) {
 		try {
-			Reflections.getFieldValue(targetObject, targetFieldName);
+			Reflections.getFieldValue(object, fieldName);
 		} catch (AccessToFieldException e) {
-			throw new MappingException("Class %s does not contain field %s", targetObject.getClass(), targetFieldName);
+			throw new MappingException("%s does not contain field %s", object.getClass(), fieldName);
 		}
 	}
 }

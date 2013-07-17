@@ -29,7 +29,7 @@ class MapExactlyToMapping implements AnnotationMapping {
 		try {
 			Reflections.getFieldValue(targetObject, targetFieldName);
 		} catch (AccessToFieldException e) {
-			throw new MappingException("Class %s does not contain field %s", targetObject.getClass(), targetFieldName);
+			throw new MappingException("%s does not contain field %s", targetObject.getClass(), targetFieldName);
 		}
 	}
 }

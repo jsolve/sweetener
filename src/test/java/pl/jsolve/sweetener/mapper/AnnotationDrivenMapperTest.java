@@ -1,6 +1,8 @@
 package pl.jsolve.sweetener.mapper;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested.NOT_EXISTING_NESTED_FIELD;
+import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo.NOT_EXISTING_FIELD;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
@@ -10,6 +12,9 @@ import org.junit.Test;
 import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
+import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested;
+import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo;
+import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedToFieldOnMapNested;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
@@ -65,6 +70,53 @@ public class AnnotationDrivenMapperTest {
 
 		// then
 		assertThrowable(caughtException).withMessage(Hero.class + " is not mappable to " + Person.class).isThrown();
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenTargetFieldOnMapExactlyToDoesNotExist() {
+		// when
+		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedMapExactlyTo(), StudentSnapshot.class);
+			}
+		});
+
+		// then
+		assertThrowable(caughtException).withMessage(StudentSnapshot.class + " does not contain field " + NOT_EXISTING_FIELD).isThrown();
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenFromNestedFieldOnMapNestedDoesNotExist() {
+		// when
+		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedFromNestedFieldOnMapNested(), StudentSnapshot.class);
+			}
+		});
+
+		// then
+		assertThrowable(caughtException).withMessage(
+				StudentWithBadlyAnnotatedFromNestedFieldOnMapNested.class + " does not contain field " + NOT_EXISTING_NESTED_FIELD)
+				.isThrown();
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenTargetFieldOnMapNestedDoesNotExist() {
+		// when
+		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedToFieldOnMapNested(), StudentSnapshot.class);
+			}
+		});
+
+		// then
+		assertThrowable(caughtException).withMessage(StudentSnapshot.class + " does not contain field " + NOT_EXISTING_FIELD).isThrown();
 	}
 
 	@Test
