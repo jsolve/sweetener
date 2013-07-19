@@ -105,4 +105,78 @@ public class Strings {
 		}
 		return sb.toString();
 	}
+
+	public static String pad(String sourceObject, int length) {
+		if (sourceObject.length() >= length) {
+			return sourceObject;
+		}
+		StringBuffer sb = new StringBuffer(sourceObject);
+		for (int i = sourceObject.length(); i < length; i++) {
+			sb.append(" ");
+		}
+		return sb.toString();
+	}
+
+	public static String pad(String sourceObject, char c, int length) {
+		if (sourceObject.length() >= length) {
+			return sourceObject;
+		}
+		StringBuffer sb = new StringBuffer(sourceObject);
+		for (int i = sourceObject.length(); i < length; i++) {
+			sb.append(c);
+		}
+		return sb.toString();
+	}
+
+	public static String pad(String sourceObject, String content, int length) {
+		if (content == null || content.isEmpty()) {
+			throw new RuntimeException();
+		}
+		if (sourceObject.length() >= length) {
+			return sourceObject;
+		}
+		StringBuffer sb = new StringBuffer(sourceObject);
+		for (int i = 0; i < length - sourceObject.length(); i++) {
+			sb.append(content.charAt(i % content.length()));
+		}
+		return sb.toString();
+	}
+
+	public static String defaultIfNull(String value, String defaultValue) {
+		return value != null ? value : defaultValue;
+	}
+
+	public static String capitalize(String value) {
+		if (value == null) {
+			throw new RuntimeException();
+		}
+		if (value.isEmpty()) {
+			return value;
+		}
+		return value.substring(0, 1).toUpperCase() + value.substring(1);
+	}
+
+	public static String capitalizeAllWords(String value) {
+		if (value == null) {
+			throw new RuntimeException();
+		}
+		if (value.isEmpty()) {
+			return value;
+		}
+		boolean whitespace = false;
+		StringBuffer sb = new StringBuffer(value);
+		sb.deleteCharAt(0).insert(0, ("" + value.charAt(0)).toUpperCase());
+		
+		for (int i = 0; i < value.length(); i++) {
+			if (value.charAt(i) == ' ' || value.charAt(i) == '\n' || value.charAt(i) == '\t' || value.charAt(i) == '\r') {
+				whitespace = true;
+				continue;
+			}
+			if (whitespace) {
+				sb.deleteCharAt(i).insert(i, ("" + value.charAt(i)).toUpperCase());
+				whitespace = false;
+			}
+		}
+		return sb.toString();
+	}
 }
