@@ -3,16 +3,21 @@ package pl.jsolve.sweetener.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import sun.print.resources.serviceui;
 
 public class Strings {
 
 	public static final String DOT = "/.";
 
 	private static final List<Character> symbols = new ArrayList<Character>(62);
+	private static final Map<Character, String> regexpSpecial = new HashMap<Character, String>();
 	private static final Random random = new Random();
 
 	static {
@@ -25,16 +30,42 @@ public class Strings {
 		for (int idx = 36; idx < 62; ++idx) {
 			symbols.add((char) ('A' + idx - 36));
 		}
+
+		regexpSpecial.put('.', "\\.");
+		regexpSpecial.put('\\', "\\\\");
+		regexpSpecial.put('?', "\\?");
+		regexpSpecial.put('*', "\\*");
+		regexpSpecial.put('+', "\\+");
+		regexpSpecial.put('&', "\\&");
+		regexpSpecial.put(':', "\\:");
+		regexpSpecial.put('{', "\\{");
+		regexpSpecial.put('}', "\\}");
+		regexpSpecial.put('[', "\\[");
+		regexpSpecial.put(']', "\\]");
+		regexpSpecial.put('(', "\\(");
+		regexpSpecial.put(')', "\\)");
+		regexpSpecial.put('^', "\\^");
+		regexpSpecial.put('$', "\\$");
 	}
 
 	public static String join(String sequence, Collection<?> collection) {
+		if (collection == null) {
+			return "";
+		}
 		return join(sequence, collection.toArray());
 	}
 
 	public static String join(String sequence, Object... args) {
+		if (args == null) {
+			return "";
+		}
 		StringBuffer stringBuffer = new StringBuffer();
 		for (int i = 0; i < args.length; i++) {
-			stringBuffer.append(args[i].toString());
+			if (args[i] == null) {
+				stringBuffer.append("null");
+			} else {
+				stringBuffer.append(args[i].toString());
+			}
 			if (i != args.length - 1) {
 				stringBuffer.append(sequence);
 			}
@@ -42,7 +73,22 @@ public class Strings {
 		return stringBuffer.toString();
 	}
 
-	public static int numberOfCccurrences(String sourceObject, String sequence) {
+	public static String escapeRegexp(String value) {
+		StringBuffer sb = new StringBuffer(value);
+		int countOfReplacements = 0;
+		for (int i = 0; i < value.length(); i++) {
+			if (regexpSpecial.containsKey(value.charAt(i))) {
+				sb.deleteCharAt(i + countOfReplacements).insert(i + countOfReplacements, regexpSpecial.get(value.charAt(i)));
+				countOfReplacements++;
+			}
+		}
+		return sb.toString();
+	}
+
+	public static int numberOfOccurrences(String sourceObject, String sequence) {
+		if (sourceObject == null || sequence == null || sequence.isEmpty()) {
+			return 0;
+		}
 		Pattern pattern = Pattern.compile(sequence);
 		Matcher matcher = pattern.matcher(sourceObject);
 		int count = 0;
@@ -52,20 +98,73 @@ public class Strings {
 		return count;
 	}
 
-	public static int numberOfCccurrences(String sourceObject, Character sequence) {
-		return numberOfCccurrences(sourceObject, sequence.toString());
+	public static int numberOfOccurrences(String sourceObject, String sequence, boolean ignoreRegexp) {
+		if (sequence == null) {
+			return 0;
+		}
+		if (ignoreRegexp) {
+			return numberOfOccurrences(sourceObject, escapeRegexp(sequence));
+		}
+		return numberOfOccurrences(sourceObject, sequence);
 	}
 
-	public static String removeAllOccurences(String sourceObject, String sequence) {
+	public static int numberOfOccurrences(String sourceObject, Character sequence) {
+		return numberOfOccurrences(sourceObject, sequence, false);
+	}
+
+	public static int numberOfOccurrences(String sourceObject, Character sequence, boolean ignoreRegexp) {
+		if (sequence == null) {
+			return 0;
+		}
+		if (ignoreRegexp) {
+			return numberOfOccurrences(sourceObject, escapeRegexp(sequence.toString()));
+		}
+		return numberOfOccurrences(sourceObject, sequence.toString());
+	}
+
+	public static String removeAllOccurrences(String sourceObject, String sequence) {
+		return removeAllOccurrences(sourceObject, sequence, false);
+	}
+
+	public static String removeAllOccurrences(String sourceObject, String sequence, boolean ignoreRegexp) {
+		if (sourceObject == null) {
+			return sourceObject;
+		}
+		if (sequence == null) {
+			return sourceObject;
+		}
+		if (ignoreRegexp) {
+			return sourceObject.replaceAll(escapeRegexp(sequence), "");
+		}
 		return sourceObject.replaceAll(sequence, "");
 	}
 
-	public static String removeAllOccurences(String sourceObject, Character sequence) {
-		return removeAllOccurences(sourceObject, sequence.toString());
+	public static String removeAllOccurrences(String sourceObject, Character sequence) {
+		if (sequence == null) {
+			return sourceObject;
+		}
+		return removeAllOccurrences(sourceObject, sequence.toString(), false);
+	}
+
+	public static String removeAllOccurrences(String sourceObject, Character sequence, boolean ignoreRegexp) {
+		return removeAllOccurrences(sourceObject, sequence.toString(), ignoreRegexp);
+	}
+
+	public static List<Integer> indexesOf(String sourceObject, String sequence, boolean ignoreRegexp) {
+		if (sequence == null) {
+			return new ArrayList<Integer>();
+		}
+		if (ignoreRegexp) {
+			return indexesOf(sourceObject, escapeRegexp(sequence));
+		}
+		return indexesOf(sourceObject, sequence);
 	}
 
 	public static List<Integer> indexesOf(String sourceObject, String sequence) {
 		List<Integer> indexes = new ArrayList<Integer>();
+		if (sourceObject == null || sequence == null || sequence.isEmpty()) {
+			return indexes;
+		}
 		Pattern pattern = Pattern.compile(sequence);
 		Matcher matcher = pattern.matcher(sourceObject);
 		while (matcher.find()) {
@@ -74,8 +173,28 @@ public class Strings {
 		return indexes;
 	}
 
-	public static List<Integer> indexesOf(String sourceObject, Character c) {
+	public static List<Integer> indexesOf(String sourceObject, Character c, boolean ignoreRegexp) {
+		if (c == null) {
+			return new ArrayList<Integer>();
+		}
+		if (ignoreRegexp) {
+			return indexesOf(sourceObject, escapeRegexp(c.toString()));
+		}
 		return indexesOf(sourceObject, c.toString());
+	}
+
+	public static List<Integer> indexesOf(String sourceObject, Character c) {
+		return indexesOf(sourceObject, c, false);
+	}
+
+	public static List<FoundGroup> groups(String sourceObject, String sequence, boolean ignoreRegexp) {
+		if (sequence == null) {
+			return new ArrayList<FoundGroup>();
+		}
+		if (ignoreRegexp) {
+			return groups(sourceObject, escapeRegexp(sequence));
+		}
+		return groups(sourceObject, sequence);
 	}
 
 	public static List<FoundGroup> groups(String sourceObject, String sequence) {
@@ -86,6 +205,20 @@ public class Strings {
 			indexes.add(new FoundGroup(matcher.start(), matcher.end(), matcher.group()));
 		}
 		return indexes;
+	}
+
+	public static List<FoundGroup> groups(String sourceObject, Character c) {
+		return groups(sourceObject, c, false);
+	}
+
+	public static List<FoundGroup> groups(String sourceObject, Character c, boolean ignoreRegexp) {
+		if (c == null) {
+			return new ArrayList<FoundGroup>();
+		}
+		if (ignoreRegexp) {
+			return groups(sourceObject, escapeRegexp(c.toString()));
+		}
+		return groups(sourceObject, c.toString());
 	}
 
 	public static String random(int length) {
@@ -166,7 +299,7 @@ public class Strings {
 		boolean whitespace = false;
 		StringBuffer sb = new StringBuffer(value);
 		sb.deleteCharAt(0).insert(0, ("" + value.charAt(0)).toUpperCase());
-		
+
 		for (int i = 0; i < value.length(); i++) {
 			if (value.charAt(i) == ' ' || value.charAt(i) == '\n' || value.charAt(i) == '\t' || value.charAt(i) == '\r') {
 				whitespace = true;
