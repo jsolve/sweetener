@@ -303,68 +303,92 @@ public class StringsTest {
 		// given
 		String sourceObject = "abbababaab";
 		String sequence = "ab";
-		
+
 		// when
 		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
-		
+
 		// then
 		assertThat(indexesOf).contains(0, 3, 5, 8);
 	}
-	
+
 	@Test
 	public void shouldReturnListOfIndexesWhenSourceIsEmpty() {
 		// given
 		String sourceObject = "";
 		String sequence = "ab";
-		
+
 		// when
 		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
-		
-		// then
-		assertThat(indexesOf).isEmpty();
-	}
-	
-	@Test
-	public void shouldReturnListOfIndexesWhenSourceIsNull() {
-		// given
-		String sourceObject = null;
-		String sequence = "ab";
-		
-		// when
-		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
-		
-		// then
-		assertThat(indexesOf).isEmpty();
-	}
-	
-	@Test
-	public void shouldReturnListOfIndexesWhenSequenceIsEmpty() {
-		// given
-		String sourceObject = "abbababaab";
-		String sequence = "";
-		
-		// when
-		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
-		
-		// then
-		assertThat(indexesOf).isEmpty();
-	}
-	
-	@Test
-	public void shouldReturnListOfIndexesWhenSequenceIsNull() {
-		// given
-		String sourceObject = "abbababaab";
-		String sequence = null;
-		
-		// when
-		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
-		
+
 		// then
 		assertThat(indexesOf).isEmpty();
 	}
 
 	@Test
-	public void testName4() {
+	public void shouldReturnListOfIndexesWhenSourceIsNull() {
+		// given
+		String sourceObject = null;
+		String sequence = "ab";
+
+		// when
+		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
+
+		// then
+		assertThat(indexesOf).isEmpty();
+	}
+
+	@Test
+	public void shouldReturnListOfIndexesWhenSequenceIsEmpty() {
+		// given
+		String sourceObject = "abbababaab";
+		String sequence = "";
+
+		// when
+		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
+
+		// then
+		assertThat(indexesOf).isEmpty();
+	}
+
+	@Test
+	public void shouldReturnListOfIndexesWhenSequenceIsNull() {
+		// given
+		String sourceObject = "abbababaab";
+		String sequence = null;
+
+		// when
+		List<Integer> indexesOf = Strings.indexesOf(sourceObject, sequence);
+
+		// then
+		assertThat(indexesOf).isEmpty();
+	}
+
+	@Test
+	public void shouldGenerateRandomString() {
+		// given
+		int length = 5;
+
+		// when
+		String random = Strings.random(length);
+
+		// then
+		assertThat(random).hasSize(length);
+	}
+
+	@Test
+	public void shouldGenerateRandomStringWhenLengthIsNegative() {
+		// given
+		int length = -5;
+
+		// when
+		String random = Strings.random(length);
+
+		// then
+		assertThat(random).hasSize(0);
+	}
+
+	@Test
+	public void shouldGenerateRandomStringWithGivenCollectionOfSymbols() {
 		// given
 		List<Character> symbols = new ArrayList<Character>();
 		symbols.add('A');
@@ -373,13 +397,116 @@ public class StringsTest {
 		symbols.add('D');
 		symbols.add('E');
 		symbols.add('F');
+
 		// when
-		for (int i = 0; i < 10; i++) {
-			String result = Strings.random(symbols, 40);
-			// System.out.println(result);
-		}
+		String result = Strings.random(symbols, 40);
 		// then
-		// assertThat(result).isEqualTo("ba");
+
+		assertThat(result).hasSize(40);
 	}
+
+	@Test
+	public void shouldGenerateRandomStringWithGivenCollectionOfSymbolsWhenCollectionIsEmpty() {
+		// given
+		List<Character> symbols = new ArrayList<Character>();
+
+		// when
+		String result = Strings.random(symbols, 40);
+		// then
+
+		assertThat(result).hasSize(0);
+	}
+
+	@Test
+	public void shouldGenerateRandomStringWithGivenCollectionOfSymbolsWhenCollectionIsNull() {
+		// given
+		List<Character> symbols = null;
+
+		// when
+		String result = Strings.random(symbols, 40);
+		// then
+
+		assertThat(result).hasSize(0);
+	}
+
+	@Test
+	public void shouldPadGivenString() {
+		// given
+		String sourceObject = "abc";
+		String content = "*-";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, content, length);
+
+		// then
+		assertThat(result).isEqualTo("abc*-*-");
+	}
+
+	@Test
+	public void shouldPadGivenStringBySpaces() {
+		// given
+		String sourceObject = "abc";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, length);
+
+		// then
+		assertThat(result).isEqualTo("abc    ");
+	}
+
+	@Test
+	public void shouldPadGivenStringWhenCIsNull() {
+		// given
+		String sourceObject = "abc";
+		Character c = null;
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length);
+
+		// then
+		assertThat(result).isEqualTo("abc    ");
+	}
+
+	@Test
+	public void shouldPadGivenStringWhenSourceIsNull() {
+		// given
+		String sourceObject = null;
+		Character c = '*';
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length);
+
+		// then
+		assertThat(result).isEqualTo("*******");
+	}
+	
+	@Test
+	public void shouldCapitalizeFirstLetter() {
+		// given
+		String sourceObject = "home sweet home";
+
+		// when
+		String result = Strings.capitalize(sourceObject);
+
+		// then
+		assertThat(result).isEqualTo("Home sweet home");
+	}
+	
+	@Test
+	public void shouldCapitalizeFirstLetterOfAllWords() {
+		// given
+		String sourceObject = "home sweet home";
+
+		// when
+		String result = Strings.capitalizeAllWords(sourceObject);
+
+		// then
+		assertThat(result).isEqualTo("Home Sweet Home");
+	}
+
 
 }

@@ -10,8 +10,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import sun.print.resources.serviceui;
-
 public class Strings {
 
 	public static final String DOT = "/.";
@@ -231,6 +229,9 @@ public class Strings {
 	}
 
 	public static String random(List<Character> symbols, int length) {
+		if (symbols == null || symbols.isEmpty()) {
+			return "";
+		}
 		StringBuffer sb = new StringBuffer();
 		Collections.shuffle(symbols);
 		for (int i = 0; i < length; i++) {
@@ -240,31 +241,21 @@ public class Strings {
 	}
 
 	public static String pad(String sourceObject, int length) {
-		if (sourceObject.length() >= length) {
-			return sourceObject;
-		}
-		StringBuffer sb = new StringBuffer(sourceObject);
-		for (int i = sourceObject.length(); i < length; i++) {
-			sb.append(" ");
-		}
-		return sb.toString();
+		return pad(sourceObject, " ", length);
 	}
 
-	public static String pad(String sourceObject, char c, int length) {
-		if (sourceObject.length() >= length) {
-			return sourceObject;
+	public static String pad(String sourceObject, Character c, int length) {
+		if (c == null) {
+			return pad(sourceObject, " ", length);
 		}
-		StringBuffer sb = new StringBuffer(sourceObject);
-		for (int i = sourceObject.length(); i < length; i++) {
-			sb.append(c);
-		}
-		return sb.toString();
+		return pad(sourceObject, c.toString(), length);
 	}
 
 	public static String pad(String sourceObject, String content, int length) {
 		if (content == null || content.isEmpty()) {
 			throw new RuntimeException();
 		}
+		sourceObject = defaultIfNull(sourceObject, "");
 		if (sourceObject.length() >= length) {
 			return sourceObject;
 		}
