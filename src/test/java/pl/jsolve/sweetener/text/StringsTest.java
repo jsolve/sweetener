@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.core;
+package pl.jsolve.sweetener.text;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
+import pl.jsolve.sweetener.text.Strings;
 
 public class StringsTest {
 
@@ -77,30 +78,6 @@ public class StringsTest {
 
 		// then
 		assertThat(numberOfCccurrences).isEqualTo(4);
-	}
-
-	@Test
-	public void shouldEscapeRegexp() {
-		// given
-		String regexp = ".()[]{}";
-
-		// when
-		String escapedRegexp = Strings.escapeRegexp(regexp);
-
-		// then
-		assertThat(escapedRegexp).isEqualTo("\\.\\(\\)\\[\\]\\{\\}");
-	}
-
-	@Test
-	public void shouldEscapeDotsInRegexp() {
-		// given
-		String regexp = "Ala has a cat. The cat's name is Tom.";
-
-		// when
-		String escapedRegexp = Strings.escapeRegexp(regexp);
-
-		// then
-		assertThat(escapedRegexp).isEqualTo("Ala has a cat\\. The cat's name is Tom\\.");
 	}
 
 	@Test
@@ -483,7 +460,7 @@ public class StringsTest {
 		// then
 		assertThat(result).isEqualTo("*******");
 	}
-	
+
 	@Test
 	public void shouldCapitalizeFirstLetter() {
 		// given
@@ -495,7 +472,7 @@ public class StringsTest {
 		// then
 		assertThat(result).isEqualTo("Home sweet home");
 	}
-	
+
 	@Test
 	public void shouldCapitalizeFirstLetterOfAllWords() {
 		// given
@@ -507,6 +484,5 @@ public class StringsTest {
 		// then
 		assertThat(result).isEqualTo("Home Sweet Home");
 	}
-
 
 }

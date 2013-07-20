@@ -1,21 +1,20 @@
-package pl.jsolve.sweetener.core;
+package pl.jsolve.sweetener.text;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import pl.jsolve.sweetener.core.FoundGroup;
 
 public class Strings {
 
 	public static final String DOT = "/.";
 
 	private static final List<Character> symbols = new ArrayList<Character>(62);
-	private static final Map<Character, String> regexpSpecial = new HashMap<Character, String>();
 	private static final Random random = new Random();
 
 	static {
@@ -28,22 +27,6 @@ public class Strings {
 		for (int idx = 36; idx < 62; ++idx) {
 			symbols.add((char) ('A' + idx - 36));
 		}
-
-		regexpSpecial.put('.', "\\.");
-		regexpSpecial.put('\\', "\\\\");
-		regexpSpecial.put('?', "\\?");
-		regexpSpecial.put('*', "\\*");
-		regexpSpecial.put('+', "\\+");
-		regexpSpecial.put('&', "\\&");
-		regexpSpecial.put(':', "\\:");
-		regexpSpecial.put('{', "\\{");
-		regexpSpecial.put('}', "\\}");
-		regexpSpecial.put('[', "\\[");
-		regexpSpecial.put(']', "\\]");
-		regexpSpecial.put('(', "\\(");
-		regexpSpecial.put(')', "\\)");
-		regexpSpecial.put('^', "\\^");
-		regexpSpecial.put('$', "\\$");
 	}
 
 	public static String join(String sequence, Collection<?> collection) {
@@ -71,18 +54,6 @@ public class Strings {
 		return stringBuffer.toString();
 	}
 
-	public static String escapeRegexp(String value) {
-		StringBuffer sb = new StringBuffer(value);
-		int countOfReplacements = 0;
-		for (int i = 0; i < value.length(); i++) {
-			if (regexpSpecial.containsKey(value.charAt(i))) {
-				sb.deleteCharAt(i + countOfReplacements).insert(i + countOfReplacements, regexpSpecial.get(value.charAt(i)));
-				countOfReplacements++;
-			}
-		}
-		return sb.toString();
-	}
-
 	public static int numberOfOccurrences(String sourceObject, String sequence) {
 		if (sourceObject == null || sequence == null || sequence.isEmpty()) {
 			return 0;
@@ -101,7 +72,7 @@ public class Strings {
 			return 0;
 		}
 		if (ignoreRegexp) {
-			return numberOfOccurrences(sourceObject, escapeRegexp(sequence));
+			return numberOfOccurrences(sourceObject, Escapes.escapeRegexp(sequence));
 		}
 		return numberOfOccurrences(sourceObject, sequence);
 	}
@@ -115,7 +86,7 @@ public class Strings {
 			return 0;
 		}
 		if (ignoreRegexp) {
-			return numberOfOccurrences(sourceObject, escapeRegexp(sequence.toString()));
+			return numberOfOccurrences(sourceObject, Escapes.escapeRegexp(sequence.toString()));
 		}
 		return numberOfOccurrences(sourceObject, sequence.toString());
 	}
@@ -132,7 +103,7 @@ public class Strings {
 			return sourceObject;
 		}
 		if (ignoreRegexp) {
-			return sourceObject.replaceAll(escapeRegexp(sequence), "");
+			return sourceObject.replaceAll(Escapes.escapeRegexp(sequence), "");
 		}
 		return sourceObject.replaceAll(sequence, "");
 	}
@@ -153,7 +124,7 @@ public class Strings {
 			return new ArrayList<Integer>();
 		}
 		if (ignoreRegexp) {
-			return indexesOf(sourceObject, escapeRegexp(sequence));
+			return indexesOf(sourceObject, Escapes.escapeRegexp(sequence));
 		}
 		return indexesOf(sourceObject, sequence);
 	}
@@ -176,7 +147,7 @@ public class Strings {
 			return new ArrayList<Integer>();
 		}
 		if (ignoreRegexp) {
-			return indexesOf(sourceObject, escapeRegexp(c.toString()));
+			return indexesOf(sourceObject, Escapes.escapeRegexp(c.toString()));
 		}
 		return indexesOf(sourceObject, c.toString());
 	}
@@ -190,7 +161,7 @@ public class Strings {
 			return new ArrayList<FoundGroup>();
 		}
 		if (ignoreRegexp) {
-			return groups(sourceObject, escapeRegexp(sequence));
+			return groups(sourceObject, Escapes.escapeRegexp(sequence));
 		}
 		return groups(sourceObject, sequence);
 	}
@@ -214,7 +185,7 @@ public class Strings {
 			return new ArrayList<FoundGroup>();
 		}
 		if (ignoreRegexp) {
-			return groups(sourceObject, escapeRegexp(c.toString()));
+			return groups(sourceObject, Escapes.escapeRegexp(c.toString()));
 		}
 		return groups(sourceObject, c.toString());
 	}
