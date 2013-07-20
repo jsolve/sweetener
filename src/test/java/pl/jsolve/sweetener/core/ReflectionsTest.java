@@ -195,7 +195,7 @@ public class ReflectionsTest {
 		List<Method> methods = Reflections.getMethods(person);
 
 		// then
-		assertThat(methods).hasSize(10);
+		assertThat(methods).hasSize(11);
 	}
 
 	@Test
