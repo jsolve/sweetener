@@ -6,7 +6,7 @@ Sweetener is a project created by Jsolve group. It provides a set of classes to 
 Current status: [![ScreenShot](https://jsolve.ci.cloudbees.com/buildStatus/icon?job=Sweetener)](https://jsolve.ci.cloudbees.com/buildStatus/icon?job=Sweetener)
 
 Main categories:
-* code
+* core
     * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
     * [Reflections] (https://github.com/jsolve/sweetener/wiki/Reflections)
 * comparer
@@ -17,6 +17,9 @@ Main categories:
     * [Mapper](https://github.com/jsolve/sweetener/wiki/Mapper)
 * io
     * [Resources] (https://github.com/jsolve/sweetener/wiki/Resources)
+* text
+    * [Strings] (https://github.com/jsolve/sweetener/wiki/Strings)
+    * [Escapes] Comming soon
 
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
