@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +22,10 @@ import pl.jsolve.sweetener.exception.FileNotFoundException;
 import pl.jsolve.sweetener.exception.ResourceException;
 
 public class Resources {
+
+	private Resources() {
+		throw new AssertionError("Using constructor of this class is prohibited.");
+	}
 
 	public static List<Path> findFilePaths(String fileName) {
 		return findPaths("", fileName);
@@ -37,7 +42,7 @@ public class Resources {
 			Files.walkFileTree(startingDir, finder);
 			return finder.getPaths();
 		} catch (IOException ioe) {
-			return new ArrayList<Path>();
+			return new ArrayList<>();
 		}
 	}
 
@@ -76,15 +81,21 @@ public class Resources {
 	}
 
 	public static List<String> asListOfLines(Path path) {
-		List<String> lines = new ArrayList<String>();
-		FileReader fileReader = null;
+		FileReader fileReader = createFileReader(path);
+		return readLines(fileReader);
+	}
+
+	private static FileReader createFileReader(Path path) {
 		try {
-			fileReader = new FileReader(path.toFile());
+			return new FileReader(path.toFile());
 		} catch (IOException ex) {
 			throw new FileNotFoundException(path.toString());
 		}
+	}
 
+	private static List<String> readLines(Reader fileReader) {
 		try {
+			List<String> lines = new ArrayList<String>();
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			try {
 				String line = bufferedReader.readLine();
@@ -97,26 +108,16 @@ public class Resources {
 				bufferedReader.close();
 			}
 		} catch (IOException ex) {
-			throw new ResourceException(path.toString(), ex);
+			throw new ResourceException(ex);
 		}
 	}
 
 	public static List<String> asListOfLines(URL url) {
-		List<String> lines = new ArrayList<String>();
 		try {
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
-			try {
-				String line = bufferedReader.readLine();
-				while (line != null) {
-					lines.add(line);
-					line = bufferedReader.readLine();
-				}
-				return lines;
-			} finally {
-				bufferedReader.close();
-			}
-		} catch (IOException ex) {
-			throw new ResourceException(url.toString(), ex);
+			InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
+			return readLines(inputStreamReader);
+		} catch (IOException e) {
+			throw new ResourceException(url.toString(), e);
 		}
 	}
 
