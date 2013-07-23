@@ -17,10 +17,12 @@ import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedToFieldOnMapNested;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
+import pl.jsolve.sweetener.tests.stub.hero.HeroDTO;
 import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
 import pl.jsolve.sweetener.tests.stub.person.Address;
 import pl.jsolve.sweetener.tests.stub.person.City;
 import pl.jsolve.sweetener.tests.stub.person.Student;
+import pl.jsolve.sweetener.tests.stub.person.StudentDTO;
 import pl.jsolve.sweetener.tests.stub.person.StudentSnapshot;
 
 public class AnnotationDrivenMapperTest {
@@ -39,6 +41,19 @@ public class AnnotationDrivenMapperTest {
 		// then
 		assertThat(result.getId()).isEqualTo(hero.getId());
 		assertThat(result.getName()).isEqualTo(hero.getNickname());
+	}
+
+	@Test
+	public void shouldMapHeroToHeroDTO() {
+		// given
+		Hero hero = aHero().withId(ID).withNickname(NICKNAME).build();
+
+		// when
+		HeroDTO result = AnnotationDrivenMapper.map(hero, HeroDTO.class);
+
+		// then
+		assertThat(result.getId()).isEqualTo(hero.getId());
+		assertThat(result.getNickname()).isEqualTo(hero.getNickname());
 	}
 
 	@Test
@@ -135,6 +150,21 @@ public class AnnotationDrivenMapperTest {
 		assertThat(studentSnapshot.getStreet()).isEqualTo(student.getAddress().getStreet());
 		assertThat(studentSnapshot.getAddress()).isEqualTo(student.getAddress().getCity().getName());
 		assertThat(studentSnapshot.getPopulation()).isEqualTo(student.getAddress().getCity().getPopulation());
+	}
+
+	@Test
+	public void shouldMapStudentToStudentDTO() {
+		// given
+		Student student = prepareStudent();
+
+		// when
+		StudentDTO studentDTO = AnnotationDrivenMapper.map(student, StudentDTO.class);
+
+		// then
+		assertThat(studentDTO.getFirstName()).isEqualTo(student.getFirstName());
+		assertThat(studentDTO.getSurname()).isEqualTo(student.getLastName());
+		assertThat(studentDTO.getStreet()).isEqualTo(student.getAddress().getStreet());
+		assertThat(studentDTO.getTotalSemesters()).isEqualTo(student.getSemester());
 	}
 
 	private Student prepareStudent() {

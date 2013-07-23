@@ -19,21 +19,21 @@ public class ResourcesTest {
 
 		// then
 		assertThat(paths.size()).isGreaterThan(1);
-		assertThat(paths.toString()).contains("src\\main\\resources\\testFile.txt");
+		assertThat(paths.toString()).contains("src/main/resources/testFile.txt");
 	}
 
 	@Test
 	public void shouldFindPathForGivenFilePath() {
 		// given
 		String fileName = "testFile.txt";
-		String startingDir = "src\\main\\resources\\";
+		String startingDir = "src/main/resources/";
 
 		// when
 		List<Path> paths = Resources.findFilePaths(startingDir, fileName);
 
 		// then
 		assertThat(paths).hasSize(1);
-		assertThat(paths.get(0).toString()).isEqualTo("src\\main\\resources\\testFile.txt");
+		assertThat(paths.get(0).toString()).isEqualTo("src/main/resources/testFile.txt");
 	}
 
 }

@@ -12,4 +12,6 @@ public @interface MapNested {
 	String fromNested();
 
 	String to();
+
+	Class<?> of() default Object.class;
 }
