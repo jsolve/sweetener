@@ -2,7 +2,6 @@ package pl.jsolve.sweetener.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import pl.jsolve.sweetener.core.Reflections;
@@ -95,44 +94,5 @@ public class Collections {
 		int to = from + resultsPerPage;
 		to = to > totalElements - 1 ? totalElements : to;
 		return to - 1;
-	}
-
-	// ArrayList
-
-	public static <E> ArrayList<E> newArrayList() {
-		return new ArrayList<>();
-	}
-
-	@SafeVarargs
-	public static <E> ArrayList<E> newArrayList(E... elements) {
-		ArrayList<E> list = new ArrayList<>();
-		java.util.Collections.addAll(list, elements);
-		return list;
-	}
-
-	public static <E> ArrayList<E> newArrayList(Iterable<? extends E> elements) {
-		ArrayList<E> arrayList = new ArrayList<>();
-		for (E e : elements) {
-			arrayList.add(e);
-		}
-		return arrayList;
-	}
-
-	public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
-		return new ArrayList<>(initialArraySize);
-	}
-
-	// LinkedList
-
-	public static <E> LinkedList<E> newLinkedList() {
-		return new LinkedList<>();
-	}
-
-	public static <E> LinkedList<E> newLinkedList(Iterable<? extends E> elements) {
-		LinkedList<E> linkedList = new LinkedList<>();
-		for (E e : elements) {
-			linkedList.add(e);
-		}
-		return linkedList;
 	}
 }
