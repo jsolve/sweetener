@@ -3,18 +3,24 @@ package pl.jsolve.sweetener.mapper;
 import static org.fest.assertions.Assertions.assertThat;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested.NOT_EXISTING_NESTED_FIELD;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo.NOT_EXISTING_FIELD;
+import static pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping.MAP_PARSING_INT_TO_ANNOTATION_CLASS;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
 
+import java.lang.reflect.Field;
+
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
+import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
+import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationMapping;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedToFieldOnMapNested;
+import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.hero.HeroDTO;
@@ -132,6 +138,30 @@ public class AnnotationDrivenMapperTest {
 
 		// then
 		assertThrowable(caughtException).withMessage(StudentSnapshot.class + " does not contain field " + NOT_EXISTING_FIELD).isThrown();
+	}
+
+	@Test
+	public void shouldMapStudentWithCustomAnnotationMapping() {
+		// given
+		StudentWithMapParsingIntToAnnotationMapping student = new StudentWithMapParsingIntToAnnotationMapping();
+		student.setSemester("5");
+		AnnotationDrivenMapper.registerAnnotationMapping(new AnnotationMapping() {
+
+			@Override
+			public <S, T> void apply(S sourceObject, T targetObject) {
+				for (Field field : Reflections.getFieldsAnnotatedBy(sourceObject, MAP_PARSING_INT_TO_ANNOTATION_CLASS)) {
+					String targetFieldName = field.getAnnotation(MAP_PARSING_INT_TO_ANNOTATION_CLASS).value();
+					String sourceObjectFieldValue = Reflections.getFieldValue(sourceObject, field.getName()).toString();
+					Reflections.setFieldValue(targetObject, targetFieldName, Integer.parseInt(sourceObjectFieldValue));
+				}
+			}
+		});
+
+		// when
+		StudentSnapshot studentSnapshot = AnnotationDrivenMapper.map(student, StudentSnapshot.class);
+
+		// then
+		assertThat(studentSnapshot.getSemester()).isEqualTo(Integer.parseInt(student.getSemester()));
 	}
 
 	@Test
