@@ -8,5 +8,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface MapExactlyTo {
-	public String value();
+
+	String value();
+
+	Class<?> of() default Object.class;
 }
