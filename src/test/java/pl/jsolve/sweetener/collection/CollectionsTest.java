@@ -1,8 +1,14 @@
 package pl.jsolve.sweetener.collection;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aCaptainAmerica;
+import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aHulk;
+import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aRedScull;
+import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.anIronMan;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
@@ -11,6 +17,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
+import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class CollectionsTest {
 
@@ -296,4 +303,68 @@ public class CollectionsTest {
 
 	}
 
+	@Test
+	public void shouldCreateNewEmptyArrayList() {
+		// when
+		ArrayList<Object> result = Collections.newArrayList();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewArrayListWithGivenIterableElements() {
+		// given
+		Hero captainAmerica = aCaptainAmerica().build();
+		Hero ironMan = anIronMan().build();
+		Hero hulk = aHulk().build();
+		Hero redScull = aRedScull().build();
+		Iterable<Hero> elements = Arrays.asList(captainAmerica, ironMan, hulk, redScull);
+
+		// when
+		ArrayList<Hero> result = Collections.newArrayList(elements);
+
+		// then
+		assertThat(result).contains(captainAmerica, ironMan, hulk, redScull);
+	}
+
+	@Test
+	public void shouldCreateNewArrayListWithGivenElements() {
+		// given
+		Hero captainAmerica = aCaptainAmerica().build();
+		Hero ironMan = anIronMan().build();
+		Hero hulk = aHulk().build();
+		Hero redScull = aRedScull().build();
+
+		// when
+		ArrayList<Hero> result = Collections.newArrayList(captainAmerica, ironMan, hulk, redScull);
+
+		// then
+		assertThat(result).contains(captainAmerica, ironMan, hulk, redScull);
+	}
+
+	@Test
+	public void shouldCreateNewLinkedList() {
+		// when
+		LinkedList<Object> result = Collections.newLinkedList();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewLinkedListWithGivenIterableElements() {
+		// given
+		Hero captainAmerica = aCaptainAmerica().build();
+		Hero ironMan = anIronMan().build();
+		Hero hulk = aHulk().build();
+		Hero redScull = aRedScull().build();
+		Iterable<Hero> elements = Arrays.asList(captainAmerica, ironMan, hulk, redScull);
+
+		// when
+		LinkedList<Hero> result = Collections.newLinkedList(elements);
+
+		// then
+		assertThat(result).contains(captainAmerica, ironMan, hulk, redScull);
+	}
 }
