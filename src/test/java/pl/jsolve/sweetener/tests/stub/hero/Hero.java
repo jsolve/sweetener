@@ -8,7 +8,7 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 @MappableTo({ HeroSnapshot.class, HeroDTO.class })
 public class Hero implements ComparableById {
 
-	@MapExactlyTo(value = "id")
+	@MapExactlyTo("id")
 	private Long id;
 	private String firstName;
 	private String lastName;

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface MapExactlyTo {
 
-	public String value();
+	String value();
 
-	public Class<?> of() default Object.class;
+	Class<?> of() default Object.class;
 }

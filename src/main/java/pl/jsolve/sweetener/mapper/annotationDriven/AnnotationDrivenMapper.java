@@ -10,22 +10,21 @@ import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 
 public final class AnnotationDrivenMapper {
 
-	private static final List<AbstractAnnotationMapping> MAPPINGS = new LinkedList<>();
-	private static final MapExactlyToAnnotationMapping MAP_EXACTLY_TO_MAPPING = new MapExactlyToAnnotationMapping();
-	private static final MapNestedAnnotationMapping MAP_NESTED_MAPPING = new MapNestedAnnotationMapping();
-	private static final NestedMappingsAnnotationMapping NESTED_MAPPINGS_MAPPING = new NestedMappingsAnnotationMapping(MAP_NESTED_MAPPING);
-	private static final ExactlyToMappingsAnnotationMapping EXACTLY_TO_MAPPINGS_MAPPING = new ExactlyToMappingsAnnotationMapping(
-			MAP_EXACTLY_TO_MAPPING);
-
-	static {
-		MAPPINGS.add(MAP_EXACTLY_TO_MAPPING);
-		MAPPINGS.add(EXACTLY_TO_MAPPINGS_MAPPING);
-		MAPPINGS.add(MAP_NESTED_MAPPING);
-		MAPPINGS.add(NESTED_MAPPINGS_MAPPING);
-	}
+	private static final List<AnnotationMapping> MAPPINGS = new LinkedList<>();
 
 	private AnnotationDrivenMapper() {
 		throw new AssertionError("Using constructor of this class is prohibited.");
+	}
+
+	static {
+		registerAnnotationMapping(new MapExactlyToAnnotationMapping());
+		registerAnnotationMapping(new MapNestedAnnotationMapping());
+	}
+
+	public static void registerAnnotationMapping(AnnotationMapping annotationMapping) {
+		if (annotationMapping != null) {
+			MAPPINGS.add(annotationMapping);
+		}
 	}
 
 	public static <T, V> V map(T sourceObject, Class<V> targetClass) {
@@ -33,12 +32,6 @@ public final class AnnotationDrivenMapper {
 		V targetObject = Reflections.tryToCreateNewInstance(targetClass);
 		applyAllMappings(sourceObject, targetObject);
 		return targetObject;
-	}
-
-	private static <V, T> void applyAllMappings(T sourceObject, V targetObject) {
-		for (AbstractAnnotationMapping mapping : MAPPINGS) {
-			mapping.apply(sourceObject, targetObject);
-		}
 	}
 
 	private static <T, V> void throwExceptionWhenIsNotMappableToTargetClass(T object, Class<V> targetClass) {
@@ -50,5 +43,11 @@ public final class AnnotationDrivenMapper {
 	public static <T, V> boolean isMappableToTargetClass(T object, Class<V> targetClass) {
 		MappableTo mappableTo = object.getClass().getAnnotation(MappableTo.class);
 		return mappableTo != null && Arrays.asList(mappableTo.value()).contains(targetClass);
+	}
+
+	private static <V, T> void applyAllMappings(T sourceObject, V targetObject) {
+		for (AnnotationMapping mapping : MAPPINGS) {
+			mapping.apply(sourceObject, targetObject);
+		}
 	}
 }
