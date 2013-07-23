@@ -4,32 +4,32 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import pl.jsolve.sweetener.core.Reflections;
-import pl.jsolve.sweetener.exception.AccessToFieldException;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
-import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 
-class MapExactlyToMapping implements AnnotationMapping {
+class MapExactlyToAnnotationMapping extends AbstractAnnotationMapping {
 
 	private static final Class<MapExactlyTo> MAP_EXACTLY_TO_ANNOTATION_CLASS = MapExactlyTo.class;
 
 	@Override
 	public <S, T> void apply(S sourceObject, T targetObject) {
-
 		List<Field> annotatedfields = Reflections.getFieldsAnnotatedBy(sourceObject, MAP_EXACTLY_TO_ANNOTATION_CLASS);
 		for (Field field : annotatedfields) {
-			String targetFieldName = field.getAnnotation(MAP_EXACTLY_TO_ANNOTATION_CLASS).value();
-			throwExceptionWhenTargetFieldIsNotPresent(targetObject, targetFieldName);
+			MapExactlyTo mapExactlyTo = field.getAnnotation(MAP_EXACTLY_TO_ANNOTATION_CLASS);
+			applyOnFieldWithAnnotation(sourceObject, targetObject, field, mapExactlyTo);
+		}
+	}
+
+	public final <S, T> void applyOnFieldWithAnnotation(S sourceObject, T targetObject, Field field, MapExactlyTo mapExactlyTo) {
+		if (isMapExactlyToOfTargetObject(targetObject, mapExactlyTo)) {
+			String targetFieldName = mapExactlyTo.value();
+			throwExceptionWhenFieldIsNotPresent(targetObject, targetFieldName);
 			String sourceObjectFieldName = field.getName();
 			Object sourceObjectFieldValue = Reflections.getFieldValue(sourceObject, sourceObjectFieldName);
 			Reflections.setFieldValue(targetObject, targetFieldName, sourceObjectFieldValue);
 		}
 	}
 
-	private static void throwExceptionWhenTargetFieldIsNotPresent(Object targetObject, String targetFieldName) {
-		try {
-			Reflections.getFieldValue(targetObject, targetFieldName);
-		} catch (AccessToFieldException e) {
-			throw new MappingException("%s does not contain field %s", targetObject.getClass(), targetFieldName);
-		}
+	private <T> boolean isMapExactlyToOfTargetObject(T targetObject, MapExactlyTo mapExactlyTo) {
+		return Reflections.getClasses(targetObject).contains(mapExactlyTo.of());
 	}
 }

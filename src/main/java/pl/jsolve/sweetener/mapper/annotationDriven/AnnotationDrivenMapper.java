@@ -1,5 +1,6 @@
 package pl.jsolve.sweetener.mapper.annotationDriven;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,13 +10,16 @@ import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 
 public final class AnnotationDrivenMapper {
 
-	private static final List<AnnotationMapping> MAPPINGS = new LinkedList<>();
-	private static final MapExactlyToMapping MAP_EXACTLY_TO_MAPPING = new MapExactlyToMapping();
-	private static final MapNestedMapping MAP_NESTED_MAPPING = new MapNestedMapping();
-	private static final NestedMappingsMapping NESTED_MAPPINGS_MAPPING = new NestedMappingsMapping(MAP_NESTED_MAPPING);
+	private static final List<AbstractAnnotationMapping> MAPPINGS = new LinkedList<>();
+	private static final MapExactlyToAnnotationMapping MAP_EXACTLY_TO_MAPPING = new MapExactlyToAnnotationMapping();
+	private static final MapNestedAnnotationMapping MAP_NESTED_MAPPING = new MapNestedAnnotationMapping();
+	private static final NestedMappingsAnnotationMapping NESTED_MAPPINGS_MAPPING = new NestedMappingsAnnotationMapping(MAP_NESTED_MAPPING);
+	private static final ExactlyToMappingsAnnotationMapping EXACTLY_TO_MAPPINGS_MAPPING = new ExactlyToMappingsAnnotationMapping(
+			MAP_EXACTLY_TO_MAPPING);
 
 	static {
 		MAPPINGS.add(MAP_EXACTLY_TO_MAPPING);
+		MAPPINGS.add(EXACTLY_TO_MAPPINGS_MAPPING);
 		MAPPINGS.add(MAP_NESTED_MAPPING);
 		MAPPINGS.add(NESTED_MAPPINGS_MAPPING);
 	}
@@ -32,7 +36,7 @@ public final class AnnotationDrivenMapper {
 	}
 
 	private static <V, T> void applyAllMappings(T sourceObject, V targetObject) {
-		for (AnnotationMapping mapping : MAPPINGS) {
+		for (AbstractAnnotationMapping mapping : MAPPINGS) {
 			mapping.apply(sourceObject, targetObject);
 		}
 	}
@@ -45,6 +49,6 @@ public final class AnnotationDrivenMapper {
 
 	public static <T, V> boolean isMappableToTargetClass(T object, Class<V> targetClass) {
 		MappableTo mappableTo = object.getClass().getAnnotation(MappableTo.class);
-		return mappableTo != null && mappableTo.value() == targetClass;
+		return mappableTo != null && Arrays.asList(mappableTo.value()).contains(targetClass);
 	}
 }

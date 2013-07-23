@@ -7,12 +7,12 @@ import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapNested;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.NestedMappings;
 
-class NestedMappingsMapping implements AnnotationMapping {
+class NestedMappingsAnnotationMapping extends AbstractAnnotationMapping {
 
 	private static final Class<NestedMappings> NESTED_MAPPINGS_ANNOTATION_CLASS = NestedMappings.class;
-	private final MapNestedMapping mapNestedMapping;
+	private final MapNestedAnnotationMapping mapNestedMapping;
 
-	public NestedMappingsMapping(MapNestedMapping mapNestedMapping) {
+	public NestedMappingsAnnotationMapping(MapNestedAnnotationMapping mapNestedMapping) {
 		this.mapNestedMapping = mapNestedMapping;
 	}
 
