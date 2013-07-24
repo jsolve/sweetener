@@ -31,7 +31,7 @@ public class StringsTest {
 	@Test
 	public void shouldJoinEmptyCollectionOfStrings() {
 		// given
-		List<String> strings = new ArrayList<String>();
+		List<String> strings = new ArrayList<>();
 
 		// when
 		String result = Strings.join(", ", strings);
@@ -55,7 +55,7 @@ public class StringsTest {
 	@Test
 	public void shouldJoinCollectionOfPeople() {
 		// given
-		List<Person> people = new ArrayList<Person>();
+		List<Person> people = new ArrayList<>();
 		people.add(new Person("John", "Deep", 19, null, null));
 		people.add(null);
 		people.add(new Person("Marry", "Duke", 21, null, null));

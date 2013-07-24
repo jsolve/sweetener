@@ -9,9 +9,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pl.jsolve.sweetener.core.FoundGroup;
+import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class Strings {
 
+	private static final char CARRIAGE_RETURN = '\r';
+	private static final char TAB = '\t';
+	private static final char NEW_LINE = '\n';
+	private static final char SPACE = ' ';
+	private static final String EMPTY_STRING = "";
 	public static final String DOT = "/.";
 
 	private static final List<Character> symbols = new ArrayList<Character>(62);
@@ -31,27 +37,23 @@ public class Strings {
 
 	public static String join(String sequence, Collection<?> collection) {
 		if (collection == null) {
-			return "";
+			return EMPTY_STRING;
 		}
 		return join(sequence, collection.toArray());
 	}
 
 	public static String join(String sequence, Object... args) {
 		if (args == null) {
-			return "";
+			return EMPTY_STRING;
 		}
-		StringBuffer stringBuffer = new StringBuffer();
+		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < args.length; i++) {
-			if (args[i] == null) {
-				stringBuffer.append("null");
-			} else {
-				stringBuffer.append(args[i].toString());
-			}
+			stringBuilder.append(args[i]);
 			if (i != args.length - 1) {
-				stringBuffer.append(sequence);
+				stringBuilder.append(sequence);
 			}
 		}
-		return stringBuffer.toString();
+		return stringBuilder.toString();
 	}
 
 	public static int numberOfOccurrences(String sourceObject, String sequence) {
@@ -96,16 +98,13 @@ public class Strings {
 	}
 
 	public static String removeAllOccurrences(String sourceObject, String sequence, boolean ignoreRegexp) {
-		if (sourceObject == null) {
-			return sourceObject;
-		}
-		if (sequence == null) {
+		if (sourceObject == null || sequence == null) {
 			return sourceObject;
 		}
 		if (ignoreRegexp) {
-			return sourceObject.replaceAll(Escapes.escapeRegexp(sequence), "");
+			return sourceObject.replaceAll(Escapes.escapeRegexp(sequence), EMPTY_STRING);
 		}
-		return sourceObject.replaceAll(sequence, "");
+		return sourceObject.replaceAll(sequence, EMPTY_STRING);
 	}
 
 	public static String removeAllOccurrences(String sourceObject, Character sequence) {
@@ -182,7 +181,7 @@ public class Strings {
 
 	public static List<FoundGroup> groups(String sourceObject, Character c, boolean ignoreRegexp) {
 		if (c == null) {
-			return new ArrayList<FoundGroup>();
+			return new ArrayList<>();
 		}
 		if (ignoreRegexp) {
 			return groups(sourceObject, Escapes.escapeRegexp(c.toString()));
@@ -191,7 +190,7 @@ public class Strings {
 	}
 
 	public static String random(int length) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		Collections.shuffle(symbols);
 		for (int i = 0; i < length; i++) {
 			sb.append(symbols.get(random.nextInt(symbols.size())));
@@ -201,9 +200,9 @@ public class Strings {
 
 	public static String random(List<Character> symbols, int length) {
 		if (symbols == null || symbols.isEmpty()) {
-			return "";
+			return EMPTY_STRING;
 		}
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		Collections.shuffle(symbols);
 		for (int i = 0; i < length; i++) {
 			sb.append(symbols.get(random.nextInt(symbols.size())));
@@ -212,25 +211,25 @@ public class Strings {
 	}
 
 	public static String pad(String sourceObject, int length) {
-		return pad(sourceObject, " ", length);
+		return pad(sourceObject, SPACE, length);
 	}
 
 	public static String pad(String sourceObject, Character c, int length) {
 		if (c == null) {
-			return pad(sourceObject, " ", length);
+			return pad(sourceObject, SPACE, length);
 		}
 		return pad(sourceObject, c.toString(), length);
 	}
 
 	public static String pad(String sourceObject, String content, int length) {
 		if (content == null || content.isEmpty()) {
-			throw new RuntimeException();
+			throw new InvalidArgumentException("Content cannot be empty");
 		}
-		sourceObject = defaultIfNull(sourceObject, "");
+		sourceObject = defaultIfNull(sourceObject, EMPTY_STRING);
 		if (sourceObject.length() >= length) {
 			return sourceObject;
 		}
-		StringBuffer sb = new StringBuffer(sourceObject);
+		StringBuilder sb = new StringBuilder(sourceObject);
 		for (int i = 0; i < length - sourceObject.length(); i++) {
 			sb.append(content.charAt(i % content.length()));
 		}
@@ -259,19 +258,23 @@ public class Strings {
 			return value;
 		}
 		boolean whitespace = false;
-		StringBuffer sb = new StringBuffer(value);
-		sb.deleteCharAt(0).insert(0, ("" + value.charAt(0)).toUpperCase());
+		StringBuilder sb = new StringBuilder(value);
+		sb.deleteCharAt(0).insert(0, (EMPTY_STRING + value.charAt(0)).toUpperCase());
 
 		for (int i = 0; i < value.length(); i++) {
-			if (value.charAt(i) == ' ' || value.charAt(i) == '\n' || value.charAt(i) == '\t' || value.charAt(i) == '\r') {
+			if (isWhitespace(value.charAt(i))) {
 				whitespace = true;
 				continue;
 			}
 			if (whitespace) {
-				sb.deleteCharAt(i).insert(i, ("" + value.charAt(i)).toUpperCase());
+				sb.deleteCharAt(i).insert(i, (String.valueOf(value.charAt(i)).toUpperCase()));
 				whitespace = false;
 			}
 		}
 		return sb.toString();
+	}
+
+	public static boolean isWhitespace(char c) {
+		return c == SPACE || c == NEW_LINE || c == TAB || c == CARRIAGE_RETURN;
 	}
 }
