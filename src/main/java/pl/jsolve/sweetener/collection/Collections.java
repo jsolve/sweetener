@@ -2,7 +2,13 @@ package pl.jsolve.sweetener.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.criteria.Criteria;
@@ -95,4 +101,38 @@ public class Collections {
 		to = to > totalElements - 1 ? totalElements : to;
 		return to - 1;
 	}
+	
+	public static  <E> Map<Object, List<E>> duplicates(Collection<E> collection, String property) {
+		Map<Object, List<E>> map = new HashMap<Object, List<E>>();
+		// prepare map of duplicates
+		for(E element : collection) {
+			Object fieldValue = Reflections.getFieldValue(element, property);
+			if(map.containsKey(fieldValue)) {
+				map.get(fieldValue).add(element);
+			} else {
+				List<E> list = new ArrayList<E>();
+				list.add(element);
+				map.put(fieldValue, list);
+			}
+		}
+		
+		// prepare key to remove
+		List<Object> keysToRemoved = new ArrayList<Object>();
+		for(Entry<Object, List<E>> entry : map.entrySet()) {
+			if(entry.getValue().size() == 1) {
+				keysToRemoved.add(entry.getKey());
+			}
+		}
+		// remove unique values
+		for(Object key : keysToRemoved) {
+			map.remove(key);
+		}
+		return map;
+}
+	/*
+	 * duplicates(Collection<?>, String property) - search duplicates by given property, not by reference
+	 * unique(Collection<?>, String property) - the same as above, but there is returned list of unique elements
+	 * List> group(Collection<?>, String fieldName) - returns list of groups, created by given value of field
+	 * List> group(Collection<?>, String ... fieldNames) - returns list of groups, created by given value of fields
+	 */
 }

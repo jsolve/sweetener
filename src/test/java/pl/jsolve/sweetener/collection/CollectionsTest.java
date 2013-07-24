@@ -4,12 +4,14 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class CollectionsTest {
@@ -293,6 +295,21 @@ public class CollectionsTest {
 
 		// third page
 		assertThat(choppedElements.getElementsOfPage()).containsOnly("I");
+	}
+	
+	@Test
+	public void shouldReturnDuplicates() {
+		// given
+		List<Person> people = new ArrayList<Person>();
+		people.add(new Person("John", "Deep", 23, null, null));
+		people.add(new Person("Marry", "Deep", 32, null, null));
+		people.add(new Person("John", "Knee", 37, null, null));
+		
+		// when
+		Map<Object, List<Person>> duplicates = Collections.duplicates(people, "lastName");
 
+		// then
+		assertThat(duplicates).hasSize(1);
+		assertThat(duplicates.get("Deep")).onProperty("name").contains("John", "Marry");
 	}
 }
