@@ -295,5 +295,4 @@ public class CollectionsTest {
 		assertThat(choppedElements.getElementsOfPage()).containsOnly("I");
 
 	}
-
 }

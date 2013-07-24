@@ -3,24 +3,32 @@ package pl.jsolve.sweetener.mapper;
 import static org.fest.assertions.Assertions.assertThat;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested.NOT_EXISTING_NESTED_FIELD;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo.NOT_EXISTING_FIELD;
+import static pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping.MAP_PARSING_INT_TO_ANNOTATION_CLASS;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
 
+import java.lang.reflect.Field;
+
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
+import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
+import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationMapping;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedToFieldOnMapNested;
+import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
+import pl.jsolve.sweetener.tests.stub.hero.HeroDTO;
 import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
 import pl.jsolve.sweetener.tests.stub.person.Address;
 import pl.jsolve.sweetener.tests.stub.person.City;
 import pl.jsolve.sweetener.tests.stub.person.Student;
+import pl.jsolve.sweetener.tests.stub.person.StudentDTO;
 import pl.jsolve.sweetener.tests.stub.person.StudentSnapshot;
 
 public class AnnotationDrivenMapperTest {
@@ -39,6 +47,19 @@ public class AnnotationDrivenMapperTest {
 		// then
 		assertThat(result.getId()).isEqualTo(hero.getId());
 		assertThat(result.getName()).isEqualTo(hero.getNickname());
+	}
+
+	@Test
+	public void shouldMapHeroToHeroDTO() {
+		// given
+		Hero hero = aHero().withId(ID).withNickname(NICKNAME).build();
+
+		// when
+		HeroDTO result = AnnotationDrivenMapper.map(hero, HeroDTO.class);
+
+		// then
+		assertThat(result.getId()).isEqualTo(hero.getId());
+		assertThat(result.getNickname()).isEqualTo(hero.getNickname());
 	}
 
 	@Test
@@ -120,6 +141,30 @@ public class AnnotationDrivenMapperTest {
 	}
 
 	@Test
+	public void shouldMapStudentWithCustomAnnotationMapping() {
+		// given
+		StudentWithMapParsingIntToAnnotationMapping student = new StudentWithMapParsingIntToAnnotationMapping();
+		student.setSemester("5");
+		AnnotationDrivenMapper.registerAnnotationMapping(new AnnotationMapping() {
+
+			@Override
+			public <S, T> void apply(S sourceObject, T targetObject) {
+				for (Field field : Reflections.getFieldsAnnotatedBy(sourceObject, MAP_PARSING_INT_TO_ANNOTATION_CLASS)) {
+					String targetFieldName = field.getAnnotation(MAP_PARSING_INT_TO_ANNOTATION_CLASS).value();
+					String sourceObjectFieldValue = Reflections.getFieldValue(sourceObject, field.getName()).toString();
+					Reflections.setFieldValue(targetObject, targetFieldName, Integer.parseInt(sourceObjectFieldValue));
+				}
+			}
+		});
+
+		// when
+		StudentSnapshot studentSnapshot = AnnotationDrivenMapper.map(student, StudentSnapshot.class);
+
+		// then
+		assertThat(studentSnapshot.getSemester()).isEqualTo(Integer.parseInt(student.getSemester()));
+	}
+
+	@Test
 	public void shouldMapStudentToStudentSnapshot() {
 		// given
 		Student student = prepareStudent();
@@ -135,6 +180,21 @@ public class AnnotationDrivenMapperTest {
 		assertThat(studentSnapshot.getStreet()).isEqualTo(student.getAddress().getStreet());
 		assertThat(studentSnapshot.getAddress()).isEqualTo(student.getAddress().getCity().getName());
 		assertThat(studentSnapshot.getPopulation()).isEqualTo(student.getAddress().getCity().getPopulation());
+	}
+
+	@Test
+	public void shouldMapStudentToStudentDTO() {
+		// given
+		Student student = prepareStudent();
+
+		// when
+		StudentDTO studentDTO = AnnotationDrivenMapper.map(student, StudentDTO.class);
+
+		// then
+		assertThat(studentDTO.getFirstName()).isEqualTo(student.getFirstName());
+		assertThat(studentDTO.getSurname()).isEqualTo(student.getLastName());
+		assertThat(studentDTO.getStreet()).isEqualTo(student.getAddress().getStreet());
+		assertThat(studentDTO.getTotalSemesters()).isEqualTo(student.getSemester());
 	}
 
 	private Student prepareStudent() {

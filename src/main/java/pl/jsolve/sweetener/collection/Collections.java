@@ -93,6 +93,6 @@ public class Collections {
 	private static int getTo(int resultsPerPage, int totalElements, int from) {
 		int to = from + resultsPerPage;
 		to = to > totalElements - 1 ? totalElements : to;
-		return to-1;
+		return to - 1;
 	}
 }

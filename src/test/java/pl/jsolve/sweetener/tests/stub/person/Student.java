@@ -1,12 +1,16 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.ExactlyToMappings;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 
-@MappableTo(StudentSnapshot.class)
+@MappableTo({ StudentSnapshot.class, StudentDTO.class })
 public class Student extends Person {
 
-	@MapExactlyTo("semester")
+	@ExactlyToMappings({
+		@MapExactlyTo(value = "semester", of = StudentSnapshot.class),
+		@MapExactlyTo(value = "totalSemesters", of = StudentDTO.class)
+	})
 	private int semester;
 
 	public int getSemester() {
