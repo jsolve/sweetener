@@ -4,13 +4,18 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
+import pl.jsolve.sweetener.tests.stub.person.Department;
+import pl.jsolve.sweetener.tests.stub.person.FieldOfStudy;
+import pl.jsolve.sweetener.tests.stub.person.Student;
 
 public class CollectionsTest {
 
@@ -293,6 +298,77 @@ public class CollectionsTest {
 
 		// third page
 		assertThat(choppedElements.getElementsOfPage()).containsOnly("I");
+	}
 
+	@Test
+	public void shouldReturnGroups() {
+		// given
+		List<Person> people = new ArrayList<>();
+		people.add(new Person("John", "Deep", 23, null, null));
+		people.add(new Person("Marry", "Deep", 32, null, null));
+		people.add(new Person("John", "Knee", 37, null, null));
+
+		// when
+		Map<GroupKey, List<Person>> groups = Collections.group(people, "lastName");
+
+		// then
+		assertThat(groups).hasSize(2);
+		assertThat(groups.get(new GroupKey("Knee"))).onProperty("name").contains("John");
+		assertThat(groups.get(new GroupKey("Deep"))).onProperty("name").contains("John", "Marry");
+	}
+
+	@Test
+	public void shouldReturnGroupsForMultiKey() {
+		// given
+		List<Student> students = new ArrayList<>();
+		students.add(new Student("John", "Deep", 3, FieldOfStudy.MATHS, Department.AEI));
+		students.add(new Student("Marry", "Duke", 3, FieldOfStudy.BIOINFORMATICS, Department.AEI));
+		students.add(new Student("John", "Knee", 3, FieldOfStudy.BIOINFORMATICS, Department.AEI));
+		students.add(new Student("Peter", "Hunt", 5, FieldOfStudy.BIOINFORMATICS, Department.MT));
+		students.add(new Student("Lucas", "Sky", 7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI));
+
+		// when
+		Map<GroupKey, List<Student>> groups = Collections.group(students, "semester", "fieldOfStudy", "department");
+
+		// then
+		assertThat(groups.keySet()).containsOnly(new GroupKey(3, FieldOfStudy.MATHS, Department.AEI),
+				new GroupKey(3, FieldOfStudy.BIOINFORMATICS, Department.AEI), new GroupKey(5, FieldOfStudy.BIOINFORMATICS, Department.MT),
+				new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI));
+		assertThat(groups.get(new GroupKey(3, FieldOfStudy.MATHS, Department.AEI))).onProperty("lastName").contains("Deep");
+		assertThat(groups.get(new GroupKey(3, FieldOfStudy.BIOINFORMATICS, Department.AEI))).onProperty("lastName").contains("Duke", "Knee");
+		assertThat(groups.get(new GroupKey(5, FieldOfStudy.BIOINFORMATICS, Department.MT))).onProperty("lastName").contains("Hunt");
+		assertThat(groups.get(new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI))).onProperty("lastName").contains("Sky");
+	}
+
+	@Test
+	public void shouldReturnDuplicates() {
+		// given
+		List<Person> people = new ArrayList<>();
+		people.add(new Person("John", "Deep", 23, null, null));
+		people.add(new Person("Marry", "Deep", 32, null, null));
+		people.add(new Person("John", "Knee", 37, null, null));
+
+		// when
+		Map<GroupKey, List<Person>> duplicates = Collections.duplicates(people, "lastName");
+
+		// then
+		assertThat(duplicates).hasSize(1);
+		assertThat(duplicates.get(new GroupKey("Deep"))).onProperty("name").contains("John", "Marry");
+	}
+
+	@Test
+	public void shouldReturnUniques() {
+		// given
+		List<Person> people = new ArrayList<>();
+		people.add(new Person("John", "Deep", 23, null, null));
+		people.add(new Person("Marry", "Deep", 32, null, null));
+		people.add(new Person("John", "Knee", 37, null, null));
+
+		// when
+		List<Person> uniques = Collections.uniques(people, "lastName");
+
+		// then
+		assertThat(uniques).hasSize(1);
+		assertThat(uniques).onProperty("name").contains("John");
 	}
 }
