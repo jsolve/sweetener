@@ -2,8 +2,20 @@ package pl.jsolve.sweetener.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.criteria.Criteria;
@@ -97,7 +109,7 @@ public class Collections {
 		return to - 1;
 	}
 
-	// ArrayList
+	// List
 
 	public static <E> ArrayList<E> newArrayList() {
 		return new ArrayList<>();
@@ -122,8 +134,6 @@ public class Collections {
 		return new ArrayList<>(initialArraySize);
 	}
 
-	// LinkedList
-
 	public static <E> LinkedList<E> newLinkedList() {
 		return new LinkedList<>();
 	}
@@ -134,5 +144,103 @@ public class Collections {
 			linkedList.add(e);
 		}
 		return linkedList;
+	}
+
+	// Map
+
+	public static <K, V> ConcurrentHashMap<K, V> newConcurrentMap() {
+		return new ConcurrentHashMap<>();
+	}
+
+	public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Class<K> type) {
+		if (type == null) {
+			throw new NullPointerException("Type cannot be null");
+		}
+		return new EnumMap<>(type);
+	}
+
+	public static <K extends Enum<K>, V> EnumMap<K, V> newEnumMap(Map<K, ? extends V> map) {
+		return new EnumMap<>(map);
+	}
+
+	public static <K, V> HashMap<K, V> newHashMap() {
+		return new HashMap<>();
+	}
+
+	public static <K, V> HashMap<K, V> newHashMapWithInitialCapacity(int initialCapacity) {
+		return new HashMap<>(initialCapacity);
+	}
+
+	public static <K, V> HashMap<K, V> newHashMap(
+			Map<? extends K, ? extends V> map) {
+		return new HashMap<>(map);
+	}
+
+	public static <K, V> IdentityHashMap<K, V> newIdentityHashMap() {
+		return new IdentityHashMap<>();
+	}
+
+	public static <K, V> LinkedHashMap<K, V> newLinkedHashMap() {
+		return new LinkedHashMap<>();
+	}
+
+	public static <K, V> LinkedHashMap<K, V> newLinkedHashMap(Map<? extends K, ? extends V> map) {
+		return new LinkedHashMap<>(map);
+	}
+
+	public static <K extends Comparable<?>, V> TreeMap<K, V> newTreeMap() {
+		return new TreeMap<>();
+	}
+
+	public static <K, V> TreeMap<K, V> newTreeMap(SortedMap<K, ? extends V> map) {
+		return new TreeMap<>(map);
+	}
+
+	public static <C, K extends C, V> TreeMap<K, V> newTreeMap(Comparator<C> comparator) {
+		return new TreeMap<>(comparator);
+	}
+
+	// Sets
+
+	public static <E> HashSet<E> newHashSet() {
+		return new HashSet<>();
+	}
+
+	@SafeVarargs
+	public static <E> HashSet<E> newHashSet(E... elements) {
+		HashSet<E> set = newHashSet();
+		java.util.Collections.addAll(set, elements);
+		return set;
+	}
+
+	public static <E> HashSet<E> newHashSetWithInitialCapacity(int initialCapacity) {
+		return new HashSet<>(initialCapacity);
+	}
+
+	public static <E> LinkedHashSet<E> newLinkedHashSet() {
+		return new LinkedHashSet<>();
+	}
+
+	public static <E> LinkedHashSet<E> newLinkedHashSetWithInitialCapacity(int initialCapacity) {
+		return new LinkedHashSet<>(initialCapacity);
+	}
+
+	public static <E extends Comparable<?>> TreeSet<E> newTreeSet() {
+		return new TreeSet<>();
+	}
+
+	public static <E extends Comparable<?>> TreeSet<E> newTreeSet(Iterable<? extends E> elements) {
+		TreeSet<E> set = newTreeSet();
+		for (E e : elements) {
+			set.add(e);
+		}
+		return set;
+	}
+
+	public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
+		if (comparator == null) {
+			throw new NullPointerException("Comparator cannot be null");
+		}
+		return new TreeSet<>(comparator);
 	}
 }

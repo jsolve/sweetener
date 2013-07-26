@@ -1,6 +1,8 @@
 package pl.jsolve.sweetener.collection;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
+import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aCaptainAmerica;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aHulk;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aRedScull;
@@ -8,8 +10,19 @@ import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.anIronMan;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,9 +30,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
+import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class CollectionsTest {
+
+	private static final Comparator<Integer> SOME_COMPARATOR = java.util.Collections.reverseOrder();
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
@@ -325,7 +341,7 @@ public class CollectionsTest {
 		ArrayList<Hero> result = Collections.newArrayList(elements);
 
 		// then
-		assertThat(result).contains(captainAmerica, ironMan, hulk, redScull);
+		assertThat(result).containsOnly(captainAmerica, ironMan, hulk, redScull);
 	}
 
 	@Test
@@ -340,7 +356,7 @@ public class CollectionsTest {
 		ArrayList<Hero> result = Collections.newArrayList(captainAmerica, ironMan, hulk, redScull);
 
 		// then
-		assertThat(result).contains(captainAmerica, ironMan, hulk, redScull);
+		assertThat(result).containsOnly(captainAmerica, ironMan, hulk, redScull);
 	}
 
 	@Test
@@ -365,6 +381,229 @@ public class CollectionsTest {
 		LinkedList<Hero> result = Collections.newLinkedList(elements);
 
 		// then
-		assertThat(result).contains(captainAmerica, ironMan, hulk, redScull);
+		assertThat(result).containsOnly(captainAmerica, ironMan, hulk, redScull);
+	}
+
+	@Test
+	public void shouldCreateNewConcurrentMap() {
+		// when
+		ConcurrentHashMap<Object, Object> result = Collections.newConcurrentMap();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	private enum SomeEnum {
+		SOME_INSTANCE
+	}
+
+	@Test
+	public void shouldCreateNewEnumMap() {
+		// when
+		EnumMap<SomeEnum, Object> result = Collections.newEnumMap(SomeEnum.class);
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldNotCreateNewEnumMapWhenPassingNullType() {
+		// given
+		final Class<SomeEnum> nullType = null;
+
+		// when
+		NullPointerException caughtException = tryToCatch(NullPointerException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				Collections.newEnumMap(nullType);
+			}
+		});
+		// then
+		assertThrowable(caughtException).withMessage("Type cannot be null").isThrown();
+	}
+
+	@Test
+	public void shouldCreateNewEnumMapWithTheSameMappingsAsGiven() {
+		// given
+		EnumMap<SomeEnum, Object> mappings = new EnumMap<>(SomeEnum.class);
+
+		// when
+		EnumMap<SomeEnum, Object> result = Collections.newEnumMap(mappings);
+
+		// then
+		assertThat(result).isEqualTo(mappings);
+		assertThat(result).isNotSameAs(mappings);
+	}
+
+	@Test
+	public void shouldCreateNewHashMap() {
+		// when
+		HashMap<Object, Object> result = Collections.newHashMap();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewHashMapWithTheSameMappingsAsGiven() {
+		// given
+		HashMap<SomeEnum, Object> mappings = new HashMap<>();
+
+		// when
+		HashMap<SomeEnum, Object> result = Collections.newHashMap(mappings);
+
+		// then
+		assertThat(result).isEqualTo(mappings);
+		assertThat(result).isNotSameAs(mappings);
+	}
+
+	@Test
+	public void shouldCreateNewIdentityHashMap() {
+		// when
+		IdentityHashMap<Object, Object> result = Collections.newIdentityHashMap();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewLinkedHashMap() {
+		// when
+		LinkedHashMap<Object, Object> result = Collections.newLinkedHashMap();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewLinkedHashMapWithTheSameMappingsAsGiven() {
+		// given
+		LinkedHashMap<Object, Object> mappings = new LinkedHashMap<>();
+
+		// when
+		LinkedHashMap<Object, Object> result = Collections.newLinkedHashMap(mappings);
+
+		// then
+		assertThat(result).isEqualTo(mappings);
+		assertThat(result).isNotSameAs(mappings);
+	}
+
+	@Test
+	public void shouldCreateNewTreeMap() {
+		// when
+		TreeMap<Integer, Integer> result = Collections.newTreeMap();
+
+		// then
+		assertThat(result).isEmpty();
+		assertThat(result.comparator()).isNull();
+	}
+
+	@Test
+	public void shouldCreateNewTreeMapWithComparator() {
+		// when
+		TreeMap<Integer, Integer> result = Collections.newTreeMap(SOME_COMPARATOR);
+
+		// then
+		assertThat(result).isEmpty();
+		assertThat(result.comparator()).isSameAs(SOME_COMPARATOR);
+	}
+
+	@Test
+	public void shouldCreateNewTreeMapWithInitialMap() {
+		// given
+		SortedMap<Integer, Integer> mappings = Collections.newTreeMap();
+		mappings.put(5, 10);
+		mappings.put(3, 20);
+		mappings.put(1, 30);
+
+		// when
+		TreeMap<Integer, Integer> result = Collections.newTreeMap(mappings);
+
+		// then
+		assertThat(result).isEqualTo(mappings);
+		assertThat(result.comparator()).isSameAs(mappings.comparator());
+	}
+
+	@Test
+	public void shouldCreateNewHashSet() {
+		// when
+		HashSet<Object> result = Collections.newHashSet();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewHashSetWithGivenElements() {
+		// given
+		Hero captainAmerica = aCaptainAmerica().build();
+		Hero ironMan = anIronMan().build();
+		Hero hulk = aHulk().build();
+		Hero redScull = aRedScull().build();
+
+		// when
+		HashSet<Hero> result = Collections.newHashSet(captainAmerica, ironMan, hulk, redScull);
+
+		// then
+		assertThat(result).containsOnly(captainAmerica, ironMan, hulk, redScull);
+	}
+
+	@Test
+	public void shouldCreateNewLinkedHashSet() {
+		// when
+		LinkedHashSet<Object> result = Collections.newLinkedHashSet();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewTreeSet() {
+		// when
+		TreeSet<Comparable<?>> result = Collections.newTreeSet();
+
+		// then
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void shouldCreateNewTreeSetWithGivenElements() {
+		// given
+		Iterable<Integer> elements = Arrays.asList(5, 3, 10, 12);
+
+		// when
+		TreeSet<Integer> result = Collections.newTreeSet(elements);
+
+		// then
+		assertThat(result).contains(5, 3, 10, 12);
+	}
+
+	@Test
+	public void shouldCreateNewTreeSetWithGivenComparator() {
+		// when
+		TreeMap<Integer, Object> result = Collections.newTreeMap(SOME_COMPARATOR);
+
+		// then
+		assertThat(result).isEmpty();
+		assertThat(result.comparator()).isSameAs(SOME_COMPARATOR);
+	}
+
+	@Test
+	public void shouldNotCreateNewTreeSetWithNullComparator() {
+		// given
+		final Comparator<Integer> nullIntegerComparator = null;
+
+		// when
+		NullPointerException caughtException = tryToCatch(NullPointerException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				Collections.newTreeSet(nullIntegerComparator);
+			}
+		});
+
+		// then
+		assertThrowable(caughtException).withMessage("Comparator cannot be null").isThrown();
 	}
 }
