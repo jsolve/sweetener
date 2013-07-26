@@ -8,12 +8,12 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.NestedMappings;
 public class Person {
 
 	@MapExactlyTo("firstName")
-	private String firstName;
+	protected String firstName;
 	@ExactlyToMappings({
 		@MapExactlyTo(value = "lastName", of = StudentSnapshot.class),
 		@MapExactlyTo(value = "surname", of = StudentDTO.class)
 	})
-	private String lastName;
+	protected String lastName;
 	@MapExactlyTo(value = "age", of = StudentSnapshot.class)
 	private int age;
 	@NestedMappings({

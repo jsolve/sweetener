@@ -2,7 +2,10 @@ package pl.jsolve.sweetener.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.criteria.Criteria;
@@ -52,6 +55,7 @@ public class Collections {
 		return (T) result;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static <T> Collection<T> createNewInstanceOfCollection(Class<?> clazz) {
 		try {
 			return (Collection<T>) clazz.newInstance();
@@ -95,4 +99,62 @@ public class Collections {
 		to = to > totalElements - 1 ? totalElements : to;
 		return to - 1;
 	}
+
+	public static <E> Map<GroupKey, List<E>> group(Collection<E> collection, String ... properties) {
+		Map<GroupKey, List<E>> map = new HashMap<GroupKey, List<E>>();
+
+		// prepare map of duplicates
+		for (E element : collection) {
+			Object[] fieldValues = getFieldsValues(element, properties);
+			GroupKey groupKey = new GroupKey(fieldValues);
+			if (map.containsKey(groupKey)) {
+				map.get(groupKey).add(element);
+			} else {
+				List<E> list = new ArrayList<E>();
+				list.add(element);
+				map.put(groupKey, list);
+			}
+		}
+		return map;
+	}
+	
+	private static Object[] getFieldsValues(Object object, String... property) {
+	    Object[] fieldValues = new Object[property.length];
+	    for (int i = 0; i < property.length; i++) {
+	        fieldValues[i] = Reflections.getFieldValue(object, property[i]);
+	    }
+	    return fieldValues;
+	}
+
+	public static <E> Map<GroupKey, List<E>> duplicates(Collection<E> collection, String ... properties) {
+		Map<GroupKey, List<E>> groups = group(collection, properties);
+		
+		// prepare keys to remove
+		List<GroupKey> keysToRemove = new ArrayList<GroupKey>();
+		for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
+			if (entry.getValue().size() == 1) {
+				keysToRemove.add(entry.getKey());
+			}
+		}
+		// remove unique values
+		for (GroupKey key : keysToRemove) {
+			groups.remove(key);
+		}
+		return groups;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <E, T extends Collection<E>> T uniques(T collection, String ... properties) {
+		Map<GroupKey, List<E>> groups = group(collection, properties);
+		
+		Collection<E> uniques = createNewInstanceOfCollection(collection.getClass());
+		
+		for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
+			if (entry.getValue().size() == 1) {
+				uniques.addAll(entry.getValue());
+			}
+		}
+		return (T) uniques;
+	}
+
 }
