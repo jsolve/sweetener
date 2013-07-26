@@ -11,18 +11,11 @@ import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.anIronMan;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -369,6 +362,21 @@ public class CollectionsTest {
 	}
 
 	@Test
+	public void shouldCreateNewLinkedListWithGivenElements() {
+		// given
+		Hero captainAmerica = aCaptainAmerica().build();
+		Hero ironMan = anIronMan().build();
+		Hero hulk = aHulk().build();
+		Hero redScull = aRedScull().build();
+
+		// when
+		LinkedList<Hero> result = Collections.newLinkedList(captainAmerica, ironMan, hulk, redScull);
+
+		// then
+		assertThat(result).containsOnly(captainAmerica, ironMan, hulk, redScull);
+	}
+
+	@Test
 	public void shouldCreateNewLinkedListWithGivenIterableElements() {
 		// given
 		Hero captainAmerica = aCaptainAmerica().build();
@@ -382,147 +390,6 @@ public class CollectionsTest {
 
 		// then
 		assertThat(result).containsOnly(captainAmerica, ironMan, hulk, redScull);
-	}
-
-	@Test
-	public void shouldCreateNewConcurrentMap() {
-		// when
-		ConcurrentHashMap<Object, Object> result = Collections.newConcurrentMap();
-
-		// then
-		assertThat(result).isEmpty();
-	}
-
-	private enum SomeEnum {
-		SOME_INSTANCE
-	}
-
-	@Test
-	public void shouldCreateNewEnumMap() {
-		// when
-		EnumMap<SomeEnum, Object> result = Collections.newEnumMap(SomeEnum.class);
-
-		// then
-		assertThat(result).isEmpty();
-	}
-
-	@Test
-	public void shouldNotCreateNewEnumMapWhenPassingNullType() {
-		// given
-		final Class<SomeEnum> nullType = null;
-
-		// when
-		NullPointerException caughtException = tryToCatch(NullPointerException.class, new ExceptionalOperation() {
-
-			@Override
-			public void operate() throws Exception {
-				Collections.newEnumMap(nullType);
-			}
-		});
-		// then
-		assertThrowable(caughtException).withMessage("Type cannot be null").isThrown();
-	}
-
-	@Test
-	public void shouldCreateNewEnumMapWithTheSameMappingsAsGiven() {
-		// given
-		EnumMap<SomeEnum, Object> mappings = new EnumMap<>(SomeEnum.class);
-
-		// when
-		EnumMap<SomeEnum, Object> result = Collections.newEnumMap(mappings);
-
-		// then
-		assertThat(result).isEqualTo(mappings);
-		assertThat(result).isNotSameAs(mappings);
-	}
-
-	@Test
-	public void shouldCreateNewHashMap() {
-		// when
-		HashMap<Object, Object> result = Collections.newHashMap();
-
-		// then
-		assertThat(result).isEmpty();
-	}
-
-	@Test
-	public void shouldCreateNewHashMapWithTheSameMappingsAsGiven() {
-		// given
-		HashMap<SomeEnum, Object> mappings = new HashMap<>();
-
-		// when
-		HashMap<SomeEnum, Object> result = Collections.newHashMap(mappings);
-
-		// then
-		assertThat(result).isEqualTo(mappings);
-		assertThat(result).isNotSameAs(mappings);
-	}
-
-	@Test
-	public void shouldCreateNewIdentityHashMap() {
-		// when
-		IdentityHashMap<Object, Object> result = Collections.newIdentityHashMap();
-
-		// then
-		assertThat(result).isEmpty();
-	}
-
-	@Test
-	public void shouldCreateNewLinkedHashMap() {
-		// when
-		LinkedHashMap<Object, Object> result = Collections.newLinkedHashMap();
-
-		// then
-		assertThat(result).isEmpty();
-	}
-
-	@Test
-	public void shouldCreateNewLinkedHashMapWithTheSameMappingsAsGiven() {
-		// given
-		LinkedHashMap<Object, Object> mappings = new LinkedHashMap<>();
-
-		// when
-		LinkedHashMap<Object, Object> result = Collections.newLinkedHashMap(mappings);
-
-		// then
-		assertThat(result).isEqualTo(mappings);
-		assertThat(result).isNotSameAs(mappings);
-	}
-
-	@Test
-	public void shouldCreateNewTreeMap() {
-		// when
-		TreeMap<Integer, Integer> result = Collections.newTreeMap();
-
-		// then
-		assertThat(result).isEmpty();
-		assertThat(result.comparator()).isNull();
-	}
-
-	@Test
-	public void shouldCreateNewTreeMapWithComparator() {
-		// when
-		TreeMap<Integer, Integer> result = Collections.newTreeMap(SOME_COMPARATOR);
-
-		// then
-		assertThat(result).isEmpty();
-		assertThat(result.comparator()).isSameAs(SOME_COMPARATOR);
-	}
-
-	@Test
-	public void shouldCreateNewTreeMapWithInitialMap() {
-		// given
-		SortedMap<Integer, Integer> mappings = Collections.newTreeMap();
-		mappings.put(5, 10);
-		mappings.put(3, 20);
-		mappings.put(1, 30);
-
-		// when
-		TreeMap<Integer, Integer> result = Collections.newTreeMap(mappings);
-
-		// then
-		assertThat(result).isEqualTo(mappings);
-		assertThat(result.comparator()).isSameAs(mappings.comparator());
 	}
 
 	@Test
@@ -559,6 +426,21 @@ public class CollectionsTest {
 	}
 
 	@Test
+	public void shouldCreateNewLinkedHashSetWithGivenElements() {
+		// given
+		Hero captainAmerica = aCaptainAmerica().build();
+		Hero ironMan = anIronMan().build();
+		Hero hulk = aHulk().build();
+		Hero redScull = aRedScull().build();
+
+		// when
+		LinkedHashSet<Hero> result = Collections.newLinkedHashSet(captainAmerica, ironMan, hulk, redScull);
+
+		// then
+		assertThat(result).containsOnly(captainAmerica, ironMan, hulk, redScull);
+	}
+
+	@Test
 	public void shouldCreateNewTreeSet() {
 		// when
 		TreeSet<Comparable<?>> result = Collections.newTreeSet();
@@ -569,6 +451,15 @@ public class CollectionsTest {
 
 	@Test
 	public void shouldCreateNewTreeSetWithGivenElements() {
+		// when
+		TreeSet<Integer> result = Collections.newTreeSet(5, 10, 12, 1);
+
+		// then
+		assertThat(result).containsOnly(1, 5, 10, 12);
+	}
+
+	@Test
+	public void shouldCreateNewTreeSetWithGivenIterableElements() {
 		// given
 		Iterable<Integer> elements = Arrays.asList(5, 3, 10, 12);
 
@@ -582,7 +473,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldCreateNewTreeSetWithGivenComparator() {
 		// when
-		TreeMap<Integer, Object> result = Collections.newTreeMap(SOME_COMPARATOR);
+		TreeSet<Integer> result = Collections.newTreeSet(SOME_COMPARATOR);
 
 		// then
 		assertThat(result).isEmpty();
