@@ -7,7 +7,8 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 @MappableTo({ StudentSnapshot.class, StudentDTO.class })
 public class Student extends Person {
 
-	@ExactlyToMappings({ @MapExactlyTo(value = "semester", of = StudentSnapshot.class),
+	@ExactlyToMappings({
+			@MapExactlyTo(value = "semester", of = StudentSnapshot.class),
 			@MapExactlyTo(value = "totalSemesters", of = StudentDTO.class) })
 	private int semester;
 

@@ -100,15 +100,12 @@ public class Collections {
 		return to - 1;
 	}
 
-	public static <E> Map<GroupKey, List<E>> group(Collection<E> collection, String... property) {
+	public static <E> Map<GroupKey, List<E>> group(Collection<E> collection, String ... properties) {
 		Map<GroupKey, List<E>> map = new HashMap<GroupKey, List<E>>();
 
 		// prepare map of duplicates
 		for (E element : collection) {
-			Object[] fieldValues = new Object[property.length];
-			for (int i = 0; i < property.length; i++) {
-				fieldValues[i] = Reflections.getFieldValue(element, property[i]);
-			}
+			Object[] fieldValues = getFieldsValues(element, properties);
 			GroupKey groupKey = new GroupKey(fieldValues);
 			if (map.containsKey(groupKey)) {
 				map.get(groupKey).add(element);
@@ -120,19 +117,27 @@ public class Collections {
 		}
 		return map;
 	}
+	
+	private static Object[] getFieldsValues(Object object, String... property) {
+	    Object[] fieldValues = new Object[property.length];
+	    for (int i = 0; i < property.length; i++) {
+	        fieldValues[i] = Reflections.getFieldValue(object, property[i]);
+	    }
+	    return fieldValues;
+	}
 
 	public static <E> Map<GroupKey, List<E>> duplicates(Collection<E> collection, String ... properties) {
 		Map<GroupKey, List<E>> groups = group(collection, properties);
 		
 		// prepare keys to remove
-		List<GroupKey> keysToRemoved = new ArrayList<GroupKey>();
+		List<GroupKey> keysToRemove = new ArrayList<GroupKey>();
 		for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
 			if (entry.getValue().size() == 1) {
-				keysToRemoved.add(entry.getKey());
+				keysToRemove.add(entry.getKey());
 			}
 		}
 		// remove unique values
-		for (GroupKey key : keysToRemoved) {
+		for (GroupKey key : keysToRemove) {
 			groups.remove(key);
 		}
 		return groups;

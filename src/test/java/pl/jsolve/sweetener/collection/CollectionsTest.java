@@ -303,7 +303,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnGroups() {
 		// given
-		List<Person> people = new ArrayList<Person>();
+		List<Person> people = new ArrayList<>();
 		people.add(new Person("John", "Deep", 23, null, null));
 		people.add(new Person("Marry", "Deep", 32, null, null));
 		people.add(new Person("John", "Knee", 37, null, null));
@@ -320,7 +320,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnGroupsForMultiKey() {
 		// given
-		List<Student> students = new ArrayList<Student>();
+		List<Student> students = new ArrayList<>();
 		students.add(new Student("John", "Deep", 3, FieldOfStudy.MATHS, Department.AEI));
 		students.add(new Student("Marry", "Duke", 3, FieldOfStudy.BIOINFORMATICS, Department.AEI));
 		students.add(new Student("John", "Knee", 3, FieldOfStudy.BIOINFORMATICS, Department.AEI));
@@ -343,7 +343,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnDuplicates() {
 		// given
-		List<Person> people = new ArrayList<Person>();
+		List<Person> people = new ArrayList<>();
 		people.add(new Person("John", "Deep", 23, null, null));
 		people.add(new Person("Marry", "Deep", 32, null, null));
 		people.add(new Person("John", "Knee", 37, null, null));
@@ -359,7 +359,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnUniques() {
 		// given
-		List<Person> people = new ArrayList<Person>();
+		List<Person> people = new ArrayList<>();
 		people.add(new Person("John", "Deep", 23, null, null));
 		people.add(new Person("Marry", "Deep", 32, null, null));
 		people.add(new Person("John", "Knee", 37, null, null));
