@@ -1,5 +1,6 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.ExactlyToMappings;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapNested;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.NestedMappings;
@@ -7,14 +8,17 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.NestedMappings;
 public class Person {
 
 	@MapExactlyTo("firstName")
-	private String firstName;
-	@MapExactlyTo("lastName")
-	private String lastName;
-	@MapExactlyTo("age")
+	protected String firstName;
+	@ExactlyToMappings({
+		@MapExactlyTo(value = "lastName", of = StudentSnapshot.class),
+		@MapExactlyTo(value = "surname", of = StudentDTO.class)
+	})
+	protected String lastName;
+	@MapExactlyTo(value = "age", of = StudentSnapshot.class)
 	private int age;
 	@NestedMappings({
-		@MapNested(fromNested = "city.name", to = "address"),
-		@MapNested(fromNested = "city.population", to = "population")
+		@MapNested(fromNested = "city.name", to = "address", of = StudentSnapshot.class),
+		@MapNested(fromNested = "city.population", to = "population", of = StudentSnapshot.class),
 	})
 	@MapNested(fromNested = "street", to = "street")
 	private Address address;
