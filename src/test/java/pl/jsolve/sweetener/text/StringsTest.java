@@ -1,14 +1,18 @@
 package pl.jsolve.sweetener.text;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
+import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
+import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.collection.data.Person;
-import pl.jsolve.sweetener.text.Strings;
+import pl.jsolve.sweetener.exception.InvalidArgumentException;
+import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 
 public class StringsTest {
 
@@ -607,6 +611,216 @@ public class StringsTest {
 
 		// then
 		assertThat(result).isEqualTo("Home Sweet Home");
+	}
+	
+	@Test
+	public void shouldReturnTrueIfStringContainsOnlyGivenCharacters() {
+		// given
+		List<Character> characters = Collections.newArrayList('a', 'b', 'c', 'd', 'e', ' ');
+		
+		// when
+		boolean containsOnly = Strings.containsOnly("abc de     dabceaaa", characters);
+		
+		// then
+		assertThat(containsOnly).isTrue();
+	}
+	
+	@Test
+	public void shouldReturnTrueIfStringIsEmpty() {
+		// given
+		List<Character> characters = Collections.newArrayList('a', 'b', 'c', 'd', 'e', ' ');
+		
+		// when
+		boolean containsOnly = Strings.containsOnly("", characters);
+		
+		// then
+		assertThat(containsOnly).isTrue();
+	}
+	
+	@Test
+	public void shouldReturnTrueIfStringIsNull() {
+		// given
+		List<Character> characters = Collections.newArrayList('a', 'b', 'c', 'd', 'e', ' ');
+		
+		// when
+		boolean containsOnly = Strings.containsOnly(null, characters);
+		
+		// then
+		assertThat(containsOnly).isTrue();
+	}
+	
+	@Test
+	public void shouldReturnTrueIfCollectionIsEmptyAndStringIsEmpty() {
+		// given
+		List<Character> characters = Collections.newArrayList();
+		
+		// when
+		boolean containsOnly = Strings.containsOnly("", characters);
+		
+		// then
+		assertThat(containsOnly).isTrue();
+	}
+	
+	@Test
+	public void shouldReturnFalseIfStringNotContainsGivenCharacters() {
+		// given
+		List<Character> characters = Collections.newArrayList('a', 'b', 'c', 'd', 'e');
+		
+		// when
+		boolean containsOnly = Strings.containsOnly("abc de     dabceaaa", characters);
+		
+		// then
+		assertThat(containsOnly).isFalse();
+	}
+	
+	@Test
+	public void shouldReturnFalseWhenListOfCharactersIsEmptyButStringIsNotEmpty() {
+		// given
+		List<Character> characters = Collections.newArrayList();
+		
+		// when
+		boolean containsOnly = Strings.containsOnly("abc de     dabceaaa", characters);
+		
+		// then
+		assertThat(containsOnly).isFalse();
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenListOfCharactersIsNullButStringIsNotEmpty() {
+		// given
+		final List<Character> characters = null;
+		
+		// when
+		InvalidArgumentException caughtException = tryToCatch(InvalidArgumentException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				Strings.containsOnly("abc de     dabceaaa", characters);
+			}
+		});
+
+		// then
+		assertThrowable(caughtException).withMessage("List of characters cannot be null").isThrown();
+	}
+
+	@Test
+	public void shouldReturnTrueIfValueIsNull() {
+		// given
+		String value = null;
+		
+		// when
+		boolean empty = Strings.isEmpty(value);
+		
+		// then
+		assertThat(empty).isTrue();
+	}
+	
+	@Test
+	public void shouldReturnTrueIfValueIsEmpty() {
+		// given
+		String value = "\n 	\r\n\t		 	";
+		
+		// when
+		boolean empty = Strings.isEmpty(value);
+		
+		// then
+		assertThat(empty).isTrue();
+	}
+	
+	@Test
+	public void shouldTransformStringToOneLine() {
+		// given
+		String threeLine = "First line\nSecond line\r\nThird line\r\n";
+		
+		// when
+		String oneLine = Strings.singleLine(threeLine);
+
+		// then
+		assertThat(oneLine).isEqualTo("First lineSecond lineThird line");
+	}
+	
+	@Test
+	public void shouldTransformStringToOneLineWhenStringIsNull() {
+		// given
+		String nullString = null;
+		
+		// when
+		String oneLine = Strings.singleLine(nullString);
+
+		// then
+		assertThat(oneLine).isNull();
+	}
+	
+	@Test
+	public void shouldTransformStringToOneLineWhenStringIsEmpty() {
+		// given
+		String nullString = "";
+		
+		// when
+		String oneLine = Strings.singleLine(nullString);
+
+		// then
+		assertThat(oneLine).isEqualTo("");
+	}
+
+	@Test
+	public void shouldReturnStringWithoutNewLinesOnTheEnd() {
+		// given
+		String stringWithNewLines = "First line\r\n";
+		
+		// when
+		String stringWithoutNewLines = Strings.removeNewLines(stringWithNewLines);
+
+		// then
+		assertThat(stringWithoutNewLines).isEqualTo("First line");
+	}
+	
+	@Test
+	public void shouldReturnStringWithoutNewLinesOnTheEnd2() {
+		// given
+		String stringWithNewLines = "First line";
+		
+		// when
+		String stringWithoutNewLines = Strings.removeNewLines(stringWithNewLines);
+
+		// then
+		assertThat(stringWithoutNewLines).isEqualTo("First line");
+	}
+
+	@Test
+	public void shouldReturnStringWithoutNewLinesOnTheEndWhenStringIsEmpty() {
+		// given
+		String stringWithNewLines = "";
+		
+		// when
+		String stringWithoutNewLines = Strings.removeNewLines(stringWithNewLines);
+
+		// then
+		assertThat(stringWithoutNewLines).isEqualTo("");
+	}
+
+	@Test
+	public void shouldReturnStringWithoutNewLinesOnTheEndWhenStringContainsSpace() {
+		// given
+		String stringWithNewLines = " ";
+		
+		// when
+		String stringWithoutNewLines = Strings.removeNewLines(stringWithNewLines);
+
+		// then
+		assertThat(stringWithoutNewLines).isEqualTo(" ");
+	}
+
+	@Test
+	public void shouldReturnStringWithoutNewLinesOnTheEndWhenStringContainsOnlyNewLine() {
+		// given
+		String stringWithNewLines = "\n";
+		
+		// when
+		String stringWithoutNewLines = Strings.removeNewLines(stringWithNewLines);
+
+		// then
+		assertThat(stringWithoutNewLines).isEqualTo("");
 	}
 
 }
