@@ -2,21 +2,21 @@ package pl.jsolve.sweetener.text;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.core.FoundGroup;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class Strings {
 
-	private static final char CARRIAGE_RETURN = '\r';
-	private static final char TAB = '\t';
-	private static final char NEW_LINE = '\n';
-	private static final char SPACE = ' ';
+	private static final Character CARRIAGE_RETURN = '\r';
+	private static final Character TAB = '\t';
+	private static final Character NEW_LINE = '\n';
+	private static final Character SPACE = ' ';
 	private static final String EMPTY_STRING = "";
 	public static final String DOT = "/.";
 
@@ -191,7 +191,7 @@ public class Strings {
 
 	public static String random(int length) {
 		StringBuilder sb = new StringBuilder();
-		Collections.shuffle(symbols);
+		java.util.Collections.shuffle(symbols);
 		for (int i = 0; i < length; i++) {
 			sb.append(symbols.get(random.nextInt(symbols.size())));
 		}
@@ -203,7 +203,7 @@ public class Strings {
 			return EMPTY_STRING;
 		}
 		StringBuilder sb = new StringBuilder();
-		Collections.shuffle(symbols);
+		java.util.Collections.shuffle(symbols);
 		for (int i = 0; i < length; i++) {
 			sb.append(symbols.get(random.nextInt(symbols.size())));
 		}
@@ -272,7 +272,8 @@ public class Strings {
 			case RIGHT:
 				insertRight(sb, c);
 				break;
-			default: break;
+			default:
+				break;
 			}
 		}
 		return sb;
@@ -326,5 +327,79 @@ public class Strings {
 
 	public static boolean isWhitespace(char c) {
 		return c == SPACE || c == NEW_LINE || c == TAB || c == CARRIAGE_RETURN;
+	}
+
+	public static boolean isWhitespace(String c) {
+		return c.equals(SPACE) || c.equals(NEW_LINE) || c.equals(TAB) || c.equals(CARRIAGE_RETURN);
+	}
+
+	public static boolean containsOnly(String value, List<Character> listOfCharacters) {
+		if (value == null) {
+			return true;
+		}
+		if (listOfCharacters == null) {
+			throw new InvalidArgumentException("List of characters cannot be null");
+		}
+		for (int i = 0; i < value.length(); i++) {
+			if (!listOfCharacters.contains(value.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isEmpty(String value) {
+		List<Character> whitespaces = Collections.newArrayList(SPACE, NEW_LINE, TAB, CARRIAGE_RETURN);
+		if (value == null || containsOnly(value, whitespaces)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static String singleLine(String value) {
+		return removeAllOccurrences(removeAllOccurrences(value, NEW_LINE), CARRIAGE_RETURN);
+	}
+
+	public static String removeNewLines(String value) {
+		int i = value.length() - 1;
+		if (i < 0) {
+			return value;
+		}
+		while (true) {
+			if (i < 0) {
+				break;
+			}
+			char character = value.charAt(i);
+			if (!(NEW_LINE.equals(character) || CARRIAGE_RETURN.equals(character))) {
+				break;
+			}
+			i--;
+		}
+		return value.substring(0, i + 1);
+	}
+
+	public static String reverse(String value) {
+		if (value == null) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = value.length() - 1; i >= 0; i--) {
+			sb.append(value.charAt(i));
+		}
+
+		return sb.toString();
+	}
+
+	public static String repeat(String value, int numberOfRepeats) {
+		if(numberOfRepeats <= 0) {
+			return value;
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < numberOfRepeats; i++) {
+			sb.append(value);
+		}
+		return sb.toString();
 	}
 }
