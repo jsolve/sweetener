@@ -402,4 +402,25 @@ public class Strings {
 		}
 		return sb.toString();
 	}
+
+	public static boolean isAlpha(String value) {
+		return value.matches("^[\\pL]+$");
+	}
+
+	public static boolean isAlphaWithWhitespace(String value) {
+		return value.matches("^[\\pL\\s]+$");
+	}
+	
+	public static boolean isNumeric(String value) {
+		return value.matches("^[\\pN]+$");
+	}
+
+	public static boolean isAlphanumeric(String value) {
+		return value.matches("^[\\pL\\pN]+$");
+	}
+
+	public static boolean isAlphanumericWithWhitespace(String value) {
+		return value.matches("^[\\pL\\pN\\s]+$");
+	}
+
 }

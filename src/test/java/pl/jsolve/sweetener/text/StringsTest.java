@@ -911,4 +911,99 @@ public class StringsTest {
 		assertThat(repeatedString).isEqualTo("");
 	}
 
+	@Test
+	public void shouldCheckIfStringIsAlpha() {
+		// given
+		String value = "asasdłućś";
+
+		// when
+		boolean alpha = Strings.isAlpha(value);
+
+		// then
+		assertThat(alpha).isTrue();
+	}
+
+	@Test
+	public void shouldCheckIfStringIsAlphaAndReturnFalse() {
+		// given
+		String value = "asasdłućś ";
+
+		// when
+		boolean alpha = Strings.isAlpha(value);
+
+		// then
+		assertThat(alpha).isFalse();
+	}
+
+	@Test
+	public void shouldCheckIfStringIsAlphaWithWhitespace() {
+		// given
+		String value = "asasdłućś \n";
+
+		// when
+		boolean alpha = Strings.isAlphaWithWhitespace(value);
+
+		// then
+		assertThat(alpha).isTrue();
+	}
+
+	@Test
+	public void shouldCheckIfStringIsNumeric() {
+		// given
+		String value = "1324234";
+
+		// when
+		boolean numeric = Strings.isNumeric(value);
+
+		// then
+		assertThat(numeric).isTrue();
+	}
+
+	@Test
+	public void shouldCheckIfStringIsNumericAndReturnFalse() {
+		// given
+		String value = "1324 234 ";
+
+		// when
+		boolean numeric = Strings.isNumeric(value);
+
+		// then
+		assertThat(numeric).isFalse();
+	}
+
+	@Test
+	public void shouldCheckIfStringIsAlphaNumeric() {
+		// given
+		String value = "1324sad234asdasd";
+
+		// when
+		boolean alphanumeric = Strings.isAlphanumeric(value);
+
+		// then
+		assertThat(alphanumeric).isTrue();
+	}
+
+	@Test
+	public void shouldCheckIfStringIsAlphaNumericAndReturnFalse() {
+		// given
+		String value = "1324sad2 34asd asd";
+
+		// when
+		boolean alphanumeric = Strings.isAlphanumeric(value);
+
+		// then
+		assertThat(alphanumeric).isFalse();
+	}
+
+	@Test
+	public void shouldCheckIfStringIsAlphaNumericWithWhitespace() {
+		// given
+		String value = "1324sad 234asda sd";
+
+		// when
+		boolean alphanumeric = Strings.isAlphanumericWithWhitespace(value);
+
+		// then
+		assertThat(alphanumeric).isTrue();
+	}
 }
