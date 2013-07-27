@@ -393,7 +393,7 @@ public class Strings {
 	}
 
 	public static String repeat(String value, int numberOfRepeats) {
-		if(numberOfRepeats <= 0) {
+		if (numberOfRepeats <= 0) {
 			return value;
 		}
 		StringBuilder sb = new StringBuilder();

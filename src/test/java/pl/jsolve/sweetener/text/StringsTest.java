@@ -834,7 +834,7 @@ public class StringsTest {
 		// then
 		assertThat(reversedString).isEqualTo("dcba");
 	}
-	
+
 	@Test
 	public void shouldReturnNullWhenStringToReverseIsNull() {
 		// given
@@ -846,7 +846,7 @@ public class StringsTest {
 		// then
 		assertThat(nullString).isNull();
 	}
-	
+
 	@Test
 	public void shouldReturnEmptyWhenStringToReverseIsEmpty() {
 		// given
@@ -858,13 +858,13 @@ public class StringsTest {
 		// then
 		assertThat(emptyString).isEmpty();
 	}
-	
+
 	@Test
 	public void shouldRepeatString() {
 		// given
 		String pattern = "abc";
 		int numberOfRepeats = 3;
-		
+
 		// when
 		String repeatedString = Strings.repeat(pattern, numberOfRepeats);
 
@@ -877,20 +877,20 @@ public class StringsTest {
 		// given
 		String pattern = "abc";
 		int numberOfRepeats = -3;
-		
+
 		// when
 		String repeatedString = Strings.repeat(pattern, numberOfRepeats);
 
 		// then
 		assertThat(repeatedString).isEqualTo("abc");
 	}
-	
+
 	@Test
 	public void shouldRepeatNullString() {
 		// given
 		String pattern = null;
 		int numberOfRepeats = 3;
-		
+
 		// when
 		String repeatedString = Strings.repeat(pattern, numberOfRepeats);
 
@@ -898,20 +898,17 @@ public class StringsTest {
 		assertThat(repeatedString).isEqualTo("nullnullnull");
 	}
 
-	
 	@Test
 	public void shouldRepeatEmptyString() {
 		// given
 		String pattern = "";
 		int numberOfRepeats = 3;
-		
+
 		// when
 		String repeatedString = Strings.repeat(pattern, numberOfRepeats);
 
 		// then
 		assertThat(repeatedString).isEqualTo("");
 	}
-
-	
 
 }
