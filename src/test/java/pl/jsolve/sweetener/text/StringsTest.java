@@ -407,55 +407,179 @@ public class StringsTest {
 	}
 
 	@Test
-	public void shouldPadGivenString() {
+	public void shouldRightPadGivenString() {
 		// given
 		String sourceObject = "abc";
 		String content = "*-";
 		int length = 7;
 
 		// when
-		String result = Strings.pad(sourceObject, content, length);
+		String result = Strings.pad(sourceObject, content, length, PaddingType.RIGHT);
 
 		// then
 		assertThat(result).isEqualTo("abc*-*-");
 	}
 
 	@Test
-	public void shouldPadGivenStringBySpaces() {
+	public void shouldLeftPadGivenString() {
+		// given
+		String sourceObject = "abc";
+		String content = "*-";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, content, length, PaddingType.LEFT);
+
+		// then
+		assertThat(result).isEqualTo("-*-*abc");
+	}
+
+	@Test
+	public void shouldCentrePadGivenString() {
+		// given
+		String sourceObject = "abc";
+		String content = "*-";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, content, length, PaddingType.CENTRE);
+
+		// then
+		assertThat(result).isEqualTo("-*abc*-");
+	}
+
+	@Test
+	public void shouldCentrePadGivenString2() {
+		// given
+		String sourceObject = "abc";
+		String content = "*-";
+		int length = 10;
+
+		// when
+		String result = Strings.pad(sourceObject, content, length, PaddingType.CENTRE);
+
+		// then
+		assertThat(result).isEqualTo("*-*abc*-*-");
+	}
+
+	@Test
+	public void shouldRightPadGivenStringBySpaces() {
 		// given
 		String sourceObject = "abc";
 		int length = 7;
 
 		// when
-		String result = Strings.pad(sourceObject, length);
+		String result = Strings.pad(sourceObject, length, PaddingType.RIGHT);
 
 		// then
 		assertThat(result).isEqualTo("abc    ");
 	}
 
 	@Test
-	public void shouldPadGivenStringWhenCIsNull() {
+	public void shouldLeftPadGivenStringBySpaces() {
+		// given
+		String sourceObject = "abc";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, length, PaddingType.LEFT);
+
+		// then
+		assertThat(result).isEqualTo("    abc");
+	}
+
+	@Test
+	public void shouldCentrePadGivenStringBySpaces() {
+		// given
+		String sourceObject = "abc";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, length, PaddingType.CENTRE);
+
+		// then
+		assertThat(result).isEqualTo("  abc  ");
+	}
+
+	@Test
+	public void shouldRightPadGivenStringWhenCIsNull() {
 		// given
 		String sourceObject = "abc";
 		Character c = null;
 		int length = 7;
 
 		// when
-		String result = Strings.pad(sourceObject, c, length);
+		String result = Strings.pad(sourceObject, c, length, PaddingType.RIGHT);
 
 		// then
 		assertThat(result).isEqualTo("abc    ");
 	}
 
 	@Test
-	public void shouldPadGivenStringWhenSourceIsNull() {
+	public void shouldLeftPadGivenStringWhenCIsNull() {
+		// given
+		String sourceObject = "abc";
+		Character c = null;
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length, PaddingType.LEFT);
+
+		// then
+		assertThat(result).isEqualTo("    abc");
+	}
+
+	@Test
+	public void shouldCentrePadGivenStringWhenCIsNull() {
+		// given
+		String sourceObject = "abc";
+		Character c = null;
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length, PaddingType.CENTRE);
+
+		// then
+		assertThat(result).isEqualTo("  abc  ");
+	}
+
+	@Test
+	public void shouldRightPadGivenStringWhenSourceIsNull() {
 		// given
 		String sourceObject = null;
 		Character c = '*';
 		int length = 7;
 
 		// when
-		String result = Strings.pad(sourceObject, c, length);
+		String result = Strings.pad(sourceObject, c, length, PaddingType.RIGHT);
+
+		// then
+		assertThat(result).isEqualTo("*******");
+	}
+
+	@Test
+	public void shouldLeftPadGivenStringWhenSourceIsNull() {
+		// given
+		String sourceObject = null;
+		Character c = '*';
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length, PaddingType.LEFT);
+
+		// then
+		assertThat(result).isEqualTo("*******");
+	}
+
+	@Test
+	public void shouldCentrePadGivenStringWhenSourceIsNull() {
+		// given
+		String sourceObject = null;
+		Character c = '*';
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length, PaddingType.CENTRE);
 
 		// then
 		assertThat(result).isEqualTo("*******");

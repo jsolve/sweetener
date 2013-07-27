@@ -210,30 +210,80 @@ public class Strings {
 		return sb.toString();
 	}
 
-	public static String pad(String sourceObject, int length) {
-		return pad(sourceObject, SPACE, length);
+	public static String pad(String sourceObject, int length, PaddingType paddingType) {
+		return pad(sourceObject, SPACE, length, paddingType);
 	}
 
-	public static String pad(String sourceObject, Character c, int length) {
+	public static String pad(String sourceObject, Character c, int length, PaddingType paddingType) {
 		if (c == null) {
-			return pad(sourceObject, SPACE, length);
+			return pad(sourceObject, SPACE, length, paddingType);
 		}
-		return pad(sourceObject, c.toString(), length);
+		return pad(sourceObject, c.toString(), length, paddingType);
 	}
 
-	public static String pad(String sourceObject, String content, int length) {
+	public static String pad(String sourceObject, String content, int length, PaddingType paddingType) {
 		if (content == null || content.isEmpty()) {
 			throw new InvalidArgumentException("Content cannot be empty");
 		}
 		sourceObject = defaultIfNull(sourceObject, EMPTY_STRING);
-		if (sourceObject.length() >= length) {
+		int numberOfPadding = length - sourceObject.length();
+		if (numberOfPadding <= 0) {
 			return sourceObject;
 		}
-		StringBuilder sb = new StringBuilder(sourceObject);
-		for (int i = 0; i < length - sourceObject.length(); i++) {
-			sb.append(content.charAt(i % content.length()));
+		StringBuilder sb = null;
+		switch (paddingType) {
+		case CENTRE:
+			sb = insertCentre(sourceObject, content, numberOfPadding, paddingType);
+			break;
+		case LEFT:
+		case RIGHT:
+			sb = insertLeftOrRight(sourceObject, content, numberOfPadding, paddingType);
+			break;
 		}
 		return sb.toString();
+	}
+
+	private static StringBuilder insertCentre(String sourceObject, String content, int numberOfPadding, PaddingType paddingType) {
+		StringBuilder sb = new StringBuilder(sourceObject);
+		int leftPad = numberOfPadding / 2;
+		int rigthPad = numberOfPadding - leftPad;
+
+		for (int i = 0; i < leftPad; i++) {
+			char c = content.charAt(i % content.length());
+			insertLeft(sb, c);
+		}
+
+		for (int i = 0; i < rigthPad; i++) {
+			char c = content.charAt(i % content.length());
+			insertRight(sb, c);
+		}
+
+		return sb;
+	}
+
+	private static StringBuilder insertLeftOrRight(String sourceObject, String content, int numberOfPadding, PaddingType paddingType) {
+		StringBuilder sb = new StringBuilder(sourceObject);
+		for (int i = 0; i < numberOfPadding; i++) {
+			char c = content.charAt(i % content.length());
+			switch (paddingType) {
+			case LEFT:
+				insertLeft(sb, c);
+				break;
+			case RIGHT:
+				insertRight(sb, c);
+				break;
+			default: break;
+			}
+		}
+		return sb;
+	}
+
+	private static void insertRight(StringBuilder sb, char c) {
+		sb.append("" + c);
+	}
+
+	private static void insertLeft(StringBuilder sb, char c) {
+		sb.insert(0, c);
 	}
 
 	public static String defaultIfNull(String value, String defaultValue) {
