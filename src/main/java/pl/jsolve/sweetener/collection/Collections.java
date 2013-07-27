@@ -34,12 +34,12 @@ public final class Collections {
 		return result;
 	}
 
-	public static <T> T truncate(Collection<?> collection, int to) {
+	public static <T extends Collection<E>, E> T truncate(T collection, int to) {
 		return truncate(collection, 0, to);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T truncate(Collection<?> collection, int from, int to) {
+	public static <T extends Collection<E>, E> T truncate(T collection, int from, int to) {
 		int countOfElements = collection.size();
 		if (to < 0) {
 			to = countOfElements + to;
@@ -56,17 +56,17 @@ public final class Collections {
 		if (to > countOfElements - 1) {
 			throw new InvalidArgumentException("The 'To' value cannot be greater than size of collection");
 		}
-		Collection<T> result = createNewInstanceOfCollection(collection.getClass());
+		T result = (T) createNewInstanceOfCollection(collection.getClass());
 		Object[] array = collection.toArray();
 		for (int i = from; i <= to; i++) {
-			result.add((T) array[i]);
+			result.add((E) array[i]);
 		}
 		return (T) result;
 	}
 
-	private static <T> Collection<T> createNewInstanceOfCollection(Class<?> clazz) {
+	private static <T extends Collection<E>, E> T createNewInstanceOfCollection(Class<T> clazz) {
 		try {
-			return (Collection<T>) clazz.newInstance();
+			return clazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException();
 		}
@@ -82,11 +82,15 @@ public final class Collections {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> Pagination<T> paginate(Collection<T> collection, int page, int resultsPerPage) {
 		int totalElements = collection.size();
 		int from = page * resultsPerPage;
 		int to = getTo(resultsPerPage, totalElements, from);
-		Collection<T> elementsOfPage = truncate(collection, from, to);
+		Collection<T> elementsOfPage = createNewInstanceOfCollection(collection.getClass());
+		if(from < collection.size()) {
+			elementsOfPage = truncate(collection, from, to);
+		}
 		return new Pagination<>(page, resultsPerPage, totalElements, elementsOfPage);
 	}
 

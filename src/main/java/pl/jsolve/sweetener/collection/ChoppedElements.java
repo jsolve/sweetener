@@ -35,7 +35,18 @@ public class ChoppedElements<T> {
 		}
 		this.page = page + 1;
 	}
+	
+	public boolean hasPreviousPage() {
+		return page - 1 >= 0;
+	}
 
+	public void previousPage() {
+		if (page - 1 < 0) {
+			throw new PaginationException("The previous page does not exist");
+		}
+		this.page = page - 1;
+	}
+	
 	public Collection<T> getElementsOfPage() {
 		return listOfPages.get(page);
 	}

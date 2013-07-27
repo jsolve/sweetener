@@ -38,20 +38,20 @@ public class CollectionsTest {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private List<String> values;
+	private List<String> alphabet;
 
 	@Before
 	public void setUp() {
-		values = new ArrayList<>();
-		values.add("A");
-		values.add("B");
-		values.add("C");
-		values.add("D");
-		values.add("E");
-		values.add("F");
-		values.add("G");
-		values.add("H");
-		values.add("I");
+		alphabet = new ArrayList<>();
+		alphabet.add("A");
+		alphabet.add("B");
+		alphabet.add("C");
+		alphabet.add("D");
+		alphabet.add("E");
+		alphabet.add("F");
+		alphabet.add("G");
+		alphabet.add("H");
+		alphabet.add("I");
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class CollectionsTest {
 		expectedException.expectMessage("The 'From' value cannot be negative");
 
 		// when
-		Collections.truncate(values, from, to);
+		Collections.truncate(alphabet, from, to);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class CollectionsTest {
 		expectedException.expectMessage("The 'From' value cannot be greater than size of collection");
 
 		// when
-		Collections.truncate(values, from, to);
+		Collections.truncate(alphabet, from, to);
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class CollectionsTest {
 		expectedException.expectMessage("The 'From' value cannot be greater than the 'to' value");
 
 		// when
-		Collections.truncate(values, from, to);
+		Collections.truncate(alphabet, from, to);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class CollectionsTest {
 		expectedException.expectMessage("The 'To' value cannot be greater than size of collection");
 
 		// when
-		Collections.truncate(values, from, to);
+		Collections.truncate(alphabet, from, to);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class CollectionsTest {
 		int to = 5;
 
 		// when
-		List<String> truncatedCollection = Collections.truncate(values, from, to);
+		List<String> truncatedCollection = Collections.truncate(alphabet, from, to);
 
 		// then
 		assertThat(truncatedCollection).hasSize(5);
@@ -131,7 +131,7 @@ public class CollectionsTest {
 		int to = 8;
 
 		// when
-		List<String> truncatedCollection = Collections.truncate(values, from, to);
+		List<String> truncatedCollection = Collections.truncate(alphabet, from, to);
 
 		// then
 		assertThat(truncatedCollection).hasSize(9);
@@ -145,7 +145,7 @@ public class CollectionsTest {
 		int to = -1;
 
 		// when
-		List<String> truncatedCollection = Collections.truncate(values, from, to);
+		List<String> truncatedCollection = Collections.truncate(alphabet, from, to);
 
 		// then
 		assertThat(truncatedCollection).hasSize(9);
@@ -159,7 +159,7 @@ public class CollectionsTest {
 		int to = -8;
 
 		// when
-		List<String> truncatedCollection = Collections.truncate(values, from, to);
+		List<String> truncatedCollection = Collections.truncate(alphabet, from, to);
 
 		// then
 		assertThat(truncatedCollection).hasSize(2);
@@ -173,7 +173,7 @@ public class CollectionsTest {
 		int resultsPerPage = 3;
 
 		// when
-		Pagination<String> pagination = Collections.paginate(values, page, resultsPerPage);
+		Pagination<String> pagination = Collections.paginate(alphabet, page, resultsPerPage);
 
 		// then
 		assertThat(pagination.getPage()).isEqualTo(page);
@@ -190,8 +190,8 @@ public class CollectionsTest {
 		int resultsPerPage = 4;
 
 		// when
-		Pagination<String> pagination = Collections.paginate(values, page, resultsPerPage);
-
+		Pagination<String> pagination = Collections.paginate(alphabet, page, resultsPerPage);
+System.out.println(pagination);
 		// then
 		assertThat(pagination.getPage()).isEqualTo(page);
 		assertThat(pagination.getResultsPerPage()).isEqualTo(resultsPerPage);
@@ -207,7 +207,7 @@ public class CollectionsTest {
 		int resultsPerPage = 40;
 
 		// when
-		Pagination<String> pagination = Collections.paginate(values, page, resultsPerPage);
+		Pagination<String> pagination = Collections.paginate(alphabet, page, resultsPerPage);
 
 		// then
 		assertThat(pagination.getPage()).isEqualTo(page);
@@ -216,6 +216,24 @@ public class CollectionsTest {
 		assertThat(pagination.getNumberOfPages()).isEqualTo(1);
 		assertThat(pagination.getElementsOfPage()).containsOnly("A", "B", "C", "D", "E", "F", "G", "H", "I");
 	}
+	
+	@Test
+	public void shouldPaginateTheCollection4() {
+		// given
+		int page = 1;
+		int resultsPerPage = 40;
+
+		// when
+		Pagination<String> pagination = Collections.paginate(alphabet, page, resultsPerPage);
+
+		// then
+		assertThat(pagination.getPage()).isEqualTo(page);
+		assertThat(pagination.getResultsPerPage()).isEqualTo(resultsPerPage);
+		assertThat(pagination.getTotalElements()).isEqualTo(alphabet.size());
+		assertThat(pagination.getNumberOfPages()).isEqualTo(1);
+		assertThat(pagination.getElementsOfPage()).isEmpty();
+	}
+
 
 	@Test
 	public void shouldChopCollection() {
@@ -223,7 +241,7 @@ public class CollectionsTest {
 		int resultsPerPage = 40;
 
 		// when
-		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+		ChoppedElements<String> choppedElements = Collections.chopElements(alphabet, resultsPerPage);
 
 		// then
 		assertThat(choppedElements.getPage()).isEqualTo(0);
@@ -240,7 +258,7 @@ public class CollectionsTest {
 		int resultsPerPage = 3;
 
 		// when
-		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+		ChoppedElements<String> choppedElements = Collections.chopElements(alphabet, resultsPerPage);
 
 		// then
 		assertThat(choppedElements.getPage()).isEqualTo(0);
@@ -257,7 +275,7 @@ public class CollectionsTest {
 		int resultsPerPage = 3;
 
 		// when
-		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+		ChoppedElements<String> choppedElements = Collections.chopElements(alphabet, resultsPerPage);
 		choppedElements.setPage(2);
 
 		// then
@@ -275,7 +293,7 @@ public class CollectionsTest {
 		int resultsPerPage = 4;
 
 		// when
-		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+		ChoppedElements<String> choppedElements = Collections.chopElements(alphabet, resultsPerPage);
 		choppedElements.setPage(2);
 
 		// then
@@ -293,7 +311,7 @@ public class CollectionsTest {
 		int resultsPerPage = 4;
 
 		// when
-		ChoppedElements<String> choppedElements = Collections.chopElements(values, resultsPerPage);
+		ChoppedElements<String> choppedElements = Collections.chopElements(alphabet, resultsPerPage);
 
 		// then
 		assertThat(choppedElements.getPage()).isEqualTo(0);
@@ -316,7 +334,7 @@ public class CollectionsTest {
 		assertThat(choppedElements.getElementsOfPage()).containsOnly("I");
 	}
 
-@Test
+	@Test
 	public void shouldReturnGroups() {
 		// given
 		List<Person> people = new ArrayList<>();
@@ -351,7 +369,8 @@ public class CollectionsTest {
 				new GroupKey(3, FieldOfStudy.BIOINFORMATICS, Department.AEI), new GroupKey(5, FieldOfStudy.BIOINFORMATICS, Department.MT),
 				new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI));
 		assertThat(groups.get(new GroupKey(3, FieldOfStudy.MATHS, Department.AEI))).onProperty("lastName").contains("Deep");
-		assertThat(groups.get(new GroupKey(3, FieldOfStudy.BIOINFORMATICS, Department.AEI))).onProperty("lastName").contains("Duke", "Knee");
+		assertThat(groups.get(new GroupKey(3, FieldOfStudy.BIOINFORMATICS, Department.AEI))).onProperty("lastName")
+				.contains("Duke", "Knee");
 		assertThat(groups.get(new GroupKey(5, FieldOfStudy.BIOINFORMATICS, Department.MT))).onProperty("lastName").contains("Hunt");
 		assertThat(groups.get(new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI))).onProperty("lastName").contains("Sky");
 	}
