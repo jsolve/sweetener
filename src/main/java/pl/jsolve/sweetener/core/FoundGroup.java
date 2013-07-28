@@ -23,4 +23,11 @@ public class FoundGroup {
         return content;
     }
 
+	@Override
+	public String toString() {
+		return "[startIndex=" + startIndex + ", endIndex=" + endIndex + ", content=" + content + "]";
+	}
+    
+    
+
 }
