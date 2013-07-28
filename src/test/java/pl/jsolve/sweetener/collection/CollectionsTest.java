@@ -191,7 +191,7 @@ public class CollectionsTest {
 
 		// when
 		Pagination<String> pagination = Collections.paginate(alphabet, page, resultsPerPage);
-System.out.println(pagination);
+
 		// then
 		assertThat(pagination.getPage()).isEqualTo(page);
 		assertThat(pagination.getResultsPerPage()).isEqualTo(resultsPerPage);
