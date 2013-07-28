@@ -2,21 +2,21 @@ package pl.jsolve.sweetener.text;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.core.FoundGroup;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class Strings {
 
-	private static final char CARRIAGE_RETURN = '\r';
-	private static final char TAB = '\t';
-	private static final char NEW_LINE = '\n';
-	private static final char SPACE = ' ';
+	private static final Character CARRIAGE_RETURN = '\r';
+	private static final Character TAB = '\t';
+	private static final Character NEW_LINE = '\n';
+	private static final Character SPACE = ' ';
 	private static final String EMPTY_STRING = "";
 	public static final String DOT = "/.";
 
@@ -191,7 +191,7 @@ public class Strings {
 
 	public static String random(int length) {
 		StringBuilder sb = new StringBuilder();
-		Collections.shuffle(symbols);
+		java.util.Collections.shuffle(symbols);
 		for (int i = 0; i < length; i++) {
 			sb.append(symbols.get(random.nextInt(symbols.size())));
 		}
@@ -203,37 +203,88 @@ public class Strings {
 			return EMPTY_STRING;
 		}
 		StringBuilder sb = new StringBuilder();
-		Collections.shuffle(symbols);
+		java.util.Collections.shuffle(symbols);
 		for (int i = 0; i < length; i++) {
 			sb.append(symbols.get(random.nextInt(symbols.size())));
 		}
 		return sb.toString();
 	}
 
-	public static String pad(String sourceObject, int length) {
-		return pad(sourceObject, SPACE, length);
+	public static String pad(String sourceObject, int length, PaddingType paddingType) {
+		return pad(sourceObject, SPACE, length, paddingType);
 	}
 
-	public static String pad(String sourceObject, Character c, int length) {
+	public static String pad(String sourceObject, Character c, int length, PaddingType paddingType) {
 		if (c == null) {
-			return pad(sourceObject, SPACE, length);
+			return pad(sourceObject, SPACE, length, paddingType);
 		}
-		return pad(sourceObject, c.toString(), length);
+		return pad(sourceObject, c.toString(), length, paddingType);
 	}
 
-	public static String pad(String sourceObject, String content, int length) {
+	public static String pad(String sourceObject, String content, int length, PaddingType paddingType) {
 		if (content == null || content.isEmpty()) {
 			throw new InvalidArgumentException("Content cannot be empty");
 		}
 		sourceObject = defaultIfNull(sourceObject, EMPTY_STRING);
-		if (sourceObject.length() >= length) {
+		int numberOfPadding = length - sourceObject.length();
+		if (numberOfPadding <= 0) {
 			return sourceObject;
 		}
-		StringBuilder sb = new StringBuilder(sourceObject);
-		for (int i = 0; i < length - sourceObject.length(); i++) {
-			sb.append(content.charAt(i % content.length()));
+		StringBuilder sb = null;
+		switch (paddingType) {
+		case CENTRE:
+			sb = insertCentre(sourceObject, content, numberOfPadding, paddingType);
+			break;
+		case LEFT:
+		case RIGHT:
+			sb = insertLeftOrRight(sourceObject, content, numberOfPadding, paddingType);
+			break;
 		}
 		return sb.toString();
+	}
+
+	private static StringBuilder insertCentre(String sourceObject, String content, int numberOfPadding, PaddingType paddingType) {
+		StringBuilder sb = new StringBuilder(sourceObject);
+		int leftPad = numberOfPadding / 2;
+		int rigthPad = numberOfPadding - leftPad;
+
+		for (int i = 0; i < leftPad; i++) {
+			char c = content.charAt(i % content.length());
+			insertLeft(sb, c);
+		}
+
+		for (int i = 0; i < rigthPad; i++) {
+			char c = content.charAt(i % content.length());
+			insertRight(sb, c);
+		}
+
+		return sb;
+	}
+
+	private static StringBuilder insertLeftOrRight(String sourceObject, String content, int numberOfPadding, PaddingType paddingType) {
+		StringBuilder sb = new StringBuilder(sourceObject);
+		for (int i = 0; i < numberOfPadding; i++) {
+			char c = content.charAt(i % content.length());
+			switch (paddingType) {
+			case LEFT:
+				insertLeft(sb, c);
+				break;
+			case RIGHT:
+				insertRight(sb, c);
+				break;
+			default:
+				break;
+			}
+		}
+		return sb;
+	}
+
+	private static void insertRight(StringBuilder sb, char c) {
+		sb.append("" + c);
+	}
+
+	private static void insertLeft(StringBuilder sb, char c) {
+		sb.insert(0, c);
 	}
 
 	public static String defaultIfNull(String value, String defaultValue) {
@@ -277,4 +328,99 @@ public class Strings {
 	public static boolean isWhitespace(char c) {
 		return c == SPACE || c == NEW_LINE || c == TAB || c == CARRIAGE_RETURN;
 	}
+
+	public static boolean isWhitespace(String c) {
+		return c.equals(SPACE) || c.equals(NEW_LINE) || c.equals(TAB) || c.equals(CARRIAGE_RETURN);
+	}
+
+	public static boolean containsOnly(String value, List<Character> listOfCharacters) {
+		if (value == null) {
+			return true;
+		}
+		if (listOfCharacters == null) {
+			throw new InvalidArgumentException("List of characters cannot be null");
+		}
+		for (int i = 0; i < value.length(); i++) {
+			if (!listOfCharacters.contains(value.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean isEmpty(String value) {
+		List<Character> whitespaces = Collections.newArrayList(SPACE, NEW_LINE, TAB, CARRIAGE_RETURN);
+		if (value == null || containsOnly(value, whitespaces)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static String singleLine(String value) {
+		return removeAllOccurrences(removeAllOccurrences(value, NEW_LINE), CARRIAGE_RETURN);
+	}
+
+	public static String removeNewLines(String value) {
+		int i = value.length() - 1;
+		if (i < 0) {
+			return value;
+		}
+		while (true) {
+			if (i < 0) {
+				break;
+			}
+			char character = value.charAt(i);
+			if (!(NEW_LINE.equals(character) || CARRIAGE_RETURN.equals(character))) {
+				break;
+			}
+			i--;
+		}
+		return value.substring(0, i + 1);
+	}
+
+	public static String reverse(String value) {
+		if (value == null) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = value.length() - 1; i >= 0; i--) {
+			sb.append(value.charAt(i));
+		}
+
+		return sb.toString();
+	}
+
+	public static String repeat(String value, int numberOfRepeats) {
+		if (numberOfRepeats <= 0) {
+			return value;
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < numberOfRepeats; i++) {
+			sb.append(value);
+		}
+		return sb.toString();
+	}
+
+	public static boolean isAlpha(String value) {
+		return value.matches("^[\\pL]+$");
+	}
+
+	public static boolean isAlphaWithWhitespace(String value) {
+		return value.matches("^[\\pL\\s]+$");
+	}
+	
+	public static boolean isNumeric(String value) {
+		return value.matches("^[\\pN]+$");
+	}
+
+	public static boolean isAlphanumeric(String value) {
+		return value.matches("^[\\pL\\pN]+$");
+	}
+
+	public static boolean isAlphanumericWithWhitespace(String value) {
+		return value.matches("^[\\pL\\pN\\s]+$");
+	}
+
 }
