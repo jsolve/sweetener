@@ -16,6 +16,7 @@ import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class Strings {
 
+	private static final PaddingType DEFAULT_PADDING = PaddingType.RIGHT;
 	private static final Character CARRIAGE_RETURN = '\r';
 	private static final Character TAB = '\t';
 	private static final Character NEW_LINE = '\n';
@@ -217,6 +218,10 @@ public class Strings {
 		return pad(sourceObject, SPACE, length, paddingType);
 	}
 
+	public static String pad(String sourceObject, int length) {
+		return pad(sourceObject, length, DEFAULT_PADDING);
+	}
+
 	public static String pad(String sourceObject, Character c, int length, PaddingType paddingType) {
 		if (c == null) {
 			return pad(sourceObject, SPACE, length, paddingType);
@@ -224,12 +229,19 @@ public class Strings {
 		return pad(sourceObject, c.toString(), length, paddingType);
 	}
 
+	public static String pad(String sourceObject, Character c, int length) {
+		return pad(sourceObject, c.toString(), length, DEFAULT_PADDING);
+	}
+
+	public static String pad(String sourceObject, String content, int length) {
+		return pad(sourceObject, content, length, DEFAULT_PADDING);
+	}
+
 	public static String pad(String sourceObject, String content, int length, PaddingType paddingType) {
-		if (content == null || content.isEmpty()) {
-			throw new InvalidArgumentException("Content cannot be empty");
-		}
+		throwExceptionWhenContentIsEmpty(content);
+		throwExceptionWhenPaddingTypeIsNull(paddingType);
+
 		sourceObject = getEmptyStringWhenNull(sourceObject);
-		paddingType = getRightPaddingWhenNull(paddingType);
 		int numberOfPadding = length - sourceObject.length();
 		if (numberOfPadding <= 0) {
 			return sourceObject;
@@ -249,20 +261,23 @@ public class Strings {
 		return sb.toString();
 	}
 
+	private static void throwExceptionWhenContentIsEmpty(String content) {
+		if (content == null || content.isEmpty()) {
+			throw new InvalidArgumentException("Content cannot be empty");
+		}
+	}
+
+	private static void throwExceptionWhenPaddingTypeIsNull(PaddingType paddingType) {
+		if (paddingType == null) {
+			throw new InvalidArgumentException("Padding type must be specified");
+		}
+	}
+
 	private static String getEmptyStringWhenNull(String sourceObject) {
 		return nullSafe(sourceObject, new OnNullStrategy<String>() {
 			@Override
 			public String onNull() {
 				return EMPTY_STRING;
-			}
-		});
-	}
-
-	private static PaddingType getRightPaddingWhenNull(PaddingType paddingType) {
-		return nullSafe(paddingType, new OnNullStrategy<PaddingType>() {
-			@Override
-			public PaddingType onNull() {
-				return PaddingType.RIGHT;
 			}
 		});
 	}

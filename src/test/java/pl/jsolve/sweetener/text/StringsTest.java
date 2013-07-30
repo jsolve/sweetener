@@ -467,6 +467,34 @@ public class StringsTest {
 	}
 
 	@Test
+	public void shouldRightPadGivenStringWhenPaddingIsNotSpecified() {
+		// given
+		String sourceObject = "abc";
+		String content = "*-";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, content, length);
+
+		// then
+		assertThat(result).isEqualTo("abc*-*-");
+	}
+
+	@Test
+	public void shouldRightPadGivenStringByCharWhenPaddingIsNotSpecified() {
+		// given
+		String sourceObject = "abc";
+		Character c = '*';
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length);
+
+		// then
+		assertThat(result).isEqualTo("abc****");
+	}
+
+	@Test
 	public void shouldRightPadGivenStringBySpaces() {
 		// given
 		String sourceObject = "abc";
@@ -590,13 +618,13 @@ public class StringsTest {
 	}
 
 	@Test
-	public void shouldRightPadGivenStringBySpacesWhenPaddingIsNull() {
+	public void shouldRightPadGivenStringBySpacesWhenPaddingIsNotSpecified() {
 		// given
 		String sourceObject = "abc";
 		int length = 7;
 
 		// when
-		String result = Strings.pad(sourceObject, length, null);
+		String result = Strings.pad(sourceObject, length);
 
 		// then
 		assertThat(result).isEqualTo("abc    ");
