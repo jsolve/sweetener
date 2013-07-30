@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Escapes {
 
-	private static final Map<Character, String> regexpSpecial = new HashMap<Character, String>();
+	private static final Map<Character, String> regexpSpecial = new HashMap<>();
 
 	static {
 		regexpSpecial.put('.', "\\.");
@@ -36,5 +36,4 @@ public class Escapes {
 		}
 		return sb.toString();
 	}
-
 }

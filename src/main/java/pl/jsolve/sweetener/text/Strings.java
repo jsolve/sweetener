@@ -1,5 +1,7 @@
 package pl.jsolve.sweetener.text;
 
+import static pl.jsolve.sweetener.core.Objects.nullSafe;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,10 +11,12 @@ import java.util.regex.Pattern;
 
 import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.core.FoundGroup;
+import pl.jsolve.sweetener.core.OnNullStrategy;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class Strings {
 
+	private static final PaddingType DEFAULT_PADDING = PaddingType.RIGHT;
 	private static final Character CARRIAGE_RETURN = '\r';
 	private static final Character TAB = '\t';
 	private static final Character NEW_LINE = '\n';
@@ -20,7 +24,7 @@ public class Strings {
 	private static final String EMPTY_STRING = "";
 	public static final String DOT = "/.";
 
-	private static final List<Character> symbols = new ArrayList<Character>(62);
+	private static final List<Character> symbols = new ArrayList<>(62);
 	private static final Random random = new Random();
 
 	static {
@@ -120,7 +124,7 @@ public class Strings {
 
 	public static List<Integer> indexesOf(String sourceObject, String sequence, boolean ignoreRegexp) {
 		if (sequence == null) {
-			return new ArrayList<Integer>();
+			return new ArrayList<>();
 		}
 		if (ignoreRegexp) {
 			return indexesOf(sourceObject, Escapes.escapeRegexp(sequence));
@@ -129,7 +133,7 @@ public class Strings {
 	}
 
 	public static List<Integer> indexesOf(String sourceObject, String sequence) {
-		List<Integer> indexes = new ArrayList<Integer>();
+		List<Integer> indexes = new ArrayList<>();
 		if (sourceObject == null || sequence == null || sequence.isEmpty()) {
 			return indexes;
 		}
@@ -143,7 +147,7 @@ public class Strings {
 
 	public static List<Integer> indexesOf(String sourceObject, Character c, boolean ignoreRegexp) {
 		if (c == null) {
-			return new ArrayList<Integer>();
+			return new ArrayList<>();
 		}
 		if (ignoreRegexp) {
 			return indexesOf(sourceObject, Escapes.escapeRegexp(c.toString()));
@@ -157,7 +161,7 @@ public class Strings {
 
 	public static List<FoundGroup> groups(String sourceObject, String sequence, boolean ignoreRegexp) {
 		if (sequence == null) {
-			return new ArrayList<FoundGroup>();
+			return new ArrayList<>();
 		}
 		if (ignoreRegexp) {
 			return groups(sourceObject, Escapes.escapeRegexp(sequence));
@@ -166,7 +170,7 @@ public class Strings {
 	}
 
 	public static List<FoundGroup> groups(String sourceObject, String sequence) {
-		List<FoundGroup> indexes = new ArrayList<FoundGroup>();
+		List<FoundGroup> indexes = new ArrayList<>();
 		Pattern pattern = Pattern.compile(sequence);
 		Matcher matcher = pattern.matcher(sourceObject);
 		while (matcher.find()) {
@@ -214,6 +218,10 @@ public class Strings {
 		return pad(sourceObject, SPACE, length, paddingType);
 	}
 
+	public static String pad(String sourceObject, int length) {
+		return pad(sourceObject, length, DEFAULT_PADDING);
+	}
+
 	public static String pad(String sourceObject, Character c, int length, PaddingType paddingType) {
 		if (c == null) {
 			return pad(sourceObject, SPACE, length, paddingType);
@@ -221,11 +229,19 @@ public class Strings {
 		return pad(sourceObject, c.toString(), length, paddingType);
 	}
 
+	public static String pad(String sourceObject, Character c, int length) {
+		return pad(sourceObject, c.toString(), length, DEFAULT_PADDING);
+	}
+
+	public static String pad(String sourceObject, String content, int length) {
+		return pad(sourceObject, content, length, DEFAULT_PADDING);
+	}
+
 	public static String pad(String sourceObject, String content, int length, PaddingType paddingType) {
-		if (content == null || content.isEmpty()) {
-			throw new InvalidArgumentException("Content cannot be empty");
-		}
-		sourceObject = defaultIfNull(sourceObject, EMPTY_STRING);
+		throwExceptionWhenContentIsEmpty(content);
+		throwExceptionWhenPaddingTypeIsNull(paddingType);
+
+		sourceObject = getEmptyStringWhenNull(sourceObject);
 		int numberOfPadding = length - sourceObject.length();
 		if (numberOfPadding <= 0) {
 			return sourceObject;
@@ -239,8 +255,31 @@ public class Strings {
 		case RIGHT:
 			sb = insertLeftOrRight(sourceObject, content, numberOfPadding, paddingType);
 			break;
+		default:
+			throw new InvalidArgumentException("Invalid PaddingType.");
 		}
 		return sb.toString();
+	}
+
+	private static void throwExceptionWhenContentIsEmpty(String content) {
+		if (content == null || content.isEmpty()) {
+			throw new InvalidArgumentException("Content cannot be empty");
+		}
+	}
+
+	private static void throwExceptionWhenPaddingTypeIsNull(PaddingType paddingType) {
+		if (paddingType == null) {
+			throw new InvalidArgumentException("Padding type must be specified");
+		}
+	}
+
+	private static String getEmptyStringWhenNull(String sourceObject) {
+		return nullSafe(sourceObject, new OnNullStrategy<String>() {
+			@Override
+			public String onNull() {
+				return EMPTY_STRING;
+			}
+		});
 	}
 
 	private static StringBuilder insertCentre(String sourceObject, String content, int numberOfPadding, PaddingType paddingType) {
@@ -285,10 +324,6 @@ public class Strings {
 
 	private static void insertLeft(StringBuilder sb, char c) {
 		sb.insert(0, c);
-	}
-
-	public static String defaultIfNull(String value, String defaultValue) {
-		return value != null ? value : defaultValue;
 	}
 
 	public static String capitalize(String value) {
@@ -370,7 +405,7 @@ public class Strings {
 			if (i < 0) {
 				break;
 			}
-			char character = value.charAt(i);
+			Character character = value.charAt(i);
 			if (!(NEW_LINE.equals(character) || CARRIAGE_RETURN.equals(character))) {
 				break;
 			}
@@ -410,7 +445,7 @@ public class Strings {
 	public static boolean isAlphaWithWhitespace(String value) {
 		return value.matches("^[\\pL\\s]+$");
 	}
-	
+
 	public static boolean isNumeric(String value) {
 		return value.matches("^[\\pN]+$");
 	}

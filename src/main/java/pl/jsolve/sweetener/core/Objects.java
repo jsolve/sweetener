@@ -7,7 +7,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import pl.jsolve.sweetener.exception.DeepCopyException;
 
-public class Objects {
+public final class Objects {
 
     private final static String EMPTY_STRING = "";
     private static ObjectMapper mapper;
@@ -66,7 +66,7 @@ public class Objects {
 	if (o1 == null && o2 == null) {
 	    return true;
 	}
-	if ((o1 == null && o2 != null) || (o1 != null && o2 == null)) {
+	if (o1 == null || o2 ==null) {
 	    return false;
 	}
 	return o1.equals(o2);

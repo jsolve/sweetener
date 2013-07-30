@@ -1,5 +1,7 @@
 package pl.jsolve.sweetener.io;
 
+import static java.nio.file.FileVisitResult.CONTINUE;
+
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
@@ -10,12 +12,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.nio.file.FileVisitResult.CONTINUE;
-
 public class Finder extends SimpleFileVisitor<Path> {
 
 	private final PathMatcher matcher;
-	private final List<Path> paths = new ArrayList<Path>();
+	private final List<Path> paths = new ArrayList<>();
 
 	Finder(String pattern) {
 		matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);

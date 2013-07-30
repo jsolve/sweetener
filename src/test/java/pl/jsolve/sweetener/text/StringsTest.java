@@ -19,7 +19,7 @@ public class StringsTest {
 	@Test
 	public void shouldJoinCollectionOfStrings() {
 		// given
-		List<String> strings = new ArrayList<String>();
+		List<String> strings = new ArrayList<>();
 		strings.add("A");
 		strings.add("B");
 		strings.add("C");
@@ -371,7 +371,7 @@ public class StringsTest {
 	@Test
 	public void shouldGenerateRandomStringWithGivenCollectionOfSymbols() {
 		// given
-		List<Character> symbols = new ArrayList<Character>();
+		List<Character> symbols = new ArrayList<>();
 		symbols.add('A');
 		symbols.add('B');
 		symbols.add('C');
@@ -389,7 +389,7 @@ public class StringsTest {
 	@Test
 	public void shouldGenerateRandomStringWithGivenCollectionOfSymbolsWhenCollectionIsEmpty() {
 		// given
-		List<Character> symbols = new ArrayList<Character>();
+		List<Character> symbols = new ArrayList<>();
 
 		// when
 		String result = Strings.random(symbols, 40);
@@ -464,6 +464,34 @@ public class StringsTest {
 
 		// then
 		assertThat(result).isEqualTo("*-*abc*-*-");
+	}
+
+	@Test
+	public void shouldRightPadGivenStringWhenPaddingIsNotSpecified() {
+		// given
+		String sourceObject = "abc";
+		String content = "*-";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, content, length);
+
+		// then
+		assertThat(result).isEqualTo("abc*-*-");
+	}
+
+	@Test
+	public void shouldRightPadGivenStringByCharWhenPaddingIsNotSpecified() {
+		// given
+		String sourceObject = "abc";
+		Character c = '*';
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, c, length);
+
+		// then
+		assertThat(result).isEqualTo("abc****");
 	}
 
 	@Test
@@ -587,6 +615,19 @@ public class StringsTest {
 
 		// then
 		assertThat(result).isEqualTo("*******");
+	}
+
+	@Test
+	public void shouldRightPadGivenStringBySpacesWhenPaddingIsNotSpecified() {
+		// given
+		String sourceObject = "abc";
+		int length = 7;
+
+		// when
+		String result = Strings.pad(sourceObject, length);
+
+		// then
+		assertThat(result).isEqualTo("abc    ");
 	}
 
 	@Test

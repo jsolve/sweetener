@@ -21,7 +21,9 @@ import java.util.List;
 import pl.jsolve.sweetener.exception.FileNotFoundException;
 import pl.jsolve.sweetener.exception.ResourceException;
 
-public class Resources {
+public final class Resources {
+
+	private static final String NEW_LINE = "\n";
 
 	private Resources() {
 		throw new AssertionError("Using constructor of this class is prohibited.");
@@ -95,7 +97,7 @@ public class Resources {
 
 	private static List<String> readLines(Reader fileReader) {
 		try {
-			List<String> lines = new ArrayList<String>();
+			List<String> lines = new ArrayList<>();
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			try {
 				String line = bufferedReader.readLine();
@@ -125,7 +127,7 @@ public class Resources {
 		List<String> lines = asListOfLines(path);
 		StringBuilder sb = new StringBuilder();
 		for (String line : lines) {
-			sb.append(line).append("\n");
+			sb.append(line).append(NEW_LINE);
 		}
 		return sb.toString();
 	}
@@ -134,7 +136,7 @@ public class Resources {
 		List<String> lines = asListOfLines(url);
 		StringBuilder sb = new StringBuilder();
 		for (String line : lines) {
-			sb.append(line).append("\n");
+			sb.append(line).append(NEW_LINE);
 		}
 		return sb.toString();
 	}
@@ -162,5 +164,4 @@ public class Resources {
 			throw new ResourceException(e);
 		}
 	}
-
 }
