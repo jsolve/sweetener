@@ -61,7 +61,7 @@ public final class Collections {
 		for (int i = from; i <= to; i++) {
 			result.add((E) array[i]);
 		}
-		return (T) result;
+		return result;
 	}
 
 	private static <T extends Collection<E>, E> T createNewInstanceOfCollection(Class<T> clazz) {

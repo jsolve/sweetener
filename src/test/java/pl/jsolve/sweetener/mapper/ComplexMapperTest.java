@@ -14,7 +14,7 @@ public class ComplexMapperTest {
 
 	private static final String SPACE = " ";
 	private static final int ANY_NUMBER = 1337;
-	private static final long ID = 2L;
+	private static final Long ID = 2L;
 
 	@Test
 	public void shouldMapHeroToHeroSnapshot() {
