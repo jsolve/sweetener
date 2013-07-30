@@ -34,7 +34,7 @@ import pl.jsolve.sweetener.tests.stub.person.StudentSnapshot;
 public class AnnotationDrivenMapperTest {
 
 	private static final String NICKNAME = "ironMan";
-	private static final long ID = 1L;
+	private static final Long ID = 1L;
 
 	@Test
 	public void shouldMapHeroToHeroSnapshot() {
