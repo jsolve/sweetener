@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.core.math.random;
+package pl.jsolve.sweetener.math.random;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import pl.jsolve.sweetener.core.Generator;
-import pl.jsolve.sweetener.core.Maths;
+import pl.jsolve.sweetener.math.Generator;
+import pl.jsolve.sweetener.math.Maths;
 
 public class RandomLongTest {
 

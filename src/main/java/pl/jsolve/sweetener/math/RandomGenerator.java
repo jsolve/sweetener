@@ -1,4 +1,5 @@
-package pl.jsolve.sweetener.core;
+package pl.jsolve.sweetener.math;
+
 
 public class RandomGenerator implements Generator {
 

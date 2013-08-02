@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.core;
+package pl.jsolve.sweetener.math;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -135,6 +135,31 @@ public class Maths {
 		}
 		return result;
 	}
+
+	public static double distance(int x1, int y1, int x2, int y2) {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}
+
+	public static double distance(int x1, int y1, int z1, int x2, int y2, int z2) {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+	}
+
+	public static double distance(double x1, double y1, double x2, double y2) {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}
+
+	public static double distance(double x1, double y1, double z1, double x2, double y2, double z2) {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+	}
+
+	public static double distance(Point2D p1, Point2D p2) {
+		return distance(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	}
+
+	public static double distance(Point3D p1, Point3D p2) {
+		return distance(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
+	}
+
 	// Random algorithms:
 	//
 	// 1. calculate range
