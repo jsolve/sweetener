@@ -1,22 +1,152 @@
 package pl.jsolve.sweetener.core;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class Maths {
 
-	public static byte randomByte(byte lowerRange, byte upperRange) {
+	private static Generator randomGenerator = new RandomGenerator();
+
+	public static byte random(byte lowerRange, byte upperRange) {
+		return random(lowerRange, upperRange, randomGenerator);
+	}
+
+	public static byte random(byte lowerRange, byte upperRange, Generator generator) {
 		if (lowerRange > upperRange) {
 			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
 		}
 		byte range = (byte) (upperRange - lowerRange);
-		if (range < 0) { // if range is negative, we need numeric type with bigger range. In this case: int
+		double random = generator.generate();
+		byte result = 0;
+		if (range < 0) {
 			int intRange = upperRange - lowerRange + 1;
-			return (byte) (lowerRange + (int)(Math.random() * intRange));
+
+			result = (byte) (lowerRange + (int) (random * intRange));
+		} else {
+			result = (byte) (lowerRange + (int) (random * (range + 1)));
 		}
-		else {
-			return (byte) (lowerRange + (int)(Math.random() * (range + 1)));
-		}
+		return random == 1.0 ? (byte) (result - 1) : result;
 	}
 
+	public static short random(short lowerRange, short upperRange) {
+		return random(lowerRange, upperRange, randomGenerator);
+	}
+
+	public static short random(short lowerRange, short upperRange, Generator generator) {
+		if (lowerRange > upperRange) {
+			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
+		}
+		short range = (short) (upperRange - lowerRange);
+		double random = generator.generate();
+		short result = 0;
+		if (range < 0) {
+			int intRange = upperRange - lowerRange + 1;
+
+			result = (short) (lowerRange + (int) (random * intRange));
+		} else {
+			result = (short) (lowerRange + (int) (random * (range + 1)));
+		}
+		return random == 1.0 ? (short) (result - 1) : result;
+	}
+
+	public static int random(int lowerRange, int upperRange) {
+		return random(lowerRange, upperRange, randomGenerator);
+	}
+
+	public static int random(int lowerRange, int upperRange, Generator generator) {
+		if (lowerRange > upperRange) {
+			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
+		}
+		int range = (upperRange - lowerRange);
+		double random = generator.generate();
+		int result = 0;
+		if (range < 0) {
+			long longRange = ((long) upperRange) - ((long) lowerRange) + 1;
+
+			result = (int) (lowerRange + (long) (random * longRange));
+		} else {
+			result = (int) (lowerRange + (long) (random * (range + 1)));
+		}
+		return random == 1.0 ? (result - 1) : result;
+	}
+
+	public static long random(long lowerRange, long upperRange) {
+		return random(lowerRange, upperRange, randomGenerator);
+	}
+
+	public static long random(long lowerRange, long upperRange, Generator generator) {
+		if (lowerRange > upperRange) {
+			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
+		}
+		long range = upperRange - lowerRange;
+		double random = generator.generate();
+		long result = 0;
+		if (range < 0) {
+			BigDecimal bigIntegerRange = BigDecimal.valueOf(upperRange).subtract(BigDecimal.valueOf(lowerRange))
+					.add(BigDecimal.ONE);
+
+			result = BigDecimal.valueOf(lowerRange).add(BigDecimal.valueOf(random).multiply(bigIntegerRange))
+					.setScale(0, RoundingMode.HALF_UP).longValue();
+		} else {
+			result = (long) (lowerRange + (long) (random * (range + 1)));
+		}
+		return random == 1.0 ? result - 1 : result;
+	}
+
+	public static float random(float lowerRange, float upperRange) {
+		return random(lowerRange, upperRange, randomGenerator);
+	}
+
+	public static float random(float lowerRange, float upperRange, Generator generator) {
+		if (lowerRange > upperRange) {
+			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
+		}
+		float range = (upperRange - lowerRange);
+		float result = 0;
+		if (range < 0) {
+			double longRange = ((double) upperRange) - ((double) lowerRange);
+
+			result = (float) (lowerRange + (double) (generator.generate() * longRange));
+		} else {
+			result = (float) (lowerRange + (double) (generator.generate() * range));
+		}
+		return result;
+	}
+
+	public static double random(double lowerRange, double upperRange) {
+		return random(lowerRange, upperRange, randomGenerator);
+	}
+
+	public static double random(double lowerRange, double upperRange, Generator generator) {
+		if (lowerRange > upperRange) {
+			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
+		}
+		double range = upperRange - lowerRange;
+		double result = 0;
+		if (range < 0) {
+			BigDecimal bigIntegerRange = BigDecimal.valueOf(upperRange).subtract(BigDecimal.valueOf(lowerRange));
+
+			result = BigDecimal.valueOf(lowerRange).add(BigDecimal.valueOf(generator.generate()).multiply(bigIntegerRange))
+					.setScale(0, RoundingMode.HALF_UP).longValue();
+		} else {
+			result = (double) (lowerRange + (double) (generator.generate() * (range)));
+		}
+		return result;
+	}
+	// Random algorithms:
+	//
+	// 1. calculate range
+	// if range is negative:
+	// 2a: generate random value (if generated value is really long, for example 0.9999999999999999999999999999 it is
+	// automatically round to 1.0 ;( )
+	// 3a: calcute result as larger numeric type
+	// 4a: if generated value is equal to 1.0, substract one from the result
+	// otherwise
+	// 2b: generate random value
+	// 3b: calculate result
+	// 4b: if generated value is equal to 1.0, substract one from the result
+	//
 
 }
