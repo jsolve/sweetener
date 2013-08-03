@@ -10,6 +10,10 @@ public class OutOfRangeException extends RuntimeException {
 		super(ex);
 		this.range = range;
 	}
+	
+	public OutOfRangeException(String message) {
+		super(message);
+	}
 
 	public Range getRange() {
 		return range;

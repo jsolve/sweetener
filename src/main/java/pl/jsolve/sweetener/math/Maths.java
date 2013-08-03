@@ -338,4 +338,40 @@ public class Maths {
 		}
 		throw new ParseException(ex);
 	}
+
+	public static double normalize(byte value, byte minValue, byte maxValue) {
+		if (value < minValue || value > maxValue) {
+			throw new OutOfRangeException(String.format("The value %d is out of the range: <%d, %d>", value, minValue, maxValue));
+		}
+		return (double) (value - minValue) / (double) (maxValue - minValue);
+	}
+
+	public static double normalize(short value, short minValue, short maxValue) {
+		if (value < minValue || value > maxValue) {
+			throw new OutOfRangeException(String.format("The value %d is out of the range: <%d, %d>", value, minValue, maxValue));
+		}
+		return (double) (value - minValue) / (double) (maxValue - minValue);
+	}
+
+	public static double normalize(int value, int minValue, int maxValue) {
+		if (value < minValue || value > maxValue) {
+			throw new OutOfRangeException(String.format("The value %d is out of the range: <%d, %d>", value, minValue, maxValue));
+		}
+		return (double) (value - minValue) / (double) (maxValue - minValue);
+	}
+
+	public static double normalize(float value, float minValue, float maxValue) {
+		if (value < minValue || value > maxValue) {
+			throw new OutOfRangeException(String.format("The value %f is out of the range: <%f, %f>", value, minValue, maxValue));
+		}
+		return (double) (value - minValue) / (double) (maxValue - minValue);
+	}
+
+	public static double normalize(double value, double minValue, double maxValue) {
+		if (value < minValue || value > maxValue) {
+			throw new OutOfRangeException(String.format("The value %f is out of the range: <%f, %f>", value, minValue, maxValue));
+		}
+		return (double) (value - minValue) / (double) (maxValue - minValue);
+	}
+
 }
