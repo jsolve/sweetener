@@ -4,8 +4,12 @@ import static org.fest.assertions.Assertions.assertThat;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.junit.Test;
 
+import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.exception.OutOfRangeException;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 
@@ -84,9 +88,9 @@ public class NormalizeTest {
 	@Test
 	public void shouldThrowExceptionWhenValueIsOutOfRange() {
 		// given
-		final byte value = 11;
-		final byte min = -10;
-		final byte max = 10;
+		final double value = 11.0;
+		final double min = -10.0;
+		final double max = 10.0;
 
 		// when
 		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
@@ -98,7 +102,19 @@ public class NormalizeTest {
 		});
 
 		// then
-		assertThrowable(caughtException).withMessage("The value 11 is out of the range: <-10, 10>").isThrown();
+		assertThrowable(caughtException).withMessage("The value 11,000000 is out of the range: <-10,000000; 10,000000>").isThrown();
+	}
+
+	@Test
+	public void shouldNormalizeCollectionOfBytes() {
+		// given
+		List<Byte> values = Collections.newArrayList((byte) 4, (byte) 2, (byte) 0, (byte) 2, (byte) 10, (byte) -6);
+
+		// when
+		Collection<Double> normalizedByte = Maths.normalizeByte(values);
+
+		// then
+		assertThat(normalizedByte).contains(0.625, 0.5, 0.375, 0.5, 1.0, 0.0);
 	}
 
 }

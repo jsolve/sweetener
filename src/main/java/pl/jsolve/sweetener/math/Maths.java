@@ -2,7 +2,11 @@ package pl.jsolve.sweetener.math;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.core.Objects;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 import pl.jsolve.sweetener.exception.OutOfRangeException;
@@ -362,16 +366,377 @@ public class Maths {
 
 	public static double normalize(float value, float minValue, float maxValue) {
 		if (value < minValue || value > maxValue) {
-			throw new OutOfRangeException(String.format("The value %f is out of the range: <%f, %f>", value, minValue, maxValue));
+			throw new OutOfRangeException(String.format("The value %f is out of the range: <%f; %f>", value, minValue, maxValue));
 		}
 		return (double) (value - minValue) / (double) (maxValue - minValue);
 	}
 
 	public static double normalize(double value, double minValue, double maxValue) {
 		if (value < minValue || value > maxValue) {
-			throw new OutOfRangeException(String.format("The value %f is out of the range: <%f, %f>", value, minValue, maxValue));
+			throw new OutOfRangeException(String.format("The value %f is out of the range: <%f; %f>", value, minValue, maxValue));
 		}
 		return (double) (value - minValue) / (double) (maxValue - minValue);
 	}
 
+	// MinMax for collection
+
+	public static MinMaxValue<Byte> minMaxByte(Collection<Byte> values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Byte min = Byte.MAX_VALUE;
+		Byte max = Byte.MIN_VALUE;
+
+		for (Byte value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Byte>(min, max);
+	}
+
+	public static MinMaxValue<Short> minMaxShort(Collection<Short> values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Short min = Short.MAX_VALUE;
+		Short max = Short.MIN_VALUE;
+
+		for (Short value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Short>(min, max);
+	}
+
+	public static MinMaxValue<Integer> minMaxInteger(Collection<Integer> values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Integer min = Integer.MAX_VALUE;
+		Integer max = Integer.MIN_VALUE;
+
+		for (Integer value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Integer>(min, max);
+	}
+
+	public static MinMaxValue<Long> minMaxLong(Collection<Long> values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Long min = Long.MAX_VALUE;
+		Long max = Long.MIN_VALUE;
+
+		for (Long value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Long>(min, max);
+	}
+
+	public static MinMaxValue<Float> minMaxFloat(Collection<Float> values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Float min = Float.MAX_VALUE;
+		Float max = Float.MIN_VALUE;
+
+		for (Float value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Float>(min, max);
+	}
+
+	public static MinMaxValue<Double> minMaxDouble(Collection<Double> values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Double min = Double.MAX_VALUE;
+		Double max = Double.MIN_VALUE;
+
+		for (Double value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Double>(min, max);
+	}
+
+	// MinMax for varArg, array
+
+	public static MinMaxValue<Byte> minMaxByte(Byte... values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Byte min = Byte.MAX_VALUE;
+		Byte max = Byte.MIN_VALUE;
+
+		for (Byte value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Byte>(min, max);
+	}
+
+	public static MinMaxValue<Short> minMaxShort(Short... values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Short min = Short.MAX_VALUE;
+		Short max = Short.MIN_VALUE;
+
+		for (Short value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Short>(min, max);
+	}
+
+	public static MinMaxValue<Integer> minMaxInteger(Integer... values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Integer min = Integer.MAX_VALUE;
+		Integer max = Integer.MIN_VALUE;
+
+		for (Integer value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Integer>(min, max);
+	}
+
+	public static MinMaxValue<Long> minMaxLong(Long... values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Long min = Long.MAX_VALUE;
+		Long max = Long.MIN_VALUE;
+
+		for (Long value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Long>(min, max);
+	}
+
+	public static MinMaxValue<Float> minMaxFloat(Float... values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Float min = Float.MAX_VALUE;
+		Float max = Float.MIN_VALUE;
+
+		for (Float value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Float>(min, max);
+	}
+
+	public static MinMaxValue<Double> minMaxDouble(Double... values) {
+		if (values == null) {
+			throw new InvalidArgumentException("Collection cannot be null");
+		}
+
+		Double min = Double.MAX_VALUE;
+		Double max = Double.MIN_VALUE;
+
+		for (Double value : values) {
+			if (value < min) {
+				min = value;
+			}
+			if (value > max) {
+				max = value;
+			}
+		}
+		return new MinMaxValue<Double>(min, max);
+	}
+
+	// Normalize collection
+
+	@SuppressWarnings("unchecked")
+	public static Collection<Double> normalizeByte(Collection<Byte> values) {
+		Collection<Double> result = Collections.createNewInstanceOfCollection(values.getClass());
+		MinMaxValue<Byte> minMaxByte = minMaxByte(values);
+
+		for (Byte value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Collection<Double> normalizeShort(Collection<Short> values) {
+		Collection<Double> result = Collections.createNewInstanceOfCollection(values.getClass());
+		MinMaxValue<Short> minMaxByte = minMaxShort(values);
+
+		for (Short value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Collection<Double> normalizeInt(Collection<Integer> values) {
+		Collection<Double> result = Collections.createNewInstanceOfCollection(values.getClass());
+		MinMaxValue<Integer> minMaxByte = minMaxInteger(values);
+
+		for (Integer value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Collection<Double> normalizeLong(Collection<Long> values) {
+		Collection<Double> result = Collections.createNewInstanceOfCollection(values.getClass());
+		MinMaxValue<Long> minMaxByte = minMaxLong(values);
+
+		for (Long value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Collection<Double> normalizeFloat(Collection<Float> values) {
+		Collection<Double> result = Collections.createNewInstanceOfCollection(values.getClass());
+		MinMaxValue<Float> minMaxByte = minMaxFloat(values);
+
+		for (Float value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Collection<Double> normalizeDouble(Collection<Double> values) {
+		Collection<Double> result = Collections.createNewInstanceOfCollection(values.getClass());
+		MinMaxValue<Double> minMaxByte = minMaxDouble(values);
+
+		for (Double value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	// Normalize array
+
+	public static Collection<Double> normalizeByte(Byte... values) {
+		List<Double> result = new ArrayList<Double>();
+		MinMaxValue<Byte> minMaxByte = minMaxByte(values);
+
+		for (Byte value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	public static Collection<Double> normalizeShort(Short... values) {
+		List<Double> result = new ArrayList<Double>();
+		MinMaxValue<Short> minMaxByte = minMaxShort(values);
+
+		for (Short value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	public static Collection<Double> normalizeInt(Integer... values) {
+		List<Double> result = new ArrayList<Double>();
+		MinMaxValue<Integer> minMaxByte = minMaxInteger(values);
+
+		for (Integer value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	public static Collection<Double> normalizeLong(Long... values) {
+		List<Double> result = new ArrayList<Double>();
+		MinMaxValue<Long> minMaxByte = minMaxLong(values);
+
+		for (Long value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	public static Collection<Double> normalizeFloat(Float... values) {
+		List<Double> result = new ArrayList<Double>();
+		MinMaxValue<Float> minMaxByte = minMaxFloat(values);
+
+		for (Float value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
+
+	public static List<Double> normalizeDouble(Double... values) {
+		List<Double> result = new ArrayList<Double>();
+		MinMaxValue<Double> minMaxByte = minMaxDouble(values);
+
+		for (Double value : values) {
+			result.add(normalize(value, minMaxByte.getMin(), minMaxByte.getMax()));
+		}
+		return result;
+	}
 }
