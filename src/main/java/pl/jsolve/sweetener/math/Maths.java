@@ -739,4 +739,64 @@ public class Maths {
 		}
 		return result;
 	}
+
+	public static byte adjustToRange(byte value, byte min, byte max) {
+		if (value >= min && value <= max) {
+			return value;
+		}
+		if (value > max) {
+			return max;
+		}
+		return min;
+	}
+
+	public static short adjustToRange(short value, short min, short max) {
+		if (value >= min && value <= max) {
+			return value;
+		}
+		if (value > max) {
+			return max;
+		}
+		return min;
+	}
+
+	public static int adjustToRange(int value, int min, int max) {
+		if (value >= min && value <= max) {
+			return value;
+		}
+		if (value > max) {
+			return max;
+		}
+		return min;
+	}
+
+	public static long adjustToRange(long value, long min, long max) {
+		if (value >= min && value <= max) {
+			return value;
+		}
+		if (value > max) {
+			return max;
+		}
+		return min;
+	}
+
+	public static float adjustToRange(float value, float min, float max) {
+		if (value >= min && value <= max) {
+			return value;
+		}
+		if (value > max) {
+			return max;
+		}
+		return min;
+	}
+
+	public static double adjustToRange(double value, double min, double max) {
+		if (value >= min && value <= max) {
+			return value;
+		}
+		if (value > max) {
+			return max;
+		}
+		return min;
+	}
 }
