@@ -3,11 +3,29 @@ package pl.jsolve.sweetener.math;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import pl.jsolve.sweetener.core.Objects;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
+import pl.jsolve.sweetener.exception.OutOfRangeException;
+import pl.jsolve.sweetener.exception.OutOfRangeException.Range;
+import pl.jsolve.sweetener.exception.ParseException;
 
 public class Maths {
 
 	private static Generator randomGenerator = new RandomGenerator();
+
+	// Random algorithms:
+	//
+	// 1. calculate range
+	// if range is negative:
+	// 2a: generate random value (if generated value is really long, for example 0.9999999999999999999999999999 it is
+	// automatically round to 1.0 ;( )
+	// 3a: calcute result as larger numeric type
+	// 4a: if generated value is equal to 1.0, substract one from the result
+	// otherwise
+	// 2b: generate random value
+	// 3b: calculate result
+	// 4b: if generated value is equal to 1.0, substract one from the result
+	//
 
 	public static byte random(byte lowerRange, byte upperRange) {
 		return random(lowerRange, upperRange, randomGenerator);
@@ -160,18 +178,164 @@ public class Maths {
 		return distance(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ());
 	}
 
-	// Random algorithms:
-	//
-	// 1. calculate range
-	// if range is negative:
-	// 2a: generate random value (if generated value is really long, for example 0.9999999999999999999999999999 it is
-	// automatically round to 1.0 ;( )
-	// 3a: calcute result as larger numeric type
-	// 4a: if generated value is equal to 1.0, substract one from the result
-	// otherwise
-	// 2b: generate random value
-	// 3b: calculate result
-	// 4b: if generated value is equal to 1.0, substract one from the result
-	//
+	public static byte parseByte(String value) {
+		return parseByte(value, ParseContext.TRY_ADJUST);
+	}
 
+	public static byte parseByte(String value, ParseContext context) {
+		try {
+			value = Objects.nullSafeToString(value);
+			return Byte.valueOf(value.trim());
+		} catch (NumberFormatException ex) {
+			return parseByBigDecimal(value.trim(), context, Byte.MIN_VALUE, Byte.MAX_VALUE, (byte) 0);
+		}
+	}
+
+	public static short parseShort(String value) {
+		return parseShort(value, ParseContext.TRY_ADJUST);
+	}
+
+	public static short parseShort(String value, ParseContext context) {
+		try {
+			value = Objects.nullSafeToString(value);
+			return Short.valueOf(value.trim());
+		} catch (NumberFormatException ex) {
+			return parseByBigDecimal(value.trim(), context, Short.MIN_VALUE, Short.MAX_VALUE, (short) 0);
+		}
+	}
+
+	public static int parseInteger(String value) {
+		return parseInteger(value, ParseContext.TRY_ADJUST);
+	}
+
+	public static int parseInteger(String value, ParseContext context) {
+		try {
+			value = Objects.nullSafeToString(value);
+			return Integer.valueOf(value.trim());
+		} catch (NumberFormatException ex) {
+			return parseByBigDecimal(value.trim(), context, Integer.MIN_VALUE, Integer.MAX_VALUE, 0);
+		}
+	}
+
+	public static long parseLong(String value) {
+		return parseLong(value, ParseContext.TRY_ADJUST);
+	}
+
+	public static long parseLong(String value, ParseContext context) {
+		try {
+			value = Objects.nullSafeToString(value);
+			return Long.valueOf(value.trim());
+		} catch (NumberFormatException ex) {
+			return parseByBigDecimal(value.trim(), context, Long.MIN_VALUE, Long.MAX_VALUE, 0L);
+		}
+	}
+
+	public static float parseFloat(String value) {
+		return parseFloat(value, ParseContext.TRY_ADJUST);
+	}
+
+	public static float parseFloat(String value, ParseContext context) {
+		try {
+			value = Objects.nullSafeToString(value);
+			Float f = Float.valueOf(value.trim());
+			if (f == Float.NEGATIVE_INFINITY || f == Float.POSITIVE_INFINITY) {
+				throw new NumberFormatException("Overflow");
+			}
+			return f;
+		} catch (NumberFormatException ex) {
+			return parseByBigDecimal(value.trim(), context, Float.MIN_VALUE, Float.MAX_VALUE, 0.0f);
+		}
+	}
+
+	public static double parseDouble(String value) {
+		return parseDouble(value, ParseContext.TRY_ADJUST);
+	}
+
+	public static double parseDouble(String value, ParseContext context) {
+		try {
+			value = Objects.nullSafeToString(value);
+			Double d = Double.valueOf(value.trim());
+			if (d == Double.NEGATIVE_INFINITY || d == Double.POSITIVE_INFINITY) {
+				throw new NumberFormatException("Overflow");
+			}
+			return d;
+		} catch (NumberFormatException ex) {
+			return parseByBigDecimal(value.trim(), context, Double.MIN_VALUE, Double.MAX_VALUE, 0.0);
+		}
+	}
+
+	private static <T> T parseByBigDecimal(String value, ParseContext context, T minValue, T maxValue, T zero) {
+		try {
+			BigDecimal valueAsBigDecimal = new BigDecimal(value);
+			if (minValue instanceof Byte) {
+				valueAsBigDecimal.byteValueExact();
+			}
+			if (minValue instanceof Short) {
+				valueAsBigDecimal.shortValueExact();
+			}
+			if (minValue instanceof Integer) {
+				valueAsBigDecimal.intValueExact();
+			}
+			if (minValue instanceof Long) {
+				valueAsBigDecimal.longValueExact();
+			}
+			if (minValue instanceof Float) {
+				Float f = valueAsBigDecimal.floatValue();
+				if (f == Float.NEGATIVE_INFINITY || f == Float.POSITIVE_INFINITY) {
+					throw new ArithmeticException("Overflow");
+				}
+			}
+			if (minValue instanceof Double) {
+				Double d = valueAsBigDecimal.doubleValue();
+				if (d == Double.NEGATIVE_INFINITY || d == Double.POSITIVE_INFINITY) {
+					throw new ArithmeticException("Overflow");
+				}
+			}
+		} catch (Exception ex) {
+			return adjustToContext(value, context, ex, minValue, maxValue, zero);
+		}
+		return zero;
+	}
+
+	private static <T> T adjustToContext(String value, ParseContext context, Exception ex, T minValue, T maxValue, T zero) {
+		switch (context) {
+		case ALWAYS_ZERO:
+			return zero;
+		case ZERO_WHEN_INCORRECT:
+			try {
+				parseException(value, ex);
+			} catch (ParseException e) {
+				return zero;
+			}
+			break;
+		case TRY_ADJUST:
+			try {
+				parseException(value, ex);
+			} catch (ParseException e) {
+				return zero;
+			} catch (OutOfRangeException oe) {
+				if (oe.getRange() == Range.MIN) {
+					return minValue;
+				}
+				return maxValue;
+			}
+		case EXCEPTION:
+		default:
+			parseException(value, ex);
+			break;
+		}
+		return zero;
+	}
+
+	private static void parseException(String value, Exception ex) {
+		String message = ex.getMessage();
+		if (message != null && message.startsWith("Overflow")) {
+			if (value.charAt(0) == '-') {
+				throw new OutOfRangeException(ex, Range.MIN);
+			} else {
+				throw new OutOfRangeException(ex, Range.MAX);
+			}
+		}
+		throw new ParseException(ex);
+	}
 }
