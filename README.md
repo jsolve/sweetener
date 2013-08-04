@@ -15,6 +15,8 @@ Main categories:
     * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
 * mapper 
     * [Mapper](https://github.com/jsolve/sweetener/wiki/Mapper)
+* maths
+    * [Maths](https://github.com/jsolve/sweetener/wiki/Maths)
 * io
     * [Resources] (https://github.com/jsolve/sweetener/wiki/Resources)
 * text
