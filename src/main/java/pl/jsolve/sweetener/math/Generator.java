@@ -1,5 +1,16 @@
 package pl.jsolve.sweetener.math;
 
-public interface Generator {
-    public double generate();
+import pl.jsolve.sweetener.exception.InvalidArgumentException;
+
+public abstract class Generator {
+
+	public abstract double random();
+
+	public final double generate() {
+		double randomValue = random();
+		if (randomValue < 0 || randomValue >= 1) {
+			throw new InvalidArgumentException("Generated value cannot be less than 0 and greater than or equal to 1");
+		}
+		return randomValue;
+	}
 }

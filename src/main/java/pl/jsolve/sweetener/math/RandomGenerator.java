@@ -1,9 +1,8 @@
 package pl.jsolve.sweetener.math;
 
+public class RandomGenerator extends Generator {
 
-public class RandomGenerator implements Generator {
-
-    public double generate() {
-      return Math.random();
-    }
+	public double random() {
+		return Math.random();
+	}
 }
