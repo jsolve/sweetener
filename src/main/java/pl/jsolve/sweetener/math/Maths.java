@@ -799,4 +799,329 @@ public class Maths {
 		}
 		return min;
 	}
+
+	public static double averageByte(Collection<Byte> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Byte b : values) {
+			sum = sum + b;
+		}
+		return sum / values.size();
+	}
+
+	public static double averageShort(Collection<Short> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Short b : values) {
+			sum = sum + b;
+		}
+		return sum / values.size();
+	}
+
+	public static double averageInteger(Collection<Integer> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Integer b : values) {
+			sum = sum + b;
+		}
+		return sum / values.size();
+	}
+
+	public static double averageLong(Collection<Long> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Long b : values) {
+			sum = sum + b;
+		}
+		return sum / values.size();
+	}
+
+	public static double averageFloat(Collection<Float> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Float b : values) {
+			sum = sum + b;
+		}
+		return sum / values.size();
+	}
+
+	public static double averageDouble(Collection<Double> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Double b : values) {
+			sum = sum + b;
+		}
+		return sum / values.size();
+	}
+
+	public static double averageByte(Byte... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Byte b : values) {
+			sum = sum + b;
+		}
+		return sum / values.length;
+	}
+
+	public static double averageShort(Short... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Short b : values) {
+			sum = sum + b;
+		}
+		return sum / values.length;
+	}
+
+	public static double averageInteger(Integer... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Integer b : values) {
+			sum = sum + b;
+		}
+		return sum / values.length;
+	}
+
+	public static double averageLong(Long... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Long b : values) {
+			sum = sum + b;
+		}
+		return sum / values.length;
+	}
+
+	public static double averageFloat(Float... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Float b : values) {
+			sum = sum + b;
+		}
+		return sum / values.length;
+	}
+
+	public static double averageDouble(Double... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double sum = 0.0;
+		for (Double b : values) {
+			sum = sum + b;
+		}
+		return sum / values.length;
+	}
+
+	public static double varianceByte(Collection<Byte> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double avg = averageByte(values);
+		double t = 0.0;
+		for (Byte value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.size();
+	}
+
+	public static double varianceShort(Collection<Short> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double avg = averageShort(values);
+		double t = 0.0;
+		for (Short value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.size();
+	}
+
+	public static double varianceInteger(Collection<Integer> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double avg = averageInteger(values);
+		double t = 0.0;
+		for (Integer value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.size();
+	}
+
+	public static double varianceLong(Collection<Long> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double avg = averageLong(values);
+		double t = 0.0;
+		for (Long value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.size();
+	}
+
+	public static double varianceFloat(Collection<Float> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double avg = averageFloat(values);
+		double t = 0.0;
+		for (Float value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.size();
+	}
+
+	public static double varianceDouble(Collection<Double> values) {
+		if (values == null || values.size() == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double avg = averageDouble(values);
+		double t = 0.0;
+		for (Double value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.size();
+	}
+
+	public static double varianceByte(Byte... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double avg = averageByte(values);
+		double t = 0.0;
+		for (Byte value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.length;
+	}
+
+	public static double varianceShort(Short... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double avg = averageShort(values);
+		double t = 0.0;
+		for (Short value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.length;
+	}
+
+	public static double varianceInteger(Integer... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double avg = averageInteger(values);
+		double t = 0.0;
+		for (Integer value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.length;
+	}
+
+	public static double varianceLong(Long... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Collection cannot be null or empty");
+		}
+		double avg = averageLong(values);
+		double t = 0.0;
+		for (Long value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.length;
+	}
+
+	public static double varianceFloat(Float... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double avg = averageFloat(values);
+		double t = 0.0;
+		for (Float value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.length;
+	}
+
+	public static double varianceDouble(Double... values) {
+		if (values == null || values.length == 0) {
+			throw new InvalidArgumentException("Array cannot be null or empty");
+		}
+		double avg = averageDouble(values);
+		double t = 0.0;
+		for (Double value : values) {
+			t += Math.pow((value - avg), 2);
+		}
+		return t / values.length;
+	}
+
+	public static double standardDeviationByte(Collection<Byte> values) {
+		return Math.sqrt(varianceByte(values));
+	}
+
+	public static double standardDeviationShort(Collection<Short> values) {
+		return Math.sqrt(varianceShort(values));
+	}
+
+	public static double standardDeviationInteger(Collection<Integer> values) {
+		return Math.sqrt(varianceInteger(values));
+	}
+
+	public static double standardDeviationLong(Collection<Long> values) {
+		return Math.sqrt(varianceLong(values));
+	}
+
+	public static double standardDeviationFloat(Collection<Float> values) {
+		return Math.sqrt(varianceFloat(values));
+	}
+
+	public static double standardDeviationDouble(Collection<Double> values) {
+		return Math.sqrt(varianceDouble(values));
+	}
+
+	public static double standardDeviationByte(Byte... values) {
+		return Math.sqrt(varianceByte(values));
+	}
+
+	public static double standardDeviationShort(Short... values) {
+		return Math.sqrt(varianceShort(values));
+	}
+
+	public static double standardDeviationInteger(Integer... values) {
+		return Math.sqrt(varianceInteger(values));
+	}
+
+	public static double standardDeviationLong(Long... values) {
+		return Math.sqrt(varianceLong(values));
+	}
+
+	public static double standardDeviationFloat(Float... values) {
+		return Math.sqrt(varianceFloat(values));
+	}
+
+	public static double standardDeviationDouble(Double... values) {
+		return Math.sqrt(varianceDouble(values));
+	}
+
 }
