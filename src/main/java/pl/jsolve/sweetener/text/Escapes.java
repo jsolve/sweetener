@@ -4,14 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.jsolve.sweetener.collection.Maps;
+import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class Escapes {
 
-	private static final Map<Character, String> regexpSpecial = new HashMap<>();
-	private static final Map<Character, String> htmlSpecial = new HashMap<>();
-	private static final Map<Character, String> urlSpecial = new HashMap<>();
-	private static final Map<Character, String> xmlSpecial = new HashMap<>();
-	private static final Map<Character, String> jsonSpecial = new HashMap<>();
+	private static final Map<Character, String> regexpSpecials = new HashMap<>();
+	private static final Map<Character, String> htmlSpecials = new HashMap<>();
+	private static final Map<Character, String> urlSpecials = new HashMap<>();
+	private static final Map<Character, String> xmlSpecials = new HashMap<>();
+	private static final Map<Character, String> jsonSpecials = new HashMap<>();
 
 	static {
 		regexpSpecial();
@@ -22,118 +23,124 @@ public class Escapes {
 	}
 
 	private static void regexpSpecial() {
-		regexpSpecial.put('.', "\\.");
-		regexpSpecial.put('\\', "\\\\");
-		regexpSpecial.put('?', "\\?");
-		regexpSpecial.put('*', "\\*");
-		regexpSpecial.put('+', "\\+");
-		regexpSpecial.put('&', "\\&");
-		regexpSpecial.put(':', "\\:");
-		regexpSpecial.put('{', "\\{");
-		regexpSpecial.put('}', "\\}");
-		regexpSpecial.put('[', "\\[");
-		regexpSpecial.put(']', "\\]");
-		regexpSpecial.put('(', "\\(");
-		regexpSpecial.put(')', "\\)");
-		regexpSpecial.put('^', "\\^");
-		regexpSpecial.put('$', "\\$");
+		regexpSpecials.put('.', "\\.");
+		regexpSpecials.put('\\', "\\\\");
+		regexpSpecials.put('?', "\\?");
+		regexpSpecials.put('*', "\\*");
+		regexpSpecials.put('+', "\\+");
+		regexpSpecials.put('&', "\\&");
+		regexpSpecials.put(':', "\\:");
+		regexpSpecials.put('{', "\\{");
+		regexpSpecials.put('}', "\\}");
+		regexpSpecials.put('[', "\\[");
+		regexpSpecials.put(']', "\\]");
+		regexpSpecials.put('(', "\\(");
+		regexpSpecials.put(')', "\\)");
+		regexpSpecials.put('^', "\\^");
+		regexpSpecials.put('$', "\\$");
 	}
 
 	private static void htmlSpecial() {
-		htmlSpecial.put('<', "&lt;");
-		htmlSpecial.put('>', "&gt;");
-		htmlSpecial.put('&', "&amp;");
-		htmlSpecial.put('\"', "&quot;");
-		htmlSpecial.put('\t', "&#009;");
-		htmlSpecial.put('!', "&#033;");
-		htmlSpecial.put('#', "&#035;");
-		htmlSpecial.put('$', "&#036;");
-		htmlSpecial.put('%', "&#037;");
-		htmlSpecial.put('\'', "&#039;");
-		htmlSpecial.put('(', "&#040;");
-		htmlSpecial.put(')', "&#041;");
-		htmlSpecial.put('*', "&#042;");
-		htmlSpecial.put('+', "&#043;");
-		htmlSpecial.put(',', "&#044;");
-		htmlSpecial.put('-', "&#045;");
-		htmlSpecial.put('.', "&#046;");
-		htmlSpecial.put('/', "&#047;");
-		htmlSpecial.put(':', "&#058;");
-		htmlSpecial.put(';', "&#059;");
-		htmlSpecial.put('=', "&#061;");
-		htmlSpecial.put('?', "&#063;");
-		htmlSpecial.put('@', "&#064;");
-		htmlSpecial.put('[', "&#091;");
-		htmlSpecial.put('\\', "&#092;");
-		htmlSpecial.put(']', "&#093;");
-		htmlSpecial.put('^', "&#094;");
-		htmlSpecial.put('_', "&#095;");
-		htmlSpecial.put('`', "&#096;");
-		htmlSpecial.put('{', "&#123;");
-		htmlSpecial.put('|', "&#124;");
-		htmlSpecial.put('}', "&#125;");
-		htmlSpecial.put('~', "&#126;");
+		htmlSpecials.put('<', "&lt;");
+		htmlSpecials.put('>', "&gt;");
+		htmlSpecials.put('&', "&amp;");
+		htmlSpecials.put('\"', "&quot;");
+		htmlSpecials.put('\t', "&#009;");
+		htmlSpecials.put('!', "&#033;");
+		htmlSpecials.put('#', "&#035;");
+		htmlSpecials.put('$', "&#036;");
+		htmlSpecials.put('%', "&#037;");
+		htmlSpecials.put('\'', "&#039;");
+		htmlSpecials.put('(', "&#040;");
+		htmlSpecials.put(')', "&#041;");
+		htmlSpecials.put('*', "&#042;");
+		htmlSpecials.put('+', "&#043;");
+		htmlSpecials.put(',', "&#044;");
+		htmlSpecials.put('-', "&#045;");
+		htmlSpecials.put('.', "&#046;");
+		htmlSpecials.put('/', "&#047;");
+		htmlSpecials.put(':', "&#058;");
+		htmlSpecials.put(';', "&#059;");
+		htmlSpecials.put('=', "&#061;");
+		htmlSpecials.put('?', "&#063;");
+		htmlSpecials.put('@', "&#064;");
+		htmlSpecials.put('[', "&#091;");
+		htmlSpecials.put('\\', "&#092;");
+		htmlSpecials.put(']', "&#093;");
+		htmlSpecials.put('^', "&#094;");
+		htmlSpecials.put('_', "&#095;");
+		htmlSpecials.put('`', "&#096;");
+		htmlSpecials.put('{', "&#123;");
+		htmlSpecials.put('|', "&#124;");
+		htmlSpecials.put('}', "&#125;");
+		htmlSpecials.put('~', "&#126;");
 	}
 
 	private static void urlSpecial() {
-		urlSpecial.put(' ', "%20");
-		urlSpecial.put('"', "%22");
-		urlSpecial.put('<', "%3c");
-		urlSpecial.put('>', "%3e");
-		urlSpecial.put('#', "%23");
-		urlSpecial.put('%', "%25");
-		urlSpecial.put('{', "%7b");
-		urlSpecial.put('}', "%7d");
-		urlSpecial.put('|', "%7c");
-		urlSpecial.put('\\', "%5c");
-		urlSpecial.put('^', "%5e");
-		urlSpecial.put('~', "%7e");
-		urlSpecial.put('[', "%5b");
-		urlSpecial.put(']', "%5d");
-		urlSpecial.put('`', "%60");
+		urlSpecials.put(' ', "%20");
+		urlSpecials.put('"', "%22");
+		urlSpecials.put('<', "%3c");
+		urlSpecials.put('>', "%3e");
+		urlSpecials.put('#', "%23");
+		urlSpecials.put('%', "%25");
+		urlSpecials.put('{', "%7b");
+		urlSpecials.put('}', "%7d");
+		urlSpecials.put('|', "%7c");
+		urlSpecials.put('\\', "%5c");
+		urlSpecials.put('^', "%5e");
+		urlSpecials.put('~', "%7e");
+		urlSpecials.put('[', "%5b");
+		urlSpecials.put(']', "%5d");
+		urlSpecials.put('`', "%60");
 	}
 
 	private static void xmlSpecial() {
-		xmlSpecial.put('<', "&lt;");
-		xmlSpecial.put('>', "&gt;");
-		xmlSpecial.put('\"', "&quot;");
-		xmlSpecial.put('\'', "&#039;");
-		xmlSpecial.put('&', "&amp;");
+		xmlSpecials.put('<', "&lt;");
+		xmlSpecials.put('>', "&gt;");
+		xmlSpecials.put('\"', "&quot;");
+		xmlSpecials.put('\'', "&#039;");
+		xmlSpecials.put('&', "&amp;");
 	}
 
 	private static void jsonSpecial() {
-		jsonSpecial.put('\"', "\\\"");
-		jsonSpecial.put('\\', "\\\\");
-		jsonSpecial.put('/', "\\/");
-		jsonSpecial.put('\b', "\\b");
-		jsonSpecial.put('\f', "\\f");
-		jsonSpecial.put('\n', "\\n");
-		jsonSpecial.put('\r', "\\r");
-		jsonSpecial.put('\t', "\\t");
+		jsonSpecials.put('\"', "\\\"");
+		jsonSpecials.put('\\', "\\\\");
+		jsonSpecials.put('/', "\\/");
+		jsonSpecials.put('\b', "\\b");
+		jsonSpecials.put('\f', "\\f");
+		jsonSpecials.put('\n', "\\n");
+		jsonSpecials.put('\r', "\\r");
+		jsonSpecials.put('\t', "\\t");
 	}
 
 	public static String escapeRegexp(String value) {
-		return escape(value, regexpSpecial);
+		return escape(value, regexpSpecials);
 	}
 
 	public static String escapeHtml(String value) {
-		return escape(value, htmlSpecial);
+		return escape(value, htmlSpecials);
 	}
 
 	public static String escapeUrl(String value) {
-		return escape(value, urlSpecial);
+		return escape(value, urlSpecials);
 	}
 
 	public static String escapeXml(String value) {
-		return escape(value, xmlSpecial);
+		return escape(value, xmlSpecials);
 	}
 	
 	public static String escapeJson(String value) {
-		return escape(value, jsonSpecial);
+		return escape(value, jsonSpecials);
 	}
 
 
 	public static String escape(String value, Map<Character, String> specials) {
+		if(value == null) {
+			throw new InvalidArgumentException("String cannot be null");
+		}
+		if(specials == null) {
+			throw new InvalidArgumentException("Map cannot be null");
+		}
 		StringBuffer sb = new StringBuffer(value);
 		int countOfReplacements = 0;
 		for (int i = 0; i < value.length(); i++) {
@@ -145,24 +152,24 @@ public class Escapes {
 		return sb.toString();
 	}
 
-	public static Map<Character, String> getRegexpspecial() {
-		return Maps.newHashMap(regexpSpecial);
+	public static Map<Character, String> getRegexpspecials() {
+		return Maps.newHashMap(regexpSpecials);
 	}
 
-	public static Map<Character, String> getHtmlspecial() {
-		return Maps.newHashMap(htmlSpecial);
+	public static Map<Character, String> getHtmlspecials() {
+		return Maps.newHashMap(htmlSpecials);
 	}
 
-	public static Map<Character, String> getUrlspecial() {
-		return Maps.newHashMap(urlSpecial);
+	public static Map<Character, String> getUrlspecials() {
+		return Maps.newHashMap(urlSpecials);
 	}
 
-	public static Map<Character, String> getXmlspecial() {
-		return Maps.newHashMap(xmlSpecial);
+	public static Map<Character, String> getXmlspecials() {
+		return Maps.newHashMap(xmlSpecials);
 	}
 
-	public static Map<Character, String> getJsonspecial() {
-		return Maps.newHashMap(jsonSpecial);
+	public static Map<Character, String> getJsonspecials() {
+		return Maps.newHashMap(jsonSpecials);
 	}
 
 }
