@@ -363,6 +363,13 @@ public class Maths {
 		}
 		return (double) (value - minValue) / (double) (maxValue - minValue);
 	}
+	
+	public static double normalize(long value, long minValue, long maxValue) {
+		if (value < minValue || value > maxValue) {
+			throw new OutOfRangeException(String.format("The value %d is out of the range: <%d, %d>", value, minValue, maxValue));
+		}
+		return (double) (value - minValue) / (double) (maxValue - minValue);
+	}
 
 	public static double normalize(float value, float minValue, float maxValue) {
 		if (value < minValue || value > maxValue) {
