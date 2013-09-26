@@ -1,8 +1,8 @@
 package pl.jsolve.sweetener.mapper;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested.NOT_EXISTING_NESTED_FIELD;
-import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo.NOT_EXISTING_FIELD;
+import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField.NOT_EXISTING_NESTED_FIELD;
+import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo.NOT_EXISTING_FIELD;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping.MAP_PARSING_INT_TO_ANNOTATION_CLASS;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
@@ -17,10 +17,12 @@ import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationMapping;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
-import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedFieldOnMapNested;
-import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapExactlyTo;
-import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedToFieldOnMapNested;
+import pl.jsolve.sweetener.mapper.stub.Grade;
+import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField;
+import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
+import pl.jsolve.sweetener.mapper.stub.StudentWithMapableGrade;
+import pl.jsolve.sweetener.mapper.stub.StudentWithMapableGradeSnapshot;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.hero.HeroDTO;
@@ -90,54 +92,42 @@ public class AnnotationDrivenMapperTest {
 		});
 
 		// then
-		assertThrowable(caughtException).withMessage(Hero.class + " is not mappable to " + Person.class).isThrown();
+		assertThrowable(caughtException).withMessageContaining(
+				Hero.class + " is not mappable to " + Person.class).isThrown();
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenTargetFieldOnMapExactlyToDoesNotExist() {
+	public void shouldThrowExceptionWhenTargetFieldDoesNotExist() {
 		// when
 		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
 
 			@Override
 			public void operate() throws Exception {
-				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedMapExactlyTo(), StudentSnapshot.class);
+				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedMapTo(), StudentSnapshot.class);
 			}
 		});
 
 		// then
-		assertThrowable(caughtException).withMessage(StudentSnapshot.class + " does not contain field " + NOT_EXISTING_FIELD).isThrown();
-	}
-
-	@Test
-	public void shouldThrowExceptionWhenFromNestedFieldOnMapNestedDoesNotExist() {
-		// when
-		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
-
-			@Override
-			public void operate() throws Exception {
-				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedFromNestedFieldOnMapNested(), StudentSnapshot.class);
-			}
-		});
-
-		// then
-		assertThrowable(caughtException).withMessage(
-				StudentWithBadlyAnnotatedFromNestedFieldOnMapNested.class + " does not contain field " + NOT_EXISTING_NESTED_FIELD)
+		assertThrowable(caughtException).withMessageContaining(
+				StudentSnapshot.class + " does not contain field '" + NOT_EXISTING_FIELD + "'")
 				.isThrown();
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenTargetFieldOnMapNestedDoesNotExist() {
+	public void shouldThrowExceptionWhenNestedSourceFieldDoesNotExist() {
 		// when
 		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
 
 			@Override
 			public void operate() throws Exception {
-				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedToFieldOnMapNested(), StudentSnapshot.class);
+				AnnotationDrivenMapper.map(new StudentWithBadlyAnnotatedFromNestedField(), StudentSnapshot.class);
 			}
 		});
 
 		// then
-		assertThrowable(caughtException).withMessage(StudentSnapshot.class + " does not contain field " + NOT_EXISTING_FIELD).isThrown();
+		assertThrowable(caughtException).withMessageContaining(
+				StudentWithBadlyAnnotatedFromNestedField.class + " does not contain field '" + NOT_EXISTING_NESTED_FIELD + "'")
+				.isThrown();
 	}
 
 	@Test
@@ -238,5 +228,20 @@ public class AnnotationDrivenMapperTest {
 		studentSnapshot.setStreet("Sunset Boulevard");
 		studentSnapshot.setPopulation(4022450L);
 		return studentSnapshot;
+	}
+
+	@Test
+	public void shouldMapStudentWithMappableGrade() {
+		// given
+		StudentWithMapableGrade studentWithMapableGrade = new StudentWithMapableGrade();
+		studentWithMapableGrade.setGrade(Grade.valueOf(5));
+
+		// when
+		StudentWithMapableGradeSnapshot studentWithMapableGradeSnapshot = AnnotationDrivenMapper.map(studentWithMapableGrade,
+				StudentWithMapableGradeSnapshot.class);
+
+		// then
+		assertThat(studentWithMapableGradeSnapshot.getGrade()).isNotSameAs(studentWithMapableGrade.getGrade());
+		assertThat(studentWithMapableGradeSnapshot.getGrade().getValue()).isEqualTo(studentWithMapableGrade.getGrade().getValue());
 	}
 }

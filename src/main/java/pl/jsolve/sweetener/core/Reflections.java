@@ -25,35 +25,22 @@ public final class Reflections {
 		throw new AssertionError("Using constructor of this class is prohibited.");
 	}
 
-	public static Object getFieldValue(Object o, String stringOfFieldsName) {
-
-		String[] fieldsName = stringOfFieldsName.split(DOT);
-		int levelOfNestedObject = 0;
-		Class<?> clazz = o.getClass();
-		while (!Object.class.equals(clazz)) {
-			Class<?> nestedClass = clazz;
-			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = getDeclaredField(nestedClass, fieldsName[i]);
-				if (field != null) {
-					boolean isLastNestedObject = (i == fieldsName.length - 1);
-					if (isLastNestedObject) {
-						return getFieldValue(o, field);
-					}
-					o = getFieldValue(o, field);
-					if (o == null) {
-						return null;
-					}
-					nestedClass = o.getClass();
-					levelOfNestedObject++;
-				}
-			}
-			clazz = clazz.getSuperclass();
-		}
-		throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
+	public static Class<?> getFieldType(Object object, String stringOfFieldsName) {
+		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		return field.getField().getType();
 	}
 
-	public static void setFieldValue(Object object, String stringOfFieldsName, Object value) {
+	public static Object getFieldValue(Object object, String stringOfFieldsName) {
+		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		return getFieldValue(field.getOwner(), field.getField());
+	}
 
+	public static void setFieldValue(Object object, String stringOfFieldsName, final Object value) {
+		FieldWithOwner objectField = getLastNestedField(object, stringOfFieldsName);
+		setField(objectField.getOwner(), objectField.getField(), value);
+	}
+
+	private static FieldWithOwner getLastNestedField(Object object, String stringOfFieldsName) {
 		String[] fieldsName = stringOfFieldsName.split(DOT);
 		int levelOfNestedObject = 0;
 		Class<?> clazz = object.getClass();
@@ -64,8 +51,7 @@ public final class Reflections {
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
-						setField(object, field, value);
-						return;
+						return new FieldWithOwner(field, object);
 					}
 					createValueIfNull(object, field);
 					object = getFieldValue(object, field);
@@ -87,7 +73,7 @@ public final class Reflections {
 				field.set(object, newInstance);
 			}
 		} catch (Exception ex) {
-			new InstanceCreationException("Could not create new instance of " + field.getType(), ex);
+			throw new InstanceCreationException("Could not create new instance of " + field.getType(), ex);
 		} finally {
 			field.setAccessible(false);
 		}
