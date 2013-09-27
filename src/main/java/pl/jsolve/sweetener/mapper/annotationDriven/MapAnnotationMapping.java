@@ -1,10 +1,11 @@
 package pl.jsolve.sweetener.mapper.annotationDriven;
 
+import static pl.jsolve.sweetener.core.Reflections.isFieldPresent;
+
 import java.lang.reflect.Field;
 import java.util.List;
 
 import pl.jsolve.sweetener.core.Reflections;
-import pl.jsolve.sweetener.exception.AccessToFieldException;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
@@ -25,7 +26,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 		List<Field> annotatedfields = Reflections.getFieldsAnnotatedBy(sourceObject, MAP_ANNOTATION_CLASS);
 		for (Field field : annotatedfields) {
 			Map mapAnnotation = field.getAnnotation(MAP_ANNOTATION_CLASS);
-			applyOnFieldWithAnnotations(sourceObject, targetObject, field, mapAnnotation);
+			applyOnFieldWithAnnotation(sourceObject, targetObject, field, mapAnnotation);
 		}
 	}
 
@@ -63,25 +64,22 @@ class MapAnnotationMapping implements AnnotationMapping {
 	}
 
 	private String getTargetFieldName(Field field, Map mapAnnotation) {
-		if (!mapAnnotation.to().isEmpty()) {
-			return mapAnnotation.to();
+		if (mapAnnotation.to().isEmpty()) {
+			return field.getName();
 		}
-		return field.getName();
+		return mapAnnotation.to();
 	}
 
-	private String getSourceFieldName(Field field, Map map) {
-		if (!map.fromNested().isEmpty()) {
-			return field.getName() + NESTING_CHARACTER + map.fromNested();
+	private String getSourceFieldName(Field field, Map mapAnnotation) {
+		if (mapAnnotation.fromNested().isEmpty()) {
+			return field.getName();
 		}
-		return field.getName();
+		return field.getName() + NESTING_CHARACTER + mapAnnotation.fromNested();
 	}
 
 	private void throwExceptionWhenFieldIsNotPresent(Object object, String fieldName) {
-		try {
-			Reflections.getFieldValue(object, fieldName);
-		} catch (AccessToFieldException e) {
-			throw new MappingException(
-					"%s does not contain field '%s'. Perhaps you misspelled field name in @Map(...) annotation?",
+		if (!isFieldPresent(object, fieldName)) {
+			throw new MappingException("%s does not contain field '%s'. Perhaps you misspelled field name in @Map(...) annotation?",
 					object.getClass(), fieldName);
 		}
 	}

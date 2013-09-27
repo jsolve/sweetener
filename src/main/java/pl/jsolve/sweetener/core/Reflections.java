@@ -27,17 +27,30 @@ public final class Reflections {
 
 	public static Class<?> getFieldType(Object object, String stringOfFieldsName) {
 		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
 		return field.getField().getType();
 	}
 
 	public static Object getFieldValue(Object object, String stringOfFieldsName) {
 		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
 		return getFieldValue(field.getOwner(), field.getField());
 	}
 
 	public static void setFieldValue(Object object, String stringOfFieldsName, final Object value) {
-		FieldWithOwner objectField = getLastNestedField(object, stringOfFieldsName);
-		setField(objectField.getOwner(), objectField.getField(), value);
+		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
+		setField(field.getOwner(), field.getField(), value);
+	}
+
+	private static void throwExceptonWhenFieldIsNotPresent(FieldWithOwner field, String stringOfFieldsName) {
+		if (field == null) {
+			throw new AccessToFieldException("The field %s does not exist", stringOfFieldsName);
+		}
+	}
+
+	public static boolean isFieldPresent(Object object, String stringOfFieldsName) {
+		return getLastNestedField(object, stringOfFieldsName) != null;
 	}
 
 	private static FieldWithOwner getLastNestedField(Object object, String stringOfFieldsName) {
@@ -61,7 +74,7 @@ public final class Reflections {
 			}
 			clazz = clazz.getSuperclass();
 		}
-		throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
+		return null;
 	}
 
 	private static void createValueIfNull(Object object, Field field) {

@@ -1,7 +1,8 @@
 package pl.jsolve.sweetener.mapper.annotationDriven;
 
+import static java.util.Collections.synchronizedList;
+
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 
 public final class AnnotationDrivenMapper {
 
-	private static final List<AnnotationMapping> MAPPINGS = Collections.synchronizedList(new LinkedList<AnnotationMapping>());
+	private static final List<AnnotationMapping> MAPPINGS = synchronizedList(new LinkedList<AnnotationMapping>());
 
 	private AnnotationDrivenMapper() {
 		throw new AssertionError("Using constructor of this class is prohibited.");
