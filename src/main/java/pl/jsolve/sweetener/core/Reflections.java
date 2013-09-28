@@ -25,35 +25,35 @@ public final class Reflections {
 		throw new AssertionError("Using constructor of this class is prohibited.");
 	}
 
-	public static Object getFieldValue(Object o, String stringOfFieldsName) {
-
-		String[] fieldsName = stringOfFieldsName.split(DOT);
-		int levelOfNestedObject = 0;
-		Class<?> clazz = o.getClass();
-		while (!Object.class.equals(clazz)) {
-			Class<?> nestedClass = clazz;
-			for (int i = levelOfNestedObject; i < fieldsName.length; i++) {
-				Field field = getDeclaredField(nestedClass, fieldsName[i]);
-				if (field != null) {
-					boolean isLastNestedObject = (i == fieldsName.length - 1);
-					if (isLastNestedObject) {
-						return getFieldValue(o, field);
-					}
-					o = getFieldValue(o, field);
-					if (o == null) {
-						return null;
-					}
-					nestedClass = o.getClass();
-					levelOfNestedObject++;
-				}
-			}
-			clazz = clazz.getSuperclass();
-		}
-		throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
+	public static Class<?> getFieldType(Object object, String stringOfFieldsName) {
+		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
+		return field.getField().getType();
 	}
 
-	public static void setFieldValue(Object object, String stringOfFieldsName, Object value) {
+	public static Object getFieldValue(Object object, String stringOfFieldsName) {
+		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
+		return getFieldValue(field.getOwner(), field.getField());
+	}
 
+	public static void setFieldValue(Object object, String stringOfFieldsName, final Object value) {
+		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
+		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
+		setField(field.getOwner(), field.getField(), value);
+	}
+
+	private static void throwExceptonWhenFieldIsNotPresent(FieldWithOwner field, String stringOfFieldsName) {
+		if (field == null) {
+			throw new AccessToFieldException("The field %s does not exist", stringOfFieldsName);
+		}
+	}
+
+	public static boolean isFieldPresent(Object object, String stringOfFieldsName) {
+		return getLastNestedField(object, stringOfFieldsName) != null;
+	}
+
+	private static FieldWithOwner getLastNestedField(Object object, String stringOfFieldsName) {
 		String[] fieldsName = stringOfFieldsName.split(DOT);
 		int levelOfNestedObject = 0;
 		Class<?> clazz = object.getClass();
@@ -64,8 +64,7 @@ public final class Reflections {
 				if (field != null) {
 					boolean isLastNestedObject = (i == fieldsName.length - 1);
 					if (isLastNestedObject) {
-						setField(object, field, value);
-						return;
+						return new FieldWithOwner(field, object);
 					}
 					createValueIfNull(object, field);
 					object = getFieldValue(object, field);
@@ -75,7 +74,7 @@ public final class Reflections {
 			}
 			clazz = clazz.getSuperclass();
 		}
-		throw new AccessToFieldException("The field %s does not exist", fieldsName[levelOfNestedObject]);
+		return null;
 	}
 
 	private static void createValueIfNull(Object object, Field field) {
@@ -87,7 +86,7 @@ public final class Reflections {
 				field.set(object, newInstance);
 			}
 		} catch (Exception ex) {
-			new InstanceCreationException("Could not create new instance of " + field.getType(), ex);
+			throw new InstanceCreationException("Could not create new instance of " + field.getType(), ex);
 		} finally {
 			field.setAccessible(false);
 		}
@@ -123,9 +122,8 @@ public final class Reflections {
 		}
 	}
 
-	public static List<Class<?>> getClassesSatisfyingCondition(Object object, Condition<Class<?>> classesCondition) {
+	public static List<Class<?>> getClassesSatisfyingCondition(Class<?> clazz, Condition<Class<?>> classesCondition) {
 		List<Class<?>> classes = new ArrayList<>();
-		Class<?> clazz = object.getClass();
 		classes.add(clazz);
 		while (!Object.class.equals(clazz)) {
 			clazz = clazz.getSuperclass();
@@ -134,6 +132,14 @@ public final class Reflections {
 			}
 		}
 		return classes;
+	}
+
+	public static List<Class<?>> getClassesSatisfyingCondition(Object object, Condition<Class<?>> classesCondition) {
+		return getClassesSatisfyingCondition(object.getClass(), classesCondition);
+	}
+
+	public static List<Class<?>> getClasses(Class<?> clazz) {
+		return getClassesSatisfyingCondition(clazz, ALWAYS_SATISFIED_CLASS_CONDITION);
 	}
 
 	public static List<Class<?>> getClasses(Object object) {

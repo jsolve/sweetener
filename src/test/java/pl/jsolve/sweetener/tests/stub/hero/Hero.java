@@ -1,20 +1,20 @@
 package pl.jsolve.sweetener.tests.stub.hero;
 
 import pl.jsolve.sweetener.comparer.byId.ComparableById;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.ExactlyToMappings;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
 
 @MappableTo({ HeroSnapshot.class, HeroDTO.class })
 public class Hero implements ComparableById {
 
-	@MapExactlyTo("id")
+	@Map
 	private Long id;
 	private String firstName;
 	private String lastName;
-	@ExactlyToMappings({
-		@MapExactlyTo(value = "name", of = HeroSnapshot.class),
-		@MapExactlyTo(value = "nickname", of = HeroDTO.class),
+	@Mappings({
+		@Map(to = "name", of = HeroSnapshot.class),
+		@Map(to = "nickname", of = HeroDTO.class),
 	})
 	private String nickname;
 

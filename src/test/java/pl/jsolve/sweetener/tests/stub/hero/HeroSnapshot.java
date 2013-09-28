@@ -1,12 +1,12 @@
 package pl.jsolve.sweetener.tests.stub.hero;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 
 @MappableTo(Hero.class)
 public class HeroSnapshot {
 
-	@MapExactlyTo("id")
+	@Map
 	private Long id;
 	private String name;
 
