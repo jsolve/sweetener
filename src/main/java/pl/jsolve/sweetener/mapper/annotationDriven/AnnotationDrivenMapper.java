@@ -44,6 +44,9 @@ public final class AnnotationDrivenMapper {
 	}
 
 	public static <T, V> boolean isMappableToTargetClass(T object, Class<V> targetClass) {
+		if (object == null) {
+			return false;
+		}
 		MappableTo mappableTo = object.getClass().getAnnotation(MappableTo.class);
 		return mappableTo != null && Arrays.asList(mappableTo.value()).contains(targetClass);
 	}

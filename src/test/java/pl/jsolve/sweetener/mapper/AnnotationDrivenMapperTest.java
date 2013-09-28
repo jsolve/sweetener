@@ -20,6 +20,8 @@ import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 import pl.jsolve.sweetener.mapper.stub.Grade;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo;
+import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsInteger;
+import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsString;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapableGrade;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapableGradeSnapshot;
@@ -243,5 +245,19 @@ public class AnnotationDrivenMapperTest {
 		// then
 		assertThat(studentWithMapableGradeSnapshot.getGrade()).isNotSameAs(studentWithMapableGrade.getGrade());
 		assertThat(studentWithMapableGradeSnapshot.getGrade().getValue()).isEqualTo(studentWithMapableGrade.getGrade().getValue());
+	}
+
+	@Test
+	public void shouldMapStudentWithGradeAsIntegerToStudentWithGradeAsString() {
+		// given
+		StudentWithGradeAsInteger studentWithGradeAsInteger = new StudentWithGradeAsInteger();
+		studentWithGradeAsInteger.setGrade(5);
+
+		// when
+		StudentWithGradeAsString studentWithGradeAsString = AnnotationDrivenMapper.map(studentWithGradeAsInteger,
+				StudentWithGradeAsString.class);
+
+		// then
+		assertThat(studentWithGradeAsString.getGrade()).isEqualTo(studentWithGradeAsInteger.getGrade().toString());
 	}
 }

@@ -122,9 +122,8 @@ public final class Reflections {
 		}
 	}
 
-	public static List<Class<?>> getClassesSatisfyingCondition(Object object, Condition<Class<?>> classesCondition) {
+	public static List<Class<?>> getClassesSatisfyingCondition(Class<?> clazz, Condition<Class<?>> classesCondition) {
 		List<Class<?>> classes = new ArrayList<>();
-		Class<?> clazz = object.getClass();
 		classes.add(clazz);
 		while (!Object.class.equals(clazz)) {
 			clazz = clazz.getSuperclass();
@@ -133,6 +132,14 @@ public final class Reflections {
 			}
 		}
 		return classes;
+	}
+
+	public static List<Class<?>> getClassesSatisfyingCondition(Object object, Condition<Class<?>> classesCondition) {
+		return getClassesSatisfyingCondition(object.getClass(), classesCondition);
+	}
+
+	public static List<Class<?>> getClasses(Class<?> clazz) {
+		return getClassesSatisfyingCondition(clazz, ALWAYS_SATISFIED_CLASS_CONDITION);
 	}
 
 	public static List<Class<?>> getClasses(Object object) {

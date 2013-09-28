@@ -5,6 +5,7 @@ import static pl.jsolve.sweetener.core.Reflections.isFieldPresent;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import pl.jsolve.sweetener.converter.TypeConverter;
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
@@ -54,7 +55,8 @@ class MapAnnotationMapping implements AnnotationMapping {
 
 			Class<?> targetFieldType = Reflections.getFieldType(targetObject, targetFieldName);
 			Object sourceFieldValue = Reflections.getFieldValue(sourceObject, sourceFieldName);
-			sourceFieldValue = mapSourceFieldToTargetField(sourceFieldValue, targetFieldType);
+			sourceFieldValue = tryToMapFields(sourceFieldValue, targetFieldType);
+			sourceFieldValue = tryToConvertTypes(sourceFieldValue, targetFieldType);
 			Reflections.setFieldValue(targetObject, targetFieldName, sourceFieldValue);
 		}
 	}
@@ -84,9 +86,16 @@ class MapAnnotationMapping implements AnnotationMapping {
 		}
 	}
 
-	private Object mapSourceFieldToTargetField(Object sourceFieldValue, Class<?> targetFieldType) {
+	private Object tryToMapFields(Object sourceFieldValue, Class<?> targetFieldType) {
 		if (AnnotationDrivenMapper.isMappableToTargetClass(sourceFieldValue, targetFieldType)) {
 			return AnnotationDrivenMapper.map(sourceFieldValue, targetFieldType);
+		}
+		return sourceFieldValue;
+	}
+
+	private Object tryToConvertTypes(Object sourceFieldValue, Class<?> targetFieldType) {
+		if (!sourceFieldValue.getClass().equals(targetFieldType) && !targetFieldType.isPrimitive()) {
+			return TypeConverter.convert(sourceFieldValue, targetFieldType);
 		}
 		return sourceFieldValue;
 	}
