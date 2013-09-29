@@ -31,6 +31,7 @@ import pl.jsolve.sweetener.tests.stub.hero.HeroDTO;
 import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
 import pl.jsolve.sweetener.tests.stub.person.Address;
 import pl.jsolve.sweetener.tests.stub.person.City;
+import pl.jsolve.sweetener.tests.stub.person.FieldOfStudy;
 import pl.jsolve.sweetener.tests.stub.person.Student;
 import pl.jsolve.sweetener.tests.stub.person.StudentDTO;
 import pl.jsolve.sweetener.tests.stub.person.StudentSnapshot;
@@ -172,6 +173,7 @@ public class AnnotationDrivenMapperTest {
 		assertThat(studentSnapshot.getStreet()).isEqualTo(student.getAddress().getStreet());
 		assertThat(studentSnapshot.getAddress()).isEqualTo(student.getAddress().getCity().getName());
 		assertThat(studentSnapshot.getPopulation()).isEqualTo(student.getAddress().getCity().getPopulation());
+		assertThat(studentSnapshot.getFieldOfStudy()).isEqualTo(String.valueOf(student.getFieldOfStudy()));
 	}
 
 	@Test
@@ -195,6 +197,7 @@ public class AnnotationDrivenMapperTest {
 		student.setLastName("White");
 		student.setSemester(3);
 		student.setAge(20);
+		student.setFieldOfStudy(FieldOfStudy.COMPUTER_SCIENCE);
 		Address address = new Address();
 		address.setStreet("street1");
 		address.setCity(new City("New York", 8336697L));
@@ -258,6 +261,20 @@ public class AnnotationDrivenMapperTest {
 				StudentWithGradeAsString.class);
 
 		// then
-		assertThat(studentWithGradeAsString.getGrade()).isEqualTo(studentWithGradeAsInteger.getGrade().toString());
+		assertThat(studentWithGradeAsString.getGrade()).isEqualTo(String.valueOf(studentWithGradeAsInteger.getGrade()));
+	}
+
+	@Test
+	public void shouldMapStudentWithGradeAsStringToStudentWithGradeAsInteger() {
+		// given
+		StudentWithGradeAsString studentWithGradeAsString = new StudentWithGradeAsString();
+		studentWithGradeAsString.setGrade("5");
+
+		// when
+		StudentWithGradeAsInteger studentWithGradeAsInteger = AnnotationDrivenMapper.map(studentWithGradeAsString,
+				StudentWithGradeAsInteger.class);
+
+		// then
+		assertThat(studentWithGradeAsInteger.getGrade()).isEqualTo(Integer.parseInt(studentWithGradeAsString.getGrade()));
 	}
 }

@@ -125,7 +125,7 @@ public final class Reflections {
 	public static List<Class<?>> getClassesSatisfyingCondition(Class<?> clazz, Condition<Class<?>> classesCondition) {
 		List<Class<?>> classes = new ArrayList<>();
 		classes.add(clazz);
-		while (!Object.class.equals(clazz)) {
+		while (!Object.class.equals(clazz) && !clazz.isInterface()) {
 			clazz = clazz.getSuperclass();
 			if (classesCondition.isSatisfied(clazz)) {
 				classes.add(clazz);

@@ -5,6 +5,7 @@ import static pl.jsolve.sweetener.core.Reflections.getClasses;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import pl.jsolve.sweetener.exception.ConversionException;
@@ -19,8 +20,8 @@ public final class TypeConverter {
 
 	static {
 		registerConverter(new BooleanToIntegerConverter());
-		registerConverter(new IntegerToBooleanConverter());
 		registerConverter(new ObjectToStringConverter());
+
 		registerConverter(new StringToBooleanConverter());
 		registerConverter(new StringToNumberConverter());
 		registerConverter(new StringToIntegerConverter());
@@ -31,6 +32,41 @@ public final class TypeConverter {
 		registerConverter(new StringToByteConverter());
 		registerConverter(new StringToDoubleConverter());
 		registerConverter(new StringToFloatConverter());
+
+		registerConverter(new IntegerToBooleanConverter());
+		registerConverter(new IntegerToBigDecimalConverter());
+		registerConverter(new IntegerToBigIntegerConverter());
+		registerConverter(new IntegerToByteConverter());
+		registerConverter(new IntegerToDoubleConverter());
+		registerConverter(new IntegerToFloatConverter());
+		registerConverter(new IntegerToLongConverter());
+		registerConverter(new IntegerToShortConverter());
+
+		registerConverter(new BigDecimalToIntegerConverter());
+		registerConverter(new BigDecimalToBigIntegerConverter());
+		registerConverter(new BigDecimalToBooleanConverter());
+		registerConverter(new BigDecimalToByteConverter());
+		registerConverter(new BigDecimalToDoubleConverter());
+		registerConverter(new BigDecimalToFloatConverter());
+		registerConverter(new BigDecimalToLongConverter());
+		registerConverter(new BigDecimalToShortConverter());
+
+		registerConverter(new ArrayToSetConverter());
+		registerConverter(new ArrayToTreeSetConverter());
+		registerConverter(new ArrayToLinkedHashSetConverter());
+		registerConverter(new ArrayToListConverter());
+		registerConverter(new ArrayToLinkedListConverter());
+
+		registerConverter(new ListToStringArrayConverter());
+		registerConverter(new ListToBooleanArrayConverter());
+		registerConverter(new ListToByteArrayConverter());
+		registerConverter(new ListToCharacterArrayConverter());
+		registerConverter(new ListToDoubleArrayConverter());
+		registerConverter(new ListToFloatArrayConverter());
+		registerConverter(new ListToIntegerArrayConverter());
+		registerConverter(new ListToLongArrayConverter());
+		registerConverter(new ListToShortArrayConverter());
+		registerConverter(new ListToObjectArrayConverter());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -41,7 +77,7 @@ public final class TypeConverter {
 		registerConverter(sourceClass, targetClass, converter);
 	}
 
-	public static <S, T> void registerConverter(Class<S> sourceClass, Class<T> targetClass, Converter<S, T> converter) {
+	public static <S, T> void registerConverter(Class<S> sourceClass, Class<T> targetClass, Converter<? super S, ? super T> converter) {
 		String converterId = createConverterId(sourceClass, targetClass);
 		CONVERTERS.put(converterId, converter);
 	}
@@ -52,14 +88,17 @@ public final class TypeConverter {
 	}
 
 	private static String createConverterId(Class<?> sourceClass, Class<?> targetClass) {
+		if (sourceClass.isArray()) {
+			sourceClass = Object[].class;
+		}
 		return String.format("%s:to:%s", sourceClass.getName(), targetClass.getName());
 	}
 
 	public static <S, T> T convert(S source, Class<T> targetClass) {
-		if(source == null) {
+		if (source == null) {
 			return null;
 		}
-		if(isCastableToClass(source, targetClass)) {
+		if (isCastableToClass(source, targetClass)) {
 			return targetClass.cast(source);
 		}
 		return tryToConvertUsingRegisteredConverters(source, targetClass);
@@ -79,8 +118,8 @@ public final class TypeConverter {
 	}
 
 	private static <S, T> Converter<S, T> getSuitableConverter(S source, Class<T> targetClass) {
-		for (Class<?> sourceClazz : getClasses(source)) {
-			for (Class<?> targetClazz : getClasses(targetClass)) {
+		for (Class<?> sourceClazz : getClassesAndInterfacesOf(source.getClass())) {
+			for (Class<?> targetClazz : getClassesAndInterfacesOf(targetClass)) {
 				String converterId = createConverterId(sourceClazz, targetClazz);
 				Converter<S, T> converter = (Converter<S, T>) CONVERTERS.get(converterId);
 				if (converter != null) {
@@ -90,5 +129,11 @@ public final class TypeConverter {
 		}
 		throw new ConversionException("No suitable converter was found. Use registerConverter() method to add your own converter",
 				source.getClass(), targetClass);
+	}
+
+	private static List<Class<?>> getClassesAndInterfacesOf(Class<?> targetClass) {
+		List<Class<?>> classes = getClasses(targetClass);
+		java.util.Collections.addAll(classes, targetClass.getInterfaces());
+		return classes;
 	}
 }

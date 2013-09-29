@@ -6,9 +6,17 @@ import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
+import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.exception.ConversionException;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
@@ -333,5 +341,460 @@ public class TypeConverterTest {
 		assertThat(person.getLastName()).isEqualTo(hero.getLastName());
 
 		TypeConverter.unregisterConverter(Hero.class, Person.class);
+	}
+
+	// integer to numbers conversion
+
+	@Test
+	public void shouldConvertIntegerToBigDecimal() {
+		// given
+		Integer integer = 12;
+
+		// when
+		BigDecimal result = TypeConverter.convert(integer, BigDecimal.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToBigInteger() {
+		// given
+		Integer integer = 12;
+
+		// when
+		BigInteger result = TypeConverter.convert(integer, BigInteger.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToByte() {
+		// given
+		Integer integer = 12;
+
+		// when
+		Byte result = TypeConverter.convert(integer, Byte.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToDouble() {
+		// given
+		Integer integer = 12;
+
+		// when
+		Double result = TypeConverter.convert(integer, Double.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToFloat() {
+		// given
+		Integer integer = 12;
+
+		// when
+		Float result = TypeConverter.convert(integer, Float.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToLong() {
+		// given
+		Integer integer = 12;
+
+		// when
+		Long result = TypeConverter.convert(integer, Long.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToNumber() {
+		// given
+		Integer integer = 12;
+
+		// when
+		Number result = TypeConverter.convert(integer, Number.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToShort() {
+		// given
+		Integer integer = 12;
+
+		// when
+		Short result = TypeConverter.convert(integer, Short.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(integer);
+	}
+
+	@Test
+	public void shouldConvertIntegerToInteger() {
+		// given
+		Integer integer = 12;
+
+		// when
+		Integer result = TypeConverter.convert(integer, Integer.class);
+
+		// then
+		assertThat(result).isEqualTo(integer);
+	}
+
+	// BigDecimal to numbers conversion
+
+	@Test
+	public void shouldConvertBigDecimalToInteger() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		Integer result = TypeConverter.convert(bigDecimal, Integer.class);
+
+		// then
+		assertThat(result).isEqualTo(bigDecimal.intValue());
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToBigInteger() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		BigInteger result = TypeConverter.convert(bigDecimal, BigInteger.class);
+
+		// then
+		assertThat(result.intValue()).isEqualTo(bigDecimal.intValue());
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToBoolean() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.ZERO;
+
+		// when
+		Boolean result = TypeConverter.convert(bigDecimal, Boolean.class);
+
+		// then
+		assertThat(result).isFalse();
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToBoolean2() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		Boolean result = TypeConverter.convert(bigDecimal, Boolean.class);
+
+		// then
+		assertThat(result).isTrue();
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToByte() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		Byte result = TypeConverter.convert(bigDecimal, Byte.class);
+
+		// then
+		assertThat(result).isEqualTo(bigDecimal.byteValue());
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToDouble() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		Double result = TypeConverter.convert(bigDecimal, Double.class);
+
+		// then
+		assertThat(result).isEqualTo(bigDecimal.doubleValue());
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToFloat() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		Float result = TypeConverter.convert(bigDecimal, Float.class);
+
+		// then
+		assertThat(result).isEqualTo(bigDecimal.floatValue());
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToLong() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		Long result = TypeConverter.convert(bigDecimal, Long.class);
+
+		// then
+		assertThat(result).isEqualTo(bigDecimal.longValue());
+	}
+
+	@Test
+	public void shouldConvertBigDecimalToShort() {
+		// given
+		BigDecimal bigDecimal = BigDecimal.TEN;
+
+		// when
+		Short result = TypeConverter.convert(bigDecimal, Short.class);
+
+		// then
+		assertThat(result).isEqualTo(bigDecimal.shortValue());
+	}
+
+	// array to collections
+
+	@Test
+	public void shouldConvertArrayToHashSet() {
+		// given
+		Integer[] arrayOfIntegers = new Integer[] { 1, 2, 3 };
+
+		// when
+		HashSet<Integer> result = TypeConverter.convert(arrayOfIntegers, HashSet.class);
+
+		// then
+		assertThat(result).contains(1, 2, 3);
+	}
+
+	@Test
+	public void shouldConvertArrayToSet() {
+		// given
+		Integer[] arrayOfIntegers = new Integer[] { 1, 2, 3 };
+
+		// when
+		Set<Integer> result = TypeConverter.convert(arrayOfIntegers, Set.class);
+
+		// then
+		assertThat(result).contains(1, 2, 3);
+	}
+
+	@Test
+	public void shouldConvertArrayToTreeSet() {
+		// given
+		Integer[] arrayOfIntegers = new Integer[] { 1, 2, 3 };
+
+		// when
+		TreeSet<Integer> result = TypeConverter.convert(arrayOfIntegers, TreeSet.class);
+
+		// then
+		assertThat(result).contains(1, 2, 3);
+	}
+
+	@Test
+	public void shouldConvertArrayToLinkedHashSet() {
+		// given
+		String[] arrayOfStrings = new String[] { "one", "two", "three" };
+
+		// when
+		LinkedHashSet<String> result = TypeConverter.convert(arrayOfStrings, LinkedHashSet.class);
+
+		// then
+		assertThat(result).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertArrayToArrayList() {
+		// given
+		Integer[] arrayOfIntegers = new Integer[] { 1, 2, 3 };
+
+		// when
+		ArrayList<Integer> result = TypeConverter.convert(arrayOfIntegers, ArrayList.class);
+
+		// then
+		assertThat(result).containsExactly(1, 2, 3);
+	}
+
+	@Test
+	public void shouldConvertArrayToArrayList2() {
+		// given
+		String[] arrayOfStrings = new String[] { "one", "two", "three" };
+
+		// when
+		ArrayList<String> result = TypeConverter.convert(arrayOfStrings, ArrayList.class);
+
+		// then
+		assertThat(result).containsExactly("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertArrayToList() {
+		// given
+		String[] arrayOfStrings = new String[] { "one", "two", "three" };
+
+		// when
+		ArrayList<String> result = TypeConverter.convert(arrayOfStrings, ArrayList.class);
+
+		// then
+		assertThat(result).containsExactly("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertArrayToLinkedList() {
+		// given
+		Integer[] arrayOfIntegers = new Integer[] { 1, 2, 3 };
+
+		// when
+		LinkedList<Integer> result = TypeConverter.convert(arrayOfIntegers, LinkedList.class);
+
+		// then
+		assertThat(result).containsExactly(1, 2, 3);
+	}
+
+	// lists to array conversion
+	@Test
+	public void shouldConvertListToStringsArray() {
+		// given
+		List<String> listOfStrings = Collections.newArrayList("one", "two", "three");
+
+		// when
+		String[] result = TypeConverter.convert(listOfStrings, String[].class);
+
+		// then
+		assertThat(result).containsOnly("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertListToBooleanArray() {
+		// given
+		List<Boolean> list = Collections.newArrayList(true, false, false);
+
+		// when
+		Boolean[] result = TypeConverter.convert(list, Boolean[].class);
+
+		// then
+		assertThat(result).containsOnly(true, false, false);
+	}
+
+	@Test
+	public void shouldConvertListToByteArray() {
+		// given
+		List<Byte> list = Collections.newArrayList(Byte.MIN_VALUE, Byte.MAX_VALUE);
+
+		// when
+		Byte[] result = TypeConverter.convert(list, Byte[].class);
+
+		// then
+		assertThat(result).containsOnly(Byte.MAX_VALUE, Byte.MIN_VALUE);
+	}
+
+	@Test
+	public void shouldConvertListToCharArray() {
+		// given
+		List<Character> list = Collections.newArrayList('a', 'b', 'c');
+
+		// when
+		Character[] result = TypeConverter.convert(list, Character[].class);
+
+		// then
+		assertThat(result).containsOnly('a', 'b', 'c');
+	}
+
+	@Test
+	public void shouldConvertListToDoubleArray() {
+		// given
+		List<Double> list = Collections.newArrayList(0.1, 0.2, 0.3);
+
+		// when
+		Double[] result = TypeConverter.convert(list, Double[].class);
+
+		// then
+		assertThat(result).containsOnly(0.1, 0.2, 0.3);
+	}
+
+	@Test
+	public void shouldConvertListToFloatArray() {
+		// given
+		List<Float> list = Collections.newArrayList(0.1f, 0.2f, 0.3f);
+
+		// when
+		Float[] result = TypeConverter.convert(list, Float[].class);
+
+		// then
+		assertThat(result).containsOnly(0.1f, 0.2f, 0.3f);
+	}
+
+	@Test
+	public void shouldConvertListToIntegerArray() {
+		// given
+		List<Integer> list = Collections.newArrayList(1, 2, 3);
+
+		// when
+		Integer[] result = TypeConverter.convert(list, Integer[].class);
+
+		// then
+		assertThat(result).containsOnly(1, 2, 3);
+	}
+
+	@Test
+	public void shouldConvertListToLongArray() {
+		// given
+		List<Long> list = Collections.newArrayList(1L, 2L, 3L);
+
+		// when
+		Long[] result = TypeConverter.convert(list, Long[].class);
+
+		// then
+		assertThat(result).containsOnly(1L, 2L, 3L);
+	}
+
+	@Test
+	public void shouldConvertListToShortArray() {
+		// given
+		List<Short> list = Collections.newArrayList(Short.MIN_VALUE, Short.MAX_VALUE);
+
+		// when
+		Short[] result = TypeConverter.convert(list, Short[].class);
+
+		// then
+		assertThat(result).containsOnly(Short.MIN_VALUE, Short.MAX_VALUE);
+	}
+
+	@Test
+	public void shouldConvertListToObjectArray() {
+		// given
+		Object object = new Object();
+		List<Object> list = Collections.newArrayList(object);
+
+		// when
+		Object[] result = TypeConverter.convert(list, Object[].class);
+
+		// then
+		assertThat(result).containsOnly(object);
+	}
+
+	@Test
+	public void shouldNotConvertListToArrayWithDifferentElementsType() {
+		// when
+		ConversionException caughtException = tryToCatch(ConversionException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				TypeConverter.convert(Collections.newArrayList("one", "two", "three"), Integer[].class);
+			}
+		});
+
+		// then
+		assertThrowable(caughtException).isThrown().withMessageContaining(ArrayStoreException.class.getName());
 	}
 }
