@@ -2,10 +2,10 @@ package pl.jsolve.sweetener.converter;
 
 import java.math.BigInteger;
 
-public class IntegerToBigIntegerConverter implements Converter<Integer, BigInteger> {
+public class NumberToBigIntegerConverter implements Converter<Number, BigInteger> {
 
 	@Override
-	public BigInteger convert(Integer source) {
+	public BigInteger convert(Number source) {
 		return BigInteger.valueOf(source.intValue());
 	}
 }

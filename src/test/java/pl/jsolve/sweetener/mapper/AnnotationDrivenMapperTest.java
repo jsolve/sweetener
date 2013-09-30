@@ -1,6 +1,8 @@
 package pl.jsolve.sweetener.mapper;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.collection.Collections.newArrayList;
+import static pl.jsolve.sweetener.collection.Collections.newHashSet;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField.NOT_EXISTING_NESTED_FIELD;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo.NOT_EXISTING_FIELD;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping.MAP_PARSING_INT_TO_ANNOTATION_CLASS;
@@ -20,6 +22,8 @@ import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 import pl.jsolve.sweetener.mapper.stub.Grade;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo;
+import pl.jsolve.sweetener.mapper.stub.StudentWithCollections;
+import pl.jsolve.sweetener.mapper.stub.StudentWithCollectionsSnapshot;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsInteger;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsString;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
@@ -276,5 +280,37 @@ public class AnnotationDrivenMapperTest {
 
 		// then
 		assertThat(studentWithGradeAsInteger.getGrade()).isEqualTo(Integer.parseInt(studentWithGradeAsString.getGrade()));
+	}
+
+	@Test
+	public void shouldMapStudentWithCollectionsToStudentWithCollectionsSnapshot() {
+		// given
+		StudentWithCollections studentWithCollections = new StudentWithCollections();
+		studentWithCollections.setGrades(newArrayList(3, 4));
+		studentWithCollections.setSubjects(newHashSet("Phisics, Math"));
+
+		// when
+		StudentWithCollectionsSnapshot studentWithCollectionsSnapshot = AnnotationDrivenMapper.map(studentWithCollections,
+				StudentWithCollectionsSnapshot.class);
+
+		// then
+		assertThat(studentWithCollectionsSnapshot.getGrades()).containsOnly(3, 4);
+		assertThat(studentWithCollectionsSnapshot.getSubjects()).containsOnly("Phisics, Math");
+	}
+
+	@Test
+	public void shouldMapStudentWithCollectionsSnapshotToStudentWithCollections() {
+		// given
+		StudentWithCollectionsSnapshot studentWithCollectionsSnapshot = new StudentWithCollectionsSnapshot();
+		studentWithCollectionsSnapshot.setGrades(new Integer[] { 4, 5 });
+		studentWithCollectionsSnapshot.setSubjects(new String[] { "Phisics", "Math" });
+
+		// when
+		StudentWithCollections studentWithCollections = AnnotationDrivenMapper.map(studentWithCollectionsSnapshot,
+				StudentWithCollections.class);
+
+		// then
+		assertThat(studentWithCollections.getGrades()).containsOnly(4, 5);
+		assertThat(studentWithCollections.getSubjects()).containsOnly("Phisics", "Math");
 	}
 }

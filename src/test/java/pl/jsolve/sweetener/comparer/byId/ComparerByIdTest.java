@@ -9,75 +9,73 @@ import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aHulk;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.comparer.Comparer;
-import pl.jsolve.sweetener.comparer.byId.ComparableById;
-import pl.jsolve.sweetener.comparer.byId.ComparerById;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class ComparerByIdTest {
 
-    private static final long ID = 1L;
-    private static final long SAME_ID = 1L;
-    private static final long DIFFERENT_ID = 2L;
+	private static final Long ID = 1L;
+	private static final Long SAME_ID = 1L;
+	private static final Long DIFFERENT_ID = 2L;
 
-    @Test
-    public void shouldCompareTwoHeroesWithSameId() {
-	// given
-	Comparer<Hero> heroesComparerById = new ComparerById<>();
-	Hero hulk = aHulk().withId(ID).build();
-	Hero captainAmerica = aCaptainAmerica().withId(SAME_ID).build();
+	@Test
+	public void shouldCompareTwoHeroesWithSameId() {
+		// given
+		Comparer<Hero> heroesComparerById = new ComparerById<>();
+		Hero hulk = aHulk().withId(ID).build();
+		Hero captainAmerica = aCaptainAmerica().withId(SAME_ID).build();
 
-	// when
-	boolean result = heroesComparerById.areEqual(hulk, captainAmerica);
+		// when
+		boolean result = heroesComparerById.areEqual(hulk, captainAmerica);
 
-	// then
-	assertThat(result).as("both captainAmerica and hulk use the same id").isTrue();
-    }
+		// then
+		assertThat(result).as("both captainAmerica and hulk use the same id").isTrue();
+	}
 
-    @Test
-    public void shouldCompareTwoHeroesWithDifferentIds() {
-	// given
-	Comparer<Hero> heroesComparerById = new ComparerById<>();
-	Hero hulk = aHulk().withId(ID).build();
-	Hero captainAmerica = aCaptainAmerica().withId(DIFFERENT_ID).build();
+	@Test
+	public void shouldCompareTwoHeroesWithDifferentIds() {
+		// given
+		Comparer<Hero> heroesComparerById = new ComparerById<>();
+		Hero hulk = aHulk().withId(ID).build();
+		Hero captainAmerica = aCaptainAmerica().withId(DIFFERENT_ID).build();
 
-	// when
-	boolean result = heroesComparerById.areEqual(hulk, captainAmerica);
+		// when
+		boolean result = heroesComparerById.areEqual(hulk, captainAmerica);
 
-	// then
-	assertThat(result).as("captainAmerica and hulk use different ids").isFalse();
-    }
+		// then
+		assertThat(result).as("captainAmerica and hulk use different ids").isFalse();
+	}
 
-    @Test
-    public void shouldCompareTwoComparableByIdObjectsWithSameId() {
-	// given
-	Comparer<ComparableById> comparerById = new ComparerById<>();
-	ComparableById comparableById = createMockedComparableByIdObjectWithId(ID);
-	ComparableById comparableByIdWithSameId = createMockedComparableByIdObjectWithId(SAME_ID);
+	@Test
+	public void shouldCompareTwoComparableByIdObjectsWithSameId() {
+		// given
+		Comparer<ComparableById> comparerById = new ComparerById<>();
+		ComparableById comparableById = createMockedComparableByIdObjectWithId(ID);
+		ComparableById comparableByIdWithSameId = createMockedComparableByIdObjectWithId(SAME_ID);
 
-	// when
-	boolean result = comparerById.areEqual(comparableById, comparableByIdWithSameId);
+		// when
+		boolean result = comparerById.areEqual(comparableById, comparableByIdWithSameId);
 
-	// then
-	assertThat(result).as("both comparable by id objects use the same id").isTrue();
-    }
+		// then
+		assertThat(result).as("both comparable by id objects use the same id").isTrue();
+	}
 
-    @Test
-    public void shouldCompareTwoComparableByIdObjectsWithDifferentIds() {
-	// given
-	Comparer<ComparableById> comparerById = new ComparerById<>();
-	ComparableById comparableById = createMockedComparableByIdObjectWithId(ID);
-	ComparableById comparableByIdWithDifferentId = createMockedComparableByIdObjectWithId(DIFFERENT_ID);
+	@Test
+	public void shouldCompareTwoComparableByIdObjectsWithDifferentIds() {
+		// given
+		Comparer<ComparableById> comparerById = new ComparerById<>();
+		ComparableById comparableById = createMockedComparableByIdObjectWithId(ID);
+		ComparableById comparableByIdWithDifferentId = createMockedComparableByIdObjectWithId(DIFFERENT_ID);
 
-	// when
-	boolean result = comparerById.areEqual(comparableById, comparableByIdWithDifferentId);
+		// when
+		boolean result = comparerById.areEqual(comparableById, comparableByIdWithDifferentId);
 
-	// then
-	assertThat(result).as("comparable objects use different ids").isFalse();
-    }
+		// then
+		assertThat(result).as("comparable objects use different ids").isFalse();
+	}
 
-    private ComparableById createMockedComparableByIdObjectWithId(Long id) {
-	ComparableById comparableById = mock(ComparableById.class);
-	given(comparableById.getId()).willReturn(id);
-	return comparableById;
-    }
+	private ComparableById createMockedComparableByIdObjectWithId(Long id) {
+		ComparableById comparableById = mock(ComparableById.class);
+		given(comparableById.getId()).willReturn(id);
+		return comparableById;
+	}
 }

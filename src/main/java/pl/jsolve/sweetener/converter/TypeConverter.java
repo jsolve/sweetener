@@ -33,23 +33,15 @@ public final class TypeConverter {
 		registerConverter(new StringToDoubleConverter());
 		registerConverter(new StringToFloatConverter());
 
-		registerConverter(new IntegerToBooleanConverter());
-		registerConverter(new IntegerToBigDecimalConverter());
-		registerConverter(new IntegerToBigIntegerConverter());
-		registerConverter(new IntegerToByteConverter());
-		registerConverter(new IntegerToDoubleConverter());
-		registerConverter(new IntegerToFloatConverter());
-		registerConverter(new IntegerToLongConverter());
-		registerConverter(new IntegerToShortConverter());
-
-		registerConverter(new BigDecimalToIntegerConverter());
-		registerConverter(new BigDecimalToBigIntegerConverter());
-		registerConverter(new BigDecimalToBooleanConverter());
-		registerConverter(new BigDecimalToByteConverter());
-		registerConverter(new BigDecimalToDoubleConverter());
-		registerConverter(new BigDecimalToFloatConverter());
-		registerConverter(new BigDecimalToLongConverter());
-		registerConverter(new BigDecimalToShortConverter());
+		registerConverter(new NumberToBooleanConverter());
+		registerConverter(new NumberToIntegerConverter());
+		registerConverter(new NumberToShortConverter());
+		registerConverter(new NumberToLongConverter());
+		registerConverter(new NumberToBigDecimalConverter());
+		registerConverter(new NumberToBigIntegerConverter());
+		registerConverter(new NumberToByteConverter());
+		registerConverter(new NumberToDoubleConverter());
+		registerConverter(new NumberToFloatConverter());
 
 		registerConverter(new ArrayToSetConverter());
 		registerConverter(new ArrayToTreeSetConverter());
@@ -57,16 +49,16 @@ public final class TypeConverter {
 		registerConverter(new ArrayToListConverter());
 		registerConverter(new ArrayToLinkedListConverter());
 
-		registerConverter(new ListToStringArrayConverter());
-		registerConverter(new ListToBooleanArrayConverter());
-		registerConverter(new ListToByteArrayConverter());
-		registerConverter(new ListToCharacterArrayConverter());
-		registerConverter(new ListToDoubleArrayConverter());
-		registerConverter(new ListToFloatArrayConverter());
-		registerConverter(new ListToIntegerArrayConverter());
-		registerConverter(new ListToLongArrayConverter());
-		registerConverter(new ListToShortArrayConverter());
-		registerConverter(new ListToObjectArrayConverter());
+		registerConverter(new CollectionToStringArrayConverter());
+		registerConverter(new CollectionToBooleanArrayConverter());
+		registerConverter(new CollectionToByteArrayConverter());
+		registerConverter(new CollectionToCharacterArrayConverter());
+		registerConverter(new CollectionToDoubleArrayConverter());
+		registerConverter(new CollectionToFloatArrayConverter());
+		registerConverter(new CollectionToIntegerArrayConverter());
+		registerConverter(new CollectionToLongArrayConverter());
+		registerConverter(new CollectionToShortArrayConverter());
+		registerConverter(new CollectionToObjectArrayConverter());
 	}
 
 	@SuppressWarnings("unchecked")
