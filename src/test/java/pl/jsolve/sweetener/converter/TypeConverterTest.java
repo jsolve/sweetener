@@ -76,7 +76,7 @@ public class TypeConverterTest {
 	@Test
 	public void shouldConvertBooleanToInteger() {
 		// when
-		int result = TypeConverter.convert(true, Integer.class);
+		Integer result = TypeConverter.convert(Boolean.TRUE, Integer.class);
 
 		// then
 		assertThat(result).isEqualTo(1);
@@ -85,7 +85,7 @@ public class TypeConverterTest {
 	@Test
 	public void shouldConvertBooleanToInteger2() {
 		// when
-		int result = TypeConverter.convert(false, Integer.class);
+		Integer result = TypeConverter.convert(Boolean.FALSE, Integer.class);
 
 		// then
 		assertThat(result).isEqualTo(0);
@@ -94,20 +94,60 @@ public class TypeConverterTest {
 	@Test
 	public void shouldConvertIntegerToBoolean() {
 		// when
-		boolean result = TypeConverter.convert(1, Boolean.class);
+		Boolean result = TypeConverter.convert(1, Boolean.class);
 
 		// then
-		assertThat(result).isEqualTo(true);
+		assertThat(result).isSameAs(Boolean.TRUE);
 	}
 
 	@Test
 	public void shouldConvertIntegerToBoolean2() {
 		// when
-		boolean result = TypeConverter.convert(0, Boolean.class);
+		Boolean result = TypeConverter.convert(0, Boolean.class);
 
 		// then
-		assertThat(result).isEqualTo(false);
+		assertThat(result).isSameAs(Boolean.FALSE);
 	}
+
+	// primitive boolean conversion
+
+	@Test
+	public void shouldConvertPrimitiveBooleanToInt() {
+		// when
+		int result = TypeConverter.convert(true, int.class);
+
+		// then
+		assertThat(result).isEqualTo(1);
+	}
+
+	@Test
+	public void shouldConvertPrimitiveBooleanToInt2() {
+		// when
+		int result = TypeConverter.convert(false, int.class);
+
+		// then
+		assertThat(result).isEqualTo(0);
+	}
+
+	@Test
+	public void shouldConvertIntToPrimitiveBoolean() {
+		// when
+		boolean result = TypeConverter.convert(1, boolean.class);
+
+		// then
+		assertThat(result).isSameAs(true);
+	}
+
+	@Test
+	public void shouldConvertIntToPrimitiveBoolean2() {
+		// when
+		boolean result = TypeConverter.convert(0, boolean.class);
+
+		// then
+		assertThat(result).isSameAs(false);
+	}
+
+	// string to ... conversion
 
 	@Test
 	public void shouldConvertStringToBoolean() {
@@ -126,8 +166,6 @@ public class TypeConverterTest {
 		// then
 		assertThat(result).isFalse();
 	}
-
-	// string to numbers conversion
 
 	@Test
 	public void shouldConvertStringToNumber() {
@@ -210,8 +248,6 @@ public class TypeConverterTest {
 		assertThat(result).isEqualTo(Short.valueOf("12"));
 	}
 
-	// number to string conversion
-
 	@Test
 	public void shouldConvertStringToString() {
 		// given
@@ -221,8 +257,10 @@ public class TypeConverterTest {
 		String result = TypeConverter.convert(string, String.class);
 
 		// then
-		assertThat(result).isEqualTo(string).isSameAs(string);
+		assertThat(result).isSameAs(string);
 	}
+
+	// number to string conversion
 
 	@Test
 	public void shouldConvertBigIntegerToString() {
@@ -563,7 +601,7 @@ public class TypeConverterTest {
 		assertThat(result).isEqualTo(bigDecimal.shortValue());
 	}
 
-	// array to collections
+	// array to collections conversion
 
 	@Test
 	public void shouldConvertArrayToHashSet() {
@@ -616,25 +654,13 @@ public class TypeConverterTest {
 	@Test
 	public void shouldConvertArrayToArrayList() {
 		// given
-		Integer[] arrayOfIntegers = new Integer[] { 1, 2, 3 };
-
-		// when
-		ArrayList<Integer> result = TypeConverter.convert(arrayOfIntegers, ArrayList.class);
-
-		// then
-		assertThat(result).containsExactly(1, 2, 3);
-	}
-
-	@Test
-	public void shouldConvertArrayToArrayList2() {
-		// given
 		String[] arrayOfStrings = new String[] { "one", "two", "three" };
 
 		// when
 		ArrayList<String> result = TypeConverter.convert(arrayOfStrings, ArrayList.class);
 
 		// then
-		assertThat(result).containsExactly("one", "two", "three");
+		assertThat(result).contains("one", "two", "three");
 	}
 
 	@Test
@@ -646,7 +672,7 @@ public class TypeConverterTest {
 		ArrayList<String> result = TypeConverter.convert(arrayOfStrings, ArrayList.class);
 
 		// then
-		assertThat(result).containsExactly("one", "two", "three");
+		assertThat(result).contains("one", "two", "three");
 	}
 
 	@Test
@@ -658,10 +684,11 @@ public class TypeConverterTest {
 		LinkedList<Integer> result = TypeConverter.convert(arrayOfIntegers, LinkedList.class);
 
 		// then
-		assertThat(result).containsExactly(1, 2, 3);
+		assertThat(result).contains(1, 2, 3);
 	}
 
 	// lists to array conversion
+
 	@Test
 	public void shouldConvertListToStringsArray() {
 		// given
@@ -671,7 +698,7 @@ public class TypeConverterTest {
 		String[] result = TypeConverter.convert(listOfStrings, String[].class);
 
 		// then
-		assertThat(result).containsOnly("one", "two", "three");
+		assertThat(result).contains("one", "two", "three");
 	}
 
 	@Test
@@ -683,7 +710,7 @@ public class TypeConverterTest {
 		Boolean[] result = TypeConverter.convert(list, Boolean[].class);
 
 		// then
-		assertThat(result).containsOnly(true, false, false);
+		assertThat(result).contains(true, false, false);
 	}
 
 	@Test
@@ -695,7 +722,7 @@ public class TypeConverterTest {
 		Byte[] result = TypeConverter.convert(list, Byte[].class);
 
 		// then
-		assertThat(result).containsOnly(Byte.MAX_VALUE, Byte.MIN_VALUE);
+		assertThat(result).contains(Byte.MAX_VALUE, Byte.MIN_VALUE);
 	}
 
 	@Test
@@ -707,7 +734,7 @@ public class TypeConverterTest {
 		Character[] result = TypeConverter.convert(list, Character[].class);
 
 		// then
-		assertThat(result).containsOnly('a', 'b', 'c');
+		assertThat(result).contains('a', 'b', 'c');
 	}
 
 	@Test
@@ -719,7 +746,7 @@ public class TypeConverterTest {
 		Double[] result = TypeConverter.convert(list, Double[].class);
 
 		// then
-		assertThat(result).containsOnly(0.1, 0.2, 0.3);
+		assertThat(result).contains(0.1, 0.2, 0.3);
 	}
 
 	@Test
@@ -731,7 +758,7 @@ public class TypeConverterTest {
 		Float[] result = TypeConverter.convert(list, Float[].class);
 
 		// then
-		assertThat(result).containsOnly(0.1f, 0.2f, 0.3f);
+		assertThat(result).contains(0.1f, 0.2f, 0.3f);
 	}
 
 	@Test
@@ -743,7 +770,7 @@ public class TypeConverterTest {
 		Integer[] result = TypeConverter.convert(list, Integer[].class);
 
 		// then
-		assertThat(result).containsOnly(1, 2, 3);
+		assertThat(result).contains(1, 2, 3);
 	}
 
 	@Test
@@ -755,7 +782,7 @@ public class TypeConverterTest {
 		Long[] result = TypeConverter.convert(list, Long[].class);
 
 		// then
-		assertThat(result).containsOnly(1L, 2L, 3L);
+		assertThat(result).contains(1L, 2L, 3L);
 	}
 
 	@Test
@@ -767,7 +794,7 @@ public class TypeConverterTest {
 		Short[] result = TypeConverter.convert(list, Short[].class);
 
 		// then
-		assertThat(result).containsOnly(Short.MIN_VALUE, Short.MAX_VALUE);
+		assertThat(result).contains(Short.MIN_VALUE, Short.MAX_VALUE);
 	}
 
 	@Test
@@ -780,7 +807,7 @@ public class TypeConverterTest {
 		Object[] result = TypeConverter.convert(list, Object[].class);
 
 		// then
-		assertThat(result).containsOnly(object);
+		assertThat(result).contains(object);
 	}
 
 	@Test
@@ -796,5 +823,141 @@ public class TypeConverterTest {
 
 		// then
 		assertThrowable(caughtException).isThrown().withMessageContaining(ArrayStoreException.class.getName());
+	}
+
+	// collection to collections
+
+	@Test
+	public void shouldConvertListToSet() {
+		// given
+		List<String> list = Collections.newArrayList("one", "two", "three");
+
+		// when
+		Set<String> set = TypeConverter.convert(list, Set.class);
+
+		// then
+		assertThat(set).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertLinkedListToLinkedHashSet() {
+		// given
+		LinkedList<String> list = Collections.newLinkedList("one", "two", "three");
+
+		// when
+		Set<String> set = TypeConverter.convert(list, LinkedHashSet.class);
+
+		// then
+		assertThat(set).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertListToHashSet() {
+		// given
+		List<String> list = Collections.newArrayList("one", "two", "three");
+
+		// when
+		Set<String> set = TypeConverter.convert(list, HashSet.class);
+
+		// then
+		assertThat(set).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertLinkedListToHashSet() {
+		// given
+		LinkedList<String> list = Collections.newLinkedList("one", "two", "three");
+
+		// when
+		Set<String> set = TypeConverter.convert(list, HashSet.class);
+
+		// then
+		assertThat(set).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertListToTreeSet() {
+		// given
+		List<Integer> arrayList = Collections.newArrayList(1, 2, 3);
+
+		// when
+		TreeSet<Integer> result = TypeConverter.convert(arrayList, TreeSet.class);
+
+		// then
+		assertThat(result).contains(1, 2, 3);
+	}
+
+	@Test
+	public void shouldConvertHashSetToTreeSet() {
+		// given
+		HashSet<String> arrayList = Collections.newHashSet("one", "two", "three");
+
+		// when
+		TreeSet<String> result = TypeConverter.convert(arrayList, TreeSet.class);
+
+		// then
+		assertThat(result).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertSetToList() {
+		// given
+		Set<String> set = Collections.newHashSet("one", "two", "three");
+
+		// when
+		List<String> result = TypeConverter.convert(set, List.class);
+
+		// then
+		assertThat(result).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertLinkedHashSetToLinkedList() {
+		// given
+		LinkedHashSet<String> linkedHashSet = Collections.newLinkedHashSet("one", "two", "three");
+
+		// when
+		LinkedList<String> result = TypeConverter.convert(linkedHashSet, LinkedList.class);
+
+		// then
+		assertThat(result).contains("one", "two", "three");
+	}
+
+	// primitives
+
+	@Test
+	public void shouldConvertIntToString() {
+		// when
+		int result = TypeConverter.convert("2", int.class);
+
+		// then
+		assertThat(result).isEqualTo(2);
+	}
+
+	@Test
+	public void shouldConvertPrimitiveByteToString() {
+		// when
+		byte result = TypeConverter.convert("2", byte.class);
+
+		// then
+		assertThat(result).isEqualTo((byte) 2);
+	}
+
+	@Test
+	public void shouldConvertPrimitiveDoubleToPrimitiveInt() {
+		// when
+		int result = TypeConverter.convert(12.5, int.class);
+
+		// then
+		assertThat(result).isEqualTo(12);
+	}
+
+	@Test
+	public void shouldConvertPrimitiveIntToPrimitiveDouble() {
+		// when
+		double result = TypeConverter.convert(12, double.class);
+
+		// then
+		assertThat(result).isEqualTo(12.0);
 	}
 }

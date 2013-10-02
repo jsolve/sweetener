@@ -6,7 +6,7 @@ import java.util.Set;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 
-@MappableTo(StudentWithCollectionsSnapshot.class)
+@MappableTo(StudentWithArrays.class)
 public class StudentWithCollections {
 
 	@Map

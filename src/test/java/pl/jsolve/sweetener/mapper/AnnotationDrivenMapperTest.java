@@ -20,10 +20,10 @@ import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationMapping;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 import pl.jsolve.sweetener.mapper.stub.Grade;
+import pl.jsolve.sweetener.mapper.stub.StudentWithArrays;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo;
 import pl.jsolve.sweetener.mapper.stub.StudentWithCollections;
-import pl.jsolve.sweetener.mapper.stub.StudentWithCollectionsSnapshot;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsInteger;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsString;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
@@ -283,31 +283,29 @@ public class AnnotationDrivenMapperTest {
 	}
 
 	@Test
-	public void shouldMapStudentWithCollectionsToStudentWithCollectionsSnapshot() {
+	public void shouldMapStudentWithCollectionsToStudentWithArrays() {
 		// given
 		StudentWithCollections studentWithCollections = new StudentWithCollections();
 		studentWithCollections.setGrades(newArrayList(3, 4));
 		studentWithCollections.setSubjects(newHashSet("Phisics, Math"));
 
 		// when
-		StudentWithCollectionsSnapshot studentWithCollectionsSnapshot = AnnotationDrivenMapper.map(studentWithCollections,
-				StudentWithCollectionsSnapshot.class);
+		StudentWithArrays studentWithArrays = AnnotationDrivenMapper.map(studentWithCollections, StudentWithArrays.class);
 
 		// then
-		assertThat(studentWithCollectionsSnapshot.getGrades()).containsOnly(3, 4);
-		assertThat(studentWithCollectionsSnapshot.getSubjects()).containsOnly("Phisics, Math");
+		assertThat(studentWithArrays.getGrades()).containsOnly(3, 4);
+		assertThat(studentWithArrays.getSubjects()).containsOnly("Phisics, Math");
 	}
 
 	@Test
-	public void shouldMapStudentWithCollectionsSnapshotToStudentWithCollections() {
+	public void shouldMapStudentWithArraysToStudentWithCollections() {
 		// given
-		StudentWithCollectionsSnapshot studentWithCollectionsSnapshot = new StudentWithCollectionsSnapshot();
-		studentWithCollectionsSnapshot.setGrades(new Integer[] { 4, 5 });
-		studentWithCollectionsSnapshot.setSubjects(new String[] { "Phisics", "Math" });
+		StudentWithArrays studentWithArrays = new StudentWithArrays();
+		studentWithArrays.setGrades(new Integer[] { 4, 5 });
+		studentWithArrays.setSubjects(new String[] { "Phisics", "Math" });
 
 		// when
-		StudentWithCollections studentWithCollections = AnnotationDrivenMapper.map(studentWithCollectionsSnapshot,
-				StudentWithCollections.class);
+		StudentWithCollections studentWithCollections = AnnotationDrivenMapper.map(studentWithArrays, StudentWithCollections.class);
 
 		// then
 		assertThat(studentWithCollections.getGrades()).containsOnly(4, 5);

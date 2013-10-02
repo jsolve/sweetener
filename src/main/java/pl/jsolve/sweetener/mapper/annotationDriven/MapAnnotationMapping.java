@@ -94,7 +94,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 	}
 
 	private Object tryToConvertTypes(Object sourceFieldValue, Class<?> targetFieldType) {
-		if (sourceFieldValue != null && !sourceFieldValue.getClass().equals(targetFieldType) && !targetFieldType.isPrimitive()) {
+		if (sourceFieldValue != null && !sourceFieldValue.getClass().equals(targetFieldType)) {
 			return TypeConverter.convert(sourceFieldValue, targetFieldType);
 		}
 		return sourceFieldValue;
