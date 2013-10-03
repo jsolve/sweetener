@@ -3,6 +3,7 @@ package pl.jsolve.sweetener.converter;
 import static org.fest.assertions.Assertions.assertThat;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
+import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aCaptainAmerica;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -357,9 +358,7 @@ public class TypeConverterTest {
 	@Test
 	public void shouldConvertHeroToPerson() {
 		// given
-		Hero hero = new Hero();
-		hero.setFirstName("Steve");
-		hero.setLastName("Rogers");
+		Hero hero = aCaptainAmerica().build();
 		TypeConverter.registerConverter(Hero.class, Person.class, new Converter<Hero, Person>() {
 
 			@Override
@@ -379,6 +378,18 @@ public class TypeConverterTest {
 		assertThat(person.getLastName()).isEqualTo(hero.getLastName());
 
 		TypeConverter.unregisterConverter(Hero.class, Person.class);
+	}
+
+	@Test
+	public void shouldConvertHeroToObject() {
+		// given
+		Hero hero = aCaptainAmerica().build();
+
+		// when
+		Object result = TypeConverter.convert(hero, Object.class);
+
+		// then
+		assertThat(result).isInstanceOf(Hero.class);
 	}
 
 	// integer to numbers conversion
@@ -890,10 +901,10 @@ public class TypeConverterTest {
 	@Test
 	public void shouldConvertHashSetToTreeSet() {
 		// given
-		HashSet<String> arrayList = Collections.newHashSet("one", "two", "three");
+		HashSet<String> hashSet = Collections.newHashSet("one", "two", "three");
 
 		// when
-		TreeSet<String> result = TypeConverter.convert(arrayList, TreeSet.class);
+		TreeSet<String> result = TypeConverter.convert(hashSet, TreeSet.class);
 
 		// then
 		assertThat(result).contains("one", "two", "three");
@@ -922,6 +933,31 @@ public class TypeConverterTest {
 		// then
 		assertThat(result).contains("one", "two", "three");
 	}
+
+	@Test
+	public void shouldConvertHashSetToArrayList() {
+		// given
+		HashSet<String> linkedHashSet = Collections.newHashSet("one", "two", "three");
+
+		// when
+		ArrayList<String> result = TypeConverter.convert(linkedHashSet, ArrayList.class);
+
+		// then
+		assertThat(result).contains("one", "two", "three");
+	}
+
+	@Test
+	public void shouldConvertHashSetToLinkedList() {
+		// given
+		HashSet<String> linkedHashSet = Collections.newHashSet("one", "two", "three");
+
+		// when
+		LinkedList<String> result = TypeConverter.convert(linkedHashSet, LinkedList.class);
+
+		// then
+		assertThat(result).contains("one", "two", "three");
+	}
+
 
 	// primitives
 

@@ -43,42 +43,27 @@ class ConvertersContainer {
 
 	@SuppressWarnings("unchecked")
 	public <S, T> Converter<S, T> getSuitableConverter(S source, Class<T> targetClass) {
-		Converter<S, T> converter = (Converter<S, T>) getConverter(source.getClass(), targetClass);
+		Class<?> sourceClass = source.getClass();
+		Converter<S, T> converter = (Converter<S, T>) getConverter(sourceClass, targetClass);
 		if (converter != null) {
 			return converter;
 		}
-		List<Class<?>> classesAndInterfacesOfSourceClass = getClassesAndInterfacesOf(source.getClass());
-		List<Class<?>> classesAndInterfacesOfTargetClass = getClassesAndInterfacesOf(targetClass);
-
-		for (Class<?> s : classesAndInterfacesOfSourceClass) {
-			for (Class<?> t : classesAndInterfacesOfTargetClass) {
+		for (Class<?> t : getClassesAndInterfacesOf(targetClass)) {
+			for (Class<?> s : getClassesAndInterfacesOf(sourceClass)) {
 				converter = (Converter<S, T>) getConverter(s, t);
 				if (converter != null) {
-					registerConverter(source.getClass(), targetClass, converter);
+					registerConverter(s, targetClass, converter);
 					return converter;
 				}
-			}
-		}
-		for (Class<?> s : classesAndInterfacesOfSourceClass) {
-			converter = (Converter<S, T>) getConverter(s, Object.class);
-			if (converter != null) {
-				registerConverter(source.getClass(), targetClass, converter);
-				return converter;
-			}
-		}
-		for (Class<?> t : classesAndInterfacesOfTargetClass) {
-			converter = (Converter<S, T>) getConverter(Object.class, t);
-			if (converter != null) {
-				registerConverter(source.getClass(), targetClass, converter);
-				return converter;
 			}
 		}
 		return null;
 	}
 
-	private static List<Class<?>> getClassesAndInterfacesOf(Class<?> targetClass) {
+	private static List<Class<?>> getClassesAndInterfacesOf(final Class<?> targetClass) {
 		List<Class<?>> classes = getClassesSatisfyingCondition(targetClass, ALL_EXCEPT_OBJECT_CLASS_CONDITION);
 		java.util.Collections.addAll(classes, targetClass.getInterfaces());
+		classes.add(Object.class);
 		return classes;
 	}
 

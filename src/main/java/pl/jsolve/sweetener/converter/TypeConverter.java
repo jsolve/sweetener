@@ -118,11 +118,11 @@ public final class TypeConverter {
 		if (source == null) {
 			return null;
 		}
-		if (isCastableToClass(source, targetClass)) {
-			return targetClass.cast(source);
-		}
 		if (targetClass.isPrimitive()) {
 			targetClass = (Class<T>) PRIMITIVES_CONVERTER.convert(targetClass);
+		}
+		if (isCastableToClass(source, targetClass)) {
+			return targetClass.cast(source);
 		}
 		return tryToConvertUsingRegisteredConverters(source, targetClass);
 	}
