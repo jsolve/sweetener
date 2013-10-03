@@ -1,19 +1,26 @@
 package pl.jsolve.sweetener.converter;
 
 import static java.util.Collections.synchronizedMap;
-import static pl.jsolve.sweetener.core.Reflections.getClasses;
+import static pl.jsolve.sweetener.core.Reflections.getClassesSatisfyingCondition;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.jsolve.sweetener.core.Condition;
+
 class ConvertersContainer {
 
-	private static final String CONVERTERS_KEY_FORMAT = "%s:to:%s";
 	private final Map<String, Converter<?, ?>> converters = synchronizedMap(new HashMap<String, Converter<?, ?>>());
+	private static final Condition<Class<?>> ALL_EXCEPT_OBJECT_CLASS_CONDITION = new Condition<Class<?>>() {
+		@Override
+		public boolean isSatisfied(Class<?> object) {
+			return !Object.class.equals(object);
+		}
+	};
 
-	public <S, T> void registerConverter(Class<S> sourceClass, Class<T> targetClass, Converter<S, T> converter) {
-		String converterId = createConverterId(sourceClass, targetClass);
+	public <S, T> void registerConverter(Class<?> s, Class<?> t, Converter<S, T> converter) {
+		String converterId = createConverterId(s, t);
 		converters.put(converterId, converter);
 	}
 
@@ -24,7 +31,7 @@ class ConvertersContainer {
 
 	private String createConverterId(Class<?> sourceClass, Class<?> targetClass) {
 		sourceClass = generalizeClassIfArray(sourceClass);
-		return String.format(CONVERTERS_KEY_FORMAT, sourceClass.getName(), targetClass.getName());
+		return sourceClass.getName() + ":to:" + targetClass.getName();
 	}
 
 	private Class<?> generalizeClassIfArray(Class<?> sourceClass) {
@@ -36,7 +43,10 @@ class ConvertersContainer {
 
 	@SuppressWarnings("unchecked")
 	public <S, T> Converter<S, T> getSuitableConverter(S source, Class<T> targetClass) {
-		Converter<S, T> converter = null;
+		Converter<S, T> converter = (Converter<S, T>) getConverter(source.getClass(), targetClass);
+		if (converter != null) {
+			return converter;
+		}
 		List<Class<?>> classesAndInterfacesOfSourceClass = getClassesAndInterfacesOf(source.getClass());
 		List<Class<?>> classesAndInterfacesOfTargetClass = getClassesAndInterfacesOf(targetClass);
 
@@ -44,6 +54,7 @@ class ConvertersContainer {
 			for (Class<?> t : classesAndInterfacesOfTargetClass) {
 				converter = (Converter<S, T>) getConverter(s, t);
 				if (converter != null) {
+					registerConverter(source.getClass(), targetClass, converter);
 					return converter;
 				}
 			}
@@ -51,12 +62,14 @@ class ConvertersContainer {
 		for (Class<?> s : classesAndInterfacesOfSourceClass) {
 			converter = (Converter<S, T>) getConverter(s, Object.class);
 			if (converter != null) {
+				registerConverter(source.getClass(), targetClass, converter);
 				return converter;
 			}
 		}
 		for (Class<?> t : classesAndInterfacesOfTargetClass) {
 			converter = (Converter<S, T>) getConverter(Object.class, t);
 			if (converter != null) {
+				registerConverter(source.getClass(), targetClass, converter);
 				return converter;
 			}
 		}
@@ -64,8 +77,7 @@ class ConvertersContainer {
 	}
 
 	private static List<Class<?>> getClassesAndInterfacesOf(Class<?> targetClass) {
-		List<Class<?>> classes = getClasses(targetClass);
-		classes.remove(Object.class);
+		List<Class<?>> classes = getClassesSatisfyingCondition(targetClass, ALL_EXCEPT_OBJECT_CLASS_CONDITION);
 		java.util.Collections.addAll(classes, targetClass.getInterfaces());
 		return classes;
 	}
