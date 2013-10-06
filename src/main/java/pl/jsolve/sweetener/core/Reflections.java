@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import pl.jsolve.sweetener.exception.AccessToFieldException;
@@ -123,7 +124,7 @@ public final class Reflections {
 	}
 
 	public static List<Class<?>> getClassesSatisfyingCondition(Class<?> clazz, Condition<Class<?>> classesCondition) {
-		List<Class<?>> classes = new ArrayList<>();
+		List<Class<?>> classes = new LinkedList<>();
 		classes.add(clazz);
 		while (!Object.class.equals(clazz) && !clazz.isInterface() && !clazz.isPrimitive()) {
 			clazz = clazz.getSuperclass();
@@ -147,7 +148,7 @@ public final class Reflections {
 	}
 
 	public static List<Field> getFieldsSatisfyingCondition(Object object, Condition<Field> fieldCondition) {
-		List<Field> fields = new ArrayList<>();
+		List<Field> fields = new LinkedList<>();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Field[] arrayOfFields = clazz.getDeclaredFields();
