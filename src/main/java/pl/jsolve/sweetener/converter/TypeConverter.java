@@ -115,7 +115,7 @@ public final class TypeConverter {
 	}
 
 	public static <S, T> T convert(S source, Class<T> targetClass) {
-		if (source == null) {
+		if (source == null || targetClass == null) {
 			return null;
 		}
 		if (targetClass.isPrimitive()) {

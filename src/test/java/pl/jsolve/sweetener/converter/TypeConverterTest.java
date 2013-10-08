@@ -39,6 +39,7 @@ public class TypeConverterTest {
 	public void shouldCastStudentToPerson() {
 		// given
 		Student student = prepareStudent();
+
 		// when
 		Person person = TypeConverter.convert(student, Person.class);
 
@@ -58,7 +59,6 @@ public class TypeConverterTest {
 
 	@Test
 	public void shouldNotFindSuitableConverter() {
-		// given
 		// when
 		ConversionException caughtException = tryToCatch(ConversionException.class, new ExceptionalOperation() {
 

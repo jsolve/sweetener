@@ -31,7 +31,7 @@ class ConvertersContainer {
 
 	private String createConverterId(Class<?> sourceClass, Class<?> targetClass) {
 		sourceClass = generalizeClassIfArray(sourceClass);
-		return sourceClass.getName() + ":to:" + targetClass.getName();
+		return sourceClass + ":to:" + targetClass;
 	}
 
 	private Class<?> generalizeClassIfArray(Class<?> sourceClass) {
