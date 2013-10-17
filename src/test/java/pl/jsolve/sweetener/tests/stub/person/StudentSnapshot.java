@@ -1,24 +1,24 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 
 @MappableTo(Student.class)
 public class StudentSnapshot {
 
-	@MapExactlyTo("firstName")
+	@Map(to = "firstName")
 	private String firstName;
-	@MapExactlyTo("lastName")
+	@Map(to = "lastName")
 	private String lastName;
-	@MapExactlyTo("age")
+	@Map(to = "age")
 	private int age;
-	@MapExactlyTo("address.city.name")
+	@Map(to = "address.city.name")
 	private String address;
-	@MapExactlyTo("semester")
+	@Map(to = "semester")
 	private int semester;
-	@MapExactlyTo("address.city.population")
+	@Map(to = "address.city.population")
 	private long population;
-	@MapExactlyTo("address.street")
+	@Map(to = "address.street")
 	private String street;
 
 	public String getFirstName() {

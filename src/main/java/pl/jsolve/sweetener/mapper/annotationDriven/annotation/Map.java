@@ -7,7 +7,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ExactlyToMappings {
+public @interface Map {
 
-	MapExactlyTo[] value();
+	String fromNested() default "";
+
+	String to() default "";
+
+	Class<?> of() default Object.class;
 }

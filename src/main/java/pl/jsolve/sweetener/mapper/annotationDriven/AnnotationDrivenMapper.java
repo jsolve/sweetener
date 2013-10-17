@@ -1,5 +1,7 @@
 package pl.jsolve.sweetener.mapper.annotationDriven;
 
+import static java.util.Collections.synchronizedList;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,15 +12,14 @@ import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 
 public final class AnnotationDrivenMapper {
 
-	private static final List<AnnotationMapping> MAPPINGS = new LinkedList<>();
+	private static final List<AnnotationMapping> MAPPINGS = synchronizedList(new LinkedList<AnnotationMapping>());
 
 	private AnnotationDrivenMapper() {
 		throw new AssertionError("Using constructor of this class is prohibited.");
 	}
 
 	static {
-		registerAnnotationMapping(new MapExactlyToAnnotationMapping());
-		registerAnnotationMapping(new MapNestedAnnotationMapping());
+		registerAnnotationMapping(new MapAnnotationMapping());
 	}
 
 	public static void registerAnnotationMapping(AnnotationMapping annotationMapping) {
@@ -36,11 +37,16 @@ public final class AnnotationDrivenMapper {
 
 	private static <T, V> void throwExceptionWhenIsNotMappableToTargetClass(T object, Class<V> targetClass) {
 		if (!isMappableToTargetClass(object, targetClass)) {
-			throw new MappingException("%s is not mappable to %s", object.getClass(), targetClass);
+			throw new MappingException(
+					"%s is not mappable to %s. Perhaps you forgot to add @MappableTo(\"%s.class\") annotation over %s class?",
+					object.getClass(), targetClass, targetClass.getSimpleName(), object.getClass().getSimpleName());
 		}
 	}
 
 	public static <T, V> boolean isMappableToTargetClass(T object, Class<V> targetClass) {
+		if (object == null) {
+			return false;
+		}
 		MappableTo mappableTo = object.getClass().getAnnotation(MappableTo.class);
 		return mappableTo != null && Arrays.asList(mappableTo.value()).contains(targetClass);
 	}

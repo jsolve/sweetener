@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class ReflectionsTest {
@@ -124,7 +124,7 @@ public class ReflectionsTest {
 		Hero hero = aHero().build();
 
 		// when
-		List<Field> fields = Reflections.getFieldsAnnotatedBy(hero, MapExactlyTo.class);
+		List<Field> fields = Reflections.getFieldsAnnotatedBy(hero, Map.class);
 
 		// then
 		Field heroIdField = hero.getClass().getDeclaredField(HERO_ID_FIELD_NAME);

@@ -1,26 +1,24 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.ExactlyToMappings;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapExactlyTo;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MapNested;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.NestedMappings;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
+import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
 
 public class Person {
 
-	@MapExactlyTo("firstName")
+	@Map
 	protected String firstName;
-	@ExactlyToMappings({
-		@MapExactlyTo(value = "lastName", of = StudentSnapshot.class),
-		@MapExactlyTo(value = "surname", of = StudentDTO.class)
+	@Mappings({
+		@Map(to = "lastName", of = StudentSnapshot.class),
+		@Map(to = "surname", of = StudentDTO.class)
 	})
 	protected String lastName;
-	@MapExactlyTo(value = "age", of = StudentSnapshot.class)
+	@Map(of = StudentSnapshot.class)
 	private int age;
-	@NestedMappings({
-		@MapNested(fromNested = "city.name", to = "address", of = StudentSnapshot.class),
-		@MapNested(fromNested = "city.population", to = "population", of = StudentSnapshot.class),
+	@Mappings({
+		@Map(fromNested = "city.name", to = "address", of = StudentSnapshot.class),
+		@Map(fromNested = "city.population", to = "population", of = StudentSnapshot.class),
+		@Map(fromNested = "street", to = "street")
 	})
-	@MapNested(fromNested = "street", to = "street")
 	private Address address;
 
 	public String getFirstName() {
