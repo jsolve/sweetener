@@ -7,13 +7,13 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 public class StudentWithGradeAsInteger {
 
 	@Map(to = "grade", of = StudentWithGradeAsString.class)
-	private Integer grade;
+	private int grade;
 
-	public Integer getGrade() {
+	public int getGrade() {
 		return grade;
 	}
 
-	public void setGrade(Integer grade) {
+	public void setGrade(int grade) {
 		this.grade = grade;
 	}
 }

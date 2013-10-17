@@ -1,6 +1,8 @@
 package pl.jsolve.sweetener.mapper;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.collection.Collections.newArrayList;
+import static pl.jsolve.sweetener.collection.Collections.newHashSet;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField.NOT_EXISTING_NESTED_FIELD;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo.NOT_EXISTING_FIELD;
 import static pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping.MAP_PARSING_INT_TO_ANNOTATION_CLASS;
@@ -18,8 +20,10 @@ import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationMapping;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
 import pl.jsolve.sweetener.mapper.stub.Grade;
+import pl.jsolve.sweetener.mapper.stub.StudentWithArrays;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo;
+import pl.jsolve.sweetener.mapper.stub.StudentWithCollections;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsInteger;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsString;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
@@ -31,6 +35,7 @@ import pl.jsolve.sweetener.tests.stub.hero.HeroDTO;
 import pl.jsolve.sweetener.tests.stub.hero.HeroSnapshot;
 import pl.jsolve.sweetener.tests.stub.person.Address;
 import pl.jsolve.sweetener.tests.stub.person.City;
+import pl.jsolve.sweetener.tests.stub.person.FieldOfStudy;
 import pl.jsolve.sweetener.tests.stub.person.Student;
 import pl.jsolve.sweetener.tests.stub.person.StudentDTO;
 import pl.jsolve.sweetener.tests.stub.person.StudentSnapshot;
@@ -172,6 +177,7 @@ public class AnnotationDrivenMapperTest {
 		assertThat(studentSnapshot.getStreet()).isEqualTo(student.getAddress().getStreet());
 		assertThat(studentSnapshot.getAddress()).isEqualTo(student.getAddress().getCity().getName());
 		assertThat(studentSnapshot.getPopulation()).isEqualTo(student.getAddress().getCity().getPopulation());
+		assertThat(studentSnapshot.getFieldOfStudy()).isEqualTo(String.valueOf(student.getFieldOfStudy()));
 	}
 
 	@Test
@@ -195,6 +201,7 @@ public class AnnotationDrivenMapperTest {
 		student.setLastName("White");
 		student.setSemester(3);
 		student.setAge(20);
+		student.setFieldOfStudy(FieldOfStudy.COMPUTER_SCIENCE);
 		Address address = new Address();
 		address.setStreet("street1");
 		address.setCity(new City("New York", 8336697L));
@@ -258,6 +265,50 @@ public class AnnotationDrivenMapperTest {
 				StudentWithGradeAsString.class);
 
 		// then
-		assertThat(studentWithGradeAsString.getGrade()).isEqualTo(studentWithGradeAsInteger.getGrade().toString());
+		assertThat(studentWithGradeAsString.getGrade()).isEqualTo(String.valueOf(studentWithGradeAsInteger.getGrade()));
+	}
+
+	@Test
+	public void shouldMapStudentWithGradeAsStringToStudentWithGradeAsInteger() {
+		// given
+		StudentWithGradeAsString studentWithGradeAsString = new StudentWithGradeAsString();
+		studentWithGradeAsString.setGrade("5");
+
+		// when
+		StudentWithGradeAsInteger studentWithGradeAsInteger = AnnotationDrivenMapper.map(studentWithGradeAsString,
+				StudentWithGradeAsInteger.class);
+
+		// then
+		assertThat(studentWithGradeAsInteger.getGrade()).isEqualTo(Integer.parseInt(studentWithGradeAsString.getGrade()));
+	}
+
+	@Test
+	public void shouldMapStudentWithCollectionsToStudentWithArrays() {
+		// given
+		StudentWithCollections studentWithCollections = new StudentWithCollections();
+		studentWithCollections.setGrades(newArrayList(3, 4));
+		studentWithCollections.setSubjects(newHashSet("Phisics, Math"));
+
+		// when
+		StudentWithArrays studentWithArrays = AnnotationDrivenMapper.map(studentWithCollections, StudentWithArrays.class);
+
+		// then
+		assertThat(studentWithArrays.getGrades()).containsOnly(3, 4);
+		assertThat(studentWithArrays.getSubjects()).containsOnly("Phisics, Math");
+	}
+
+	@Test
+	public void shouldMapStudentWithArraysToStudentWithCollections() {
+		// given
+		StudentWithArrays studentWithArrays = new StudentWithArrays();
+		studentWithArrays.setGrades(new Integer[] { 4, 5 });
+		studentWithArrays.setSubjects(new String[] { "Phisics", "Math" });
+
+		// when
+		StudentWithCollections studentWithCollections = AnnotationDrivenMapper.map(studentWithArrays, StudentWithCollections.class);
+
+		// then
+		assertThat(studentWithCollections.getGrades()).containsOnly(4, 5);
+		assertThat(studentWithCollections.getSubjects()).containsOnly("Phisics", "Math");
 	}
 }

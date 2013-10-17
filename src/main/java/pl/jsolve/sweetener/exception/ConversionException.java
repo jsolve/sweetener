@@ -13,7 +13,7 @@ public class ConversionException extends RuntimeException {
 	}
 
 	public ConversionException(Class<?> sourceClass, Class<?> targetClass, Exception e) {
-		this(e.getMessage(), sourceClass, targetClass, e);
+		this("Reason: " + e.toString(), sourceClass, targetClass, e);
 	}
 
 	public ConversionException(String message, Class<?> sourceClass, Class<?> targetClass, Exception e) {

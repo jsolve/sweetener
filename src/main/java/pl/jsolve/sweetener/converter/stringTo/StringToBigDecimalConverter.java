@@ -1,8 +1,8 @@
-package pl.jsolve.sweetener.converter;
+package pl.jsolve.sweetener.converter.stringTo;
 
 import java.math.BigDecimal;
 
-public class StringToBigDecimalConverter implements Converter<String, BigDecimal> {
+public class StringToBigDecimalConverter extends StringToAbstractConverter<BigDecimal> {
 
 	@Override
 	public BigDecimal convert(String source) {
