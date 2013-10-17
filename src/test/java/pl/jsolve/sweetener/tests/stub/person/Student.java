@@ -8,10 +8,11 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
 public class Student extends Person {
 
 	@Mappings({
-			@Map(to = "semester", of = StudentSnapshot.class),
-			@Map(to = "totalSemesters", of = StudentDTO.class) })
+		@Map(to = "semester", of = StudentSnapshot.class),
+		@Map(to = "totalSemesters", of = StudentDTO.class) })
 	private int semester;
 
+	@Map(of = StudentSnapshot.class)
 	private FieldOfStudy fieldOfStudy;
 
 	private Department department;

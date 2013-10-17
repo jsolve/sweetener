@@ -1,11 +1,11 @@
-package pl.jsolve.sweetener.converter;
+package pl.jsolve.sweetener.converter.stringTo;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
 
 import pl.jsolve.sweetener.exception.ConversionException;
 
-public class StringToNumberConverter implements Converter<String, Number> {
+public class StringToNumberConverter extends StringToAbstractConverter<Number> {
 
 	@Override
 	public Number convert(String source) {
