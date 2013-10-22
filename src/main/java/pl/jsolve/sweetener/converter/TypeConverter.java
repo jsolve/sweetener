@@ -104,6 +104,14 @@ public final class TypeConverter {
 		registerConverter(new CollectionToTreeSetConverter());
 		registerConverter(new CollectionToListConverter());
 		registerConverter(new CollectionToLinkedListConverter());
+
+		// date
+		registerConverter(new LongToDateConverter());
+		registerConverter(new DateToLongConverter());
+		registerConverter(new LongToCalendarConverter());
+		registerConverter(new CalendarToLongConverter());
+		registerConverter(new DateToCalendarConverter());
+		registerConverter(new CalendarToDateConverter());
 	}
 
 	@SuppressWarnings("unchecked")
