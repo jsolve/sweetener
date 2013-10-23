@@ -1,6 +1,7 @@
 package pl.jsolve.sweetener.collection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -167,6 +168,14 @@ public final class Collections {
 			}
 		}
 		return (T) uniques;
+	}
+
+	public static <T extends Collection<?>> boolean containsAny(T collectionA, T collectionB) {
+		return !java.util.Collections.disjoint(collectionA, collectionB);
+	}
+
+	public static <E, T extends Collection<E>> boolean containsAny(T collection, E[] elements) {
+		return containsAny(collection, Arrays.asList(elements));
 	}
 
 	// List

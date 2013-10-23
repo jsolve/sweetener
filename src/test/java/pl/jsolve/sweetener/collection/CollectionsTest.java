@@ -10,6 +10,7 @@ import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.anIronMan;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -25,11 +26,11 @@ import org.junit.rules.ExpectedException;
 
 import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
+import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
+import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.person.Department;
 import pl.jsolve.sweetener.tests.stub.person.FieldOfStudy;
 import pl.jsolve.sweetener.tests.stub.person.Student;
-import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
-import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class CollectionsTest {
 
@@ -216,7 +217,7 @@ public class CollectionsTest {
 		assertThat(pagination.getNumberOfPages()).isEqualTo(1);
 		assertThat(pagination.getElementsOfPage()).containsOnly("A", "B", "C", "D", "E", "F", "G", "H", "I");
 	}
-	
+
 	@Test
 	public void shouldPaginateTheCollection4() {
 		// given
@@ -370,7 +371,7 @@ public class CollectionsTest {
 				new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI));
 		assertThat(groups.get(new GroupKey(3, FieldOfStudy.MATHS, Department.AEI))).onProperty("lastName").contains("Deep");
 		assertThat(groups.get(new GroupKey(3, FieldOfStudy.BIOINFORMATICS, Department.AEI))).onProperty("lastName")
-				.contains("Duke", "Knee");
+		.contains("Duke", "Knee");
 		assertThat(groups.get(new GroupKey(5, FieldOfStudy.BIOINFORMATICS, Department.MT))).onProperty("lastName").contains("Hunt");
 		assertThat(groups.get(new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI))).onProperty("lastName").contains("Sky");
 	}
@@ -405,6 +406,32 @@ public class CollectionsTest {
 		// then
 		assertThat(uniques).hasSize(1);
 		assertThat(uniques).onProperty("name").contains("John");
+	}
+
+	@Test
+	public void shouldContainAny() {
+		// given
+		Collection<String> collectionA = Collections.newArrayList("Adam", "Mark", "Tom");
+		Collection<String> collectionB = Collections.newArrayList("Mat", "Mark", "Thomas");
+
+		// when
+		boolean result = Collections.containsAny(collectionA, collectionB);
+
+		// then
+		assertThat(result).as("both collections contain 'Mark'").isTrue();
+	}
+
+	@Test
+	public void shouldNotContainAny() {
+		// given
+		Collection<String> collectionA = Collections.newArrayList("Adam", "Mark", "Tom");
+		Collection<String> collectionB = Collections.newArrayList("Mat", "Marcus", "Thomas");
+
+		// when
+		boolean result = Collections.containsAny(collectionA, collectionB);
+
+		// then
+		assertThat(result).as("collections do not have common elements").isFalse();
 	}
 
 	@Test

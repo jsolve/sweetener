@@ -5,6 +5,7 @@ import static pl.jsolve.sweetener.core.Reflections.isFieldPresent;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.converter.TypeConverter;
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
@@ -62,7 +63,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 	}
 
 	private <T> boolean isMappingOfTargetObject(T targetObject, Map mapAnnotation) {
-		return Reflections.getClasses(targetObject).contains(mapAnnotation.of());
+		return Collections.containsAny(Reflections.getClasses(targetObject), mapAnnotation.of());
 	}
 
 	private String getTargetFieldName(Field field, Map mapAnnotation) {
@@ -81,7 +82,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 
 	private void throwExceptionWhenFieldIsNotPresent(Object object, String fieldName) {
 		if (!isFieldPresent(object, fieldName)) {
-			throw new MappingException("%s does not contain field '%s'. Perhaps you misspelled field name in @Map(...) annotation?",
+			throw new MappingException("%s does not contain field '%s'. Perhaps you have misspelled field name in @Map annotation?",
 					object.getClass(), fieldName);
 		}
 	}
