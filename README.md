@@ -4,13 +4,15 @@ Sweetener [![Build Status](https://travis-ci.org/jsolve/sweetener.png)](https://
 Sweetener is a project created by Jsolve group. It provides a set of classes to facilitate the work with the Java language.
 
 Main categories:
+* collection
+    * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
+* comparer
+    * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
+* converter
+    * [TypeConverter](https://github.com/jsolve/sweetener/wiki/Type-converter)
 * core
     * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
     * [Reflections] (https://github.com/jsolve/sweetener/wiki/Reflections)
-* comparer
-    * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
-* collection
-    * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
 * mapper 
     * [Mapper](https://github.com/jsolve/sweetener/wiki/Mapper)
 * maths
