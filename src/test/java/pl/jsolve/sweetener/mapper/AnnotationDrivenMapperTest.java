@@ -11,6 +11,8 @@ import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -24,6 +26,8 @@ import pl.jsolve.sweetener.mapper.stub.StudentWithArrays;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField;
 import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo;
 import pl.jsolve.sweetener.mapper.stub.StudentWithCollections;
+import pl.jsolve.sweetener.mapper.stub.StudentWithDates;
+import pl.jsolve.sweetener.mapper.stub.StudentWithDatesSnapshot;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsInteger;
 import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsString;
 import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
@@ -44,6 +48,8 @@ public class AnnotationDrivenMapperTest {
 
 	private static final String NICKNAME = "ironMan";
 	private static final Long ID = 1L;
+	private static final Long FIRST_SEMPTEMBER_2008_TIMESTAMP = 1220227200100L;
+	private static final Date FIRST_SEMPTEMBER_2008_DATE = new Date(FIRST_SEMPTEMBER_2008_TIMESTAMP);
 
 	@Test
 	public void shouldMapHeroToHeroSnapshot() {
@@ -310,5 +316,35 @@ public class AnnotationDrivenMapperTest {
 		// then
 		assertThat(studentWithCollections.getGrades()).containsOnly(4, 5);
 		assertThat(studentWithCollections.getSubjects()).containsOnly("Phisics", "Math");
+	}
+
+	@Test
+	public void shouldMapStudentWithDatesToItsSnapshot() {
+		StudentWithDates studentWithDates = new StudentWithDates();
+		studentWithDates.setDateAsLong(FIRST_SEMPTEMBER_2008_TIMESTAMP);
+		studentWithDates.setDate(FIRST_SEMPTEMBER_2008_DATE);
+
+		// when
+		StudentWithDatesSnapshot studentWithDatesSnapshot = AnnotationDrivenMapper.map(studentWithDates, StudentWithDatesSnapshot.class);
+
+		// then
+		assertThat(studentWithDatesSnapshot.getCalendar().getTime()).isEqualTo(studentWithDates.getDate());
+		assertThat(studentWithDatesSnapshot.getDate().getTime()).isEqualTo(studentWithDates.getDateAsLong());
+	}
+
+	@Test
+	public void shouldConvertStudentWithDatesSnapshotToStudentWithDates() {
+		// given
+		Calendar calendar = Calendar.getInstance();
+		StudentWithDatesSnapshot studentWithDatesSnapshot = new StudentWithDatesSnapshot();
+		studentWithDatesSnapshot.setCalendar(calendar);
+		studentWithDatesSnapshot.setDate(calendar.getTime());
+
+		// when
+		StudentWithDates studentWithDates = AnnotationDrivenMapper.map(studentWithDatesSnapshot, StudentWithDates.class);
+
+		// then
+		assertThat(studentWithDates.getDate()).isEqualTo(studentWithDatesSnapshot.getCalendar().getTime());
+		assertThat(studentWithDates.getDateAsLong()).isEqualTo(studentWithDatesSnapshot.getDate().getTime());
 	}
 }
