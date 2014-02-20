@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.stub;
+package pl.jsolve.sweetener.mapper.simple.stub;
 
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
@@ -7,7 +7,10 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 public class Grade {
 
 	@Map
-	private final int grade;
+	private int grade;
+
+	public Grade() {
+	}
 
 	public Grade(int grade) {
 		this.grade = grade;

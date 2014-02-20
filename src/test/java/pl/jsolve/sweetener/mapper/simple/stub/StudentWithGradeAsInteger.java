@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.stub;
+package pl.jsolve.sweetener.mapper.simple.stub;
 
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;

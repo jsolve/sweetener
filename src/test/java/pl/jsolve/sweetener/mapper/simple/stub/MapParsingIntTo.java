@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.stub;
+package pl.jsolve.sweetener.mapper.simple.stub;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

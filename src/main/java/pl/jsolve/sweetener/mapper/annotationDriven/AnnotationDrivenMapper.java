@@ -38,7 +38,7 @@ public final class AnnotationDrivenMapper {
 	private static <T, V> void throwExceptionWhenIsNotMappableToTargetClass(T object, Class<V> targetClass) {
 		if (!isMappableToTargetClass(object, targetClass)) {
 			throw new MappingException(
-					"%s is not mappable to %s. Perhaps you forgot to add @MappableTo(\"%s.class\") annotation over %s class?",
+					"%s is not mappable to %s. Perhaps you forgot to add @MappableTo(%s.class) annotation over %s class?",
 					object.getClass(), targetClass, targetClass.getSimpleName(), object.getClass().getSimpleName());
 		}
 	}

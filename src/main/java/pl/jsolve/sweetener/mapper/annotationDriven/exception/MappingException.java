@@ -11,4 +11,8 @@ public class MappingException extends RuntimeException {
 	public MappingException(String format, Object... args) {
 		super(String.format(format, args));
 	}
+
+	public MappingException(Throwable e, String format, Object... args) {
+		super(String.format(format, args), e);
+	}
 }

@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.stub;
+package pl.jsolve.sweetener.mapper.simple.stub;
 
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
@@ -6,9 +6,9 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 @MappableTo(StudentWithCollections.class)
 public class StudentWithArrays {
 
-	@Map
+	@Map(withElementsType = Integer.class)
 	private Integer[] grades;
-	@Map
+	@Map(withElementsType = String.class)
 	private String[] subjects;
 
 	public Integer[] getGrades() {

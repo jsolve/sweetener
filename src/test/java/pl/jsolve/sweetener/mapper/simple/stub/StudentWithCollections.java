@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.stub;
+package pl.jsolve.sweetener.mapper.simple.stub;
 
 import java.util.List;
 import java.util.Set;
@@ -9,9 +9,9 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 @MappableTo(StudentWithArrays.class)
 public class StudentWithCollections {
 
-	@Map
+	@Map(withElementsType = Integer.class)
 	private List<Integer> grades;
-	@Map
+	@Map(withElementsType = String.class)
 	private Set<String> subjects;
 
 	public List<Integer> getGrades() {

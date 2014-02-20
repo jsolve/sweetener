@@ -1,22 +1,20 @@
 package pl.jsolve.sweetener.mapper.annotationDriven;
 
-import static pl.jsolve.sweetener.core.Reflections.isFieldPresent;
-
 import java.lang.reflect.Field;
 import java.util.List;
 
 import pl.jsolve.sweetener.collection.Collections;
-import pl.jsolve.sweetener.converter.TypeConverter;
 import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
+import pl.jsolve.sweetener.mapper.custom.CustomMapper;
 
 class MapAnnotationMapping implements AnnotationMapping {
 
 	private static final String NESTING_CHARACTER = ".";
 	private static final Class<Map> MAP_ANNOTATION_CLASS = Map.class;
-	private static final Class<Mappings> MAPS_ANNOTATION_CLASS = Mappings.class;
+	private static final Class<Mappings> MAPPINGS_ANNOTATION_CLASS = Mappings.class;
 
 	@Override
 	public <S, T> void apply(S sourceObject, T targetObject) {
@@ -33,9 +31,9 @@ class MapAnnotationMapping implements AnnotationMapping {
 	}
 
 	private <S, T> void applyOnFieldsAnnotatedByMappings(S sourceObject, T targetObject) {
-		List<Field> annotatedfields = Reflections.getFieldsAnnotatedBy(sourceObject, MAPS_ANNOTATION_CLASS);
+		List<Field> annotatedfields = Reflections.getFieldsAnnotatedBy(sourceObject, MAPPINGS_ANNOTATION_CLASS);
 		for (Field field : annotatedfields) {
-			Map[] mapAnntoations = field.getAnnotation(MAPS_ANNOTATION_CLASS).value();
+			Map[] mapAnntoations = field.getAnnotation(MAPPINGS_ANNOTATION_CLASS).value();
 			applyOnFieldWithAnnotations(sourceObject, targetObject, field, mapAnntoations);
 		}
 	}
@@ -47,7 +45,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 	}
 
 	private <S, T> void applyOnFieldWithAnnotation(S sourceObject, T targetObject, Field field, Map mapAnnotation) {
-		if (isMappingOfTargetObject(targetObject, mapAnnotation)) {
+		if (isMappingIntendedForTargetObject(targetObject, mapAnnotation)) {
 			String targetFieldName = getTargetFieldName(field, mapAnnotation);
 			throwExceptionWhenFieldIsNotPresent(targetObject, targetFieldName);
 
@@ -56,13 +54,13 @@ class MapAnnotationMapping implements AnnotationMapping {
 
 			Class<?> targetFieldType = Reflections.getFieldType(targetObject, targetFieldName);
 			Object sourceFieldValue = Reflections.getFieldValue(sourceObject, sourceFieldName);
-			sourceFieldValue = tryToMapFields(sourceFieldValue, targetFieldType);
-			sourceFieldValue = tryToConvertTypes(sourceFieldValue, targetFieldType);
+
+			sourceFieldValue = mapObjectToTargetType(sourceFieldValue, targetFieldType, mapAnnotation);
 			Reflections.setFieldValue(targetObject, targetFieldName, sourceFieldValue);
 		}
 	}
 
-	private <T> boolean isMappingOfTargetObject(T targetObject, Map mapAnnotation) {
+	private <T> boolean isMappingIntendedForTargetObject(T targetObject, Map mapAnnotation) {
 		return Collections.containsAny(Reflections.getClasses(targetObject), mapAnnotation.of());
 	}
 
@@ -81,23 +79,19 @@ class MapAnnotationMapping implements AnnotationMapping {
 	}
 
 	private void throwExceptionWhenFieldIsNotPresent(Object object, String fieldName) {
-		if (!isFieldPresent(object, fieldName)) {
+		if (!Reflections.isFieldPresent(object, fieldName)) {
 			throw new MappingException("%s does not contain field '%s'. Perhaps you have misspelled field name in @Map annotation?",
 					object.getClass(), fieldName);
 		}
 	}
 
-	private Object tryToMapFields(Object sourceFieldValue, Class<?> targetFieldType) {
-		if (AnnotationDrivenMapper.isMappableToTargetClass(sourceFieldValue, targetFieldType)) {
-			return AnnotationDrivenMapper.map(sourceFieldValue, targetFieldType);
+	private Object mapObjectToTargetType(Object object, Class<?> targetType, Map mapAnnotation) {
+		if (object != null) {
+			Class<?> elementsType = mapAnnotation.withElementsType();
+			object = CustomMapper.toType(targetType).arrayElementsTo(elementsType)
+					.collectionElementsTo(elementsType).usingAnnotations()
+					.usingTypeConvertion().map(object);
 		}
-		return sourceFieldValue;
-	}
-
-	private Object tryToConvertTypes(Object sourceFieldValue, Class<?> targetFieldType) {
-		if (sourceFieldValue != null && !sourceFieldValue.getClass().equals(targetFieldType)) {
-			return TypeConverter.convert(sourceFieldValue, targetFieldType);
-		}
-		return sourceFieldValue;
+		return object;
 	}
 }

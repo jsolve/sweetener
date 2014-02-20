@@ -1,18 +1,16 @@
-package pl.jsolve.sweetener.mapper;
+package pl.jsolve.sweetener.mapper.simple;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static pl.jsolve.sweetener.collection.Collections.newArrayList;
 import static pl.jsolve.sweetener.collection.Collections.newHashSet;
-import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField.NOT_EXISTING_NESTED_FIELD;
-import static pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo.NOT_EXISTING_FIELD;
-import static pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping.MAP_PARSING_INT_TO_ANNOTATION_CLASS;
+import static pl.jsolve.sweetener.mapper.simple.stub.StudentWithBadlyAnnotatedFromNestedField.NOT_EXISTING_NESTED_FIELD;
+import static pl.jsolve.sweetener.mapper.simple.stub.StudentWithBadlyAnnotatedMapTo.NOT_EXISTING_FIELD;
+import static pl.jsolve.sweetener.mapper.simple.stub.StudentWithMapParsingIntToAnnotationMapping.MAP_PARSING_INT_TO_ANNOTATION_CLASS;
 import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
 import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
 
 import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.junit.Test;
 
@@ -21,18 +19,16 @@ import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
 import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationMapping;
 import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
-import pl.jsolve.sweetener.mapper.stub.Grade;
-import pl.jsolve.sweetener.mapper.stub.StudentWithArrays;
-import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedFromNestedField;
-import pl.jsolve.sweetener.mapper.stub.StudentWithBadlyAnnotatedMapTo;
-import pl.jsolve.sweetener.mapper.stub.StudentWithCollections;
-import pl.jsolve.sweetener.mapper.stub.StudentWithDates;
-import pl.jsolve.sweetener.mapper.stub.StudentWithDatesSnapshot;
-import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsInteger;
-import pl.jsolve.sweetener.mapper.stub.StudentWithGradeAsString;
-import pl.jsolve.sweetener.mapper.stub.StudentWithMapParsingIntToAnnotationMapping;
-import pl.jsolve.sweetener.mapper.stub.StudentWithMapableGrade;
-import pl.jsolve.sweetener.mapper.stub.StudentWithMapableGradeSnapshot;
+import pl.jsolve.sweetener.mapper.simple.stub.Grade;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithArrays;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithBadlyAnnotatedFromNestedField;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithBadlyAnnotatedMapTo;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithCollections;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithGradeAsInteger;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithGradeAsString;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithMapParsingIntToAnnotationMapping;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithMapableGrade;
+import pl.jsolve.sweetener.mapper.simple.stub.StudentWithMapableGradeSnapshot;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.hero.HeroDTO;
@@ -48,8 +44,6 @@ public class AnnotationDrivenMapperTest {
 
 	private static final String NICKNAME = "ironMan";
 	private static final Long ID = 1L;
-	private static final Long FIRST_SEMPTEMBER_2008_TIMESTAMP = 1220227200100L;
-	private static final Date FIRST_SEMPTEMBER_2008_DATE = new Date(FIRST_SEMPTEMBER_2008_TIMESTAMP);
 
 	@Test
 	public void shouldMapHeroToHeroSnapshot() {
@@ -319,32 +313,21 @@ public class AnnotationDrivenMapperTest {
 	}
 
 	@Test
-	public void shouldMapStudentWithDatesToItsSnapshot() {
-		StudentWithDates studentWithDates = new StudentWithDates();
-		studentWithDates.setDateAsLong(FIRST_SEMPTEMBER_2008_TIMESTAMP);
-		studentWithDates.setDate(FIRST_SEMPTEMBER_2008_DATE);
-
-		// when
-		StudentWithDatesSnapshot studentWithDatesSnapshot = AnnotationDrivenMapper.map(studentWithDates, StudentWithDatesSnapshot.class);
-
-		// then
-		assertThat(studentWithDatesSnapshot.getCalendar().getTime()).isEqualTo(studentWithDates.getDate());
-		assertThat(studentWithDatesSnapshot.getDate().getTime()).isEqualTo(studentWithDates.getDateAsLong());
-	}
-
-	@Test
-	public void shouldConvertStudentWithDatesSnapshotToStudentWithDates() {
+	public void shouldFailAtMappingStudentWithGradeToStudentWithGradeAsIntegerBecauseOfTypeConversion() {
 		// given
-		Calendar calendar = Calendar.getInstance();
-		StudentWithDatesSnapshot studentWithDatesSnapshot = new StudentWithDatesSnapshot();
-		studentWithDatesSnapshot.setCalendar(calendar);
-		studentWithDatesSnapshot.setDate(calendar.getTime());
+		final StudentWithMapableGrade studentWithGrade = new StudentWithMapableGrade();
+		studentWithGrade.setGrade(Grade.valueOf(2));
 
 		// when
-		StudentWithDates studentWithDates = AnnotationDrivenMapper.map(studentWithDatesSnapshot, StudentWithDates.class);
+		MappingException caughtException = tryToCatch(MappingException.class, new ExceptionalOperation() {
+
+			@Override
+			public void operate() throws Exception {
+				AnnotationDrivenMapper.map(studentWithGrade, StudentWithGradeAsInteger.class);
+			}
+		});
 
 		// then
-		assertThat(studentWithDates.getDate()).isEqualTo(studentWithDatesSnapshot.getCalendar().getTime());
-		assertThat(studentWithDates.getDateAsLong()).isEqualTo(studentWithDatesSnapshot.getDate().getTime());
+		assertThrowable(caughtException).isThrown().withMessage("Type conversion between fields failed.");
 	}
 }

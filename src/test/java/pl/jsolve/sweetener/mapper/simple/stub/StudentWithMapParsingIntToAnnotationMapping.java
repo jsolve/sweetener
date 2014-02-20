@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.stub;
+package pl.jsolve.sweetener.mapper.simple.stub;
 
 import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 import pl.jsolve.sweetener.tests.stub.person.StudentSnapshot;

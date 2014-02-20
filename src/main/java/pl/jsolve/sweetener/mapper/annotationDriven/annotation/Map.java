@@ -14,4 +14,6 @@ public @interface Map {
 	String to() default "";
 
 	Class<?>[] of() default Object.class;
+
+	Class<?> withElementsType() default Object.class;
 }
