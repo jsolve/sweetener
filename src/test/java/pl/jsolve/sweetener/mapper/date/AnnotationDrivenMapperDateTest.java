@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
+import pl.jsolve.sweetener.mapper.annotationdriven.AnnotationDrivenMapper;
 import pl.jsolve.sweetener.mapper.date.stub.StudentWithDates;
 import pl.jsolve.sweetener.mapper.date.stub.StudentWithDatesSnapshot;
 

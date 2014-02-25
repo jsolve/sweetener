@@ -3,8 +3,8 @@ package pl.jsolve.sweetener.mapper.date.stub;
 import java.util.Calendar;
 import java.util.Date;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.MappableTo;
 
 @MappableTo(StudentWithDates.class)
 public class StudentWithDatesSnapshot {

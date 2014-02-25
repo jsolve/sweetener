@@ -1,9 +1,9 @@
 package pl.jsolve.sweetener.tests.stub.hero;
 
-import pl.jsolve.sweetener.comparer.byId.ComparableById;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
+import pl.jsolve.sweetener.comparer.byid.ComparableById;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Mappings;
 
 @MappableTo({ HeroSnapshot.class, HeroDTO.class })
 public class Hero implements ComparableById {

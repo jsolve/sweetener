@@ -1,8 +1,8 @@
 package pl.jsolve.sweetener.mapper.simple.stub;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Mappings;
 
 @MappableTo({ StudentWithMapableGradeSnapshot.class, StudentWithGradeAsInteger.class })
 public class StudentWithMapableGrade {

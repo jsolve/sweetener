@@ -2,9 +2,9 @@ package pl.jsolve.sweetener.mapper.collection.stub;
 
 import java.util.List;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Mappings;
 
 @MappableTo({ StudentWithSetOfGradesAsStrings.class, StudentWithArrayOfGradesAsStrings.class, StudentWithListOfIntegers.class })
 public class StudentWithListOfGradesAsIntegers {

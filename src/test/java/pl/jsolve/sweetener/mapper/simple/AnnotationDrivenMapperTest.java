@@ -16,9 +16,9 @@ import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.core.Reflections;
-import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
-import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationMapping;
-import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
+import pl.jsolve.sweetener.mapper.annotationdriven.AnnotationDrivenMapper;
+import pl.jsolve.sweetener.mapper.annotationdriven.AnnotationMapping;
+import pl.jsolve.sweetener.mapper.annotationdriven.exception.MappingException;
 import pl.jsolve.sweetener.mapper.simple.stub.Grade;
 import pl.jsolve.sweetener.mapper.simple.stub.StudentWithArrays;
 import pl.jsolve.sweetener.mapper.simple.stub.StudentWithBadlyAnnotatedFromNestedField;

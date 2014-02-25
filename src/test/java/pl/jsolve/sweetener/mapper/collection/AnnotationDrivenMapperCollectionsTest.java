@@ -8,7 +8,7 @@ import java.util.Collection;
 
 import org.junit.Test;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
+import pl.jsolve.sweetener.mapper.annotationdriven.AnnotationDrivenMapper;
 import pl.jsolve.sweetener.mapper.collection.stub.StudentWithArrayOfGradeSnapshots;
 import pl.jsolve.sweetener.mapper.collection.stub.StudentWithArrayOfGrades;
 import pl.jsolve.sweetener.mapper.collection.stub.StudentWithArrayOfGradesAsStrings;

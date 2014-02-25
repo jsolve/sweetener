@@ -1,6 +1,6 @@
 package pl.jsolve.sweetener.mapper.custom.strategies;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.AnnotationDrivenMapper;
+import pl.jsolve.sweetener.mapper.annotationdriven.AnnotationDrivenMapper;
 
 public class AnnotationDrivenMapperStrategy implements CustomMapperStrategy {
 

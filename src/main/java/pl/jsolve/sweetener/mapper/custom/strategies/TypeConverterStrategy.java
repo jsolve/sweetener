@@ -2,7 +2,7 @@ package pl.jsolve.sweetener.mapper.custom.strategies;
 
 import pl.jsolve.sweetener.converter.TypeConverter;
 import pl.jsolve.sweetener.exception.ConversionException;
-import pl.jsolve.sweetener.mapper.annotationDriven.exception.MappingException;
+import pl.jsolve.sweetener.mapper.annotationdriven.exception.MappingException;
 
 public class TypeConverterStrategy implements CustomMapperStrategy {
 
