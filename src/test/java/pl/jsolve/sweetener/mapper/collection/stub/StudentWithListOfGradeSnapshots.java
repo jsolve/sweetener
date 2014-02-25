@@ -10,7 +10,7 @@ import pl.jsolve.sweetener.mapper.simple.stub.GradeSnapshot;
 @MappableTo(StudentWithListOfGrades.class)
 public class StudentWithListOfGradeSnapshots {
 
-	@Map(to = "grades", withElementsType = Grade.class)
+	@Map(to = "grades", elementsAs = Grade.class)
 	private List<GradeSnapshot> gradeSnapshots;
 
 	public List<GradeSnapshot> getGradeSnapshots() {

@@ -87,7 +87,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 
 	private Object mapObjectToTargetType(Object object, Class<?> targetType, Map mapAnnotation) {
 		if (object != null) {
-			Class<?> elementsType = mapAnnotation.withElementsType();
+			Class<?> elementsType = mapAnnotation.elementsAs();
 			object = CustomMapper.toType(targetType).arrayElementsTo(elementsType)
 					.collectionElementsTo(elementsType).usingAnnotations()
 					.usingTypeConvertion().map(object);

@@ -9,9 +9,9 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 @MappableTo(StudentWithArrays.class)
 public class StudentWithCollections {
 
-	@Map(withElementsType = Integer.class)
+	@Map(elementsAs = Integer.class)
 	private List<Integer> grades;
-	@Map(withElementsType = String.class)
+	@Map(elementsAs = String.class)
 	private Set<String> subjects;
 
 	public List<Integer> getGrades() {

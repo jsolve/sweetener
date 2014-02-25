@@ -8,7 +8,7 @@ import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
 @MappableTo(StudentWithListOfGradesAsIntegers.class)
 public class StudentWithSetOfGradesAsStrings {
 
-	@Map(to = "grades", withElementsType = Integer.class)
+	@Map(to = "grades", elementsAs = Integer.class)
 	private Set<String> grades;
 
 	public Set<String> getGrades() {

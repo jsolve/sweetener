@@ -12,9 +12,9 @@ import pl.jsolve.sweetener.mapper.simple.stub.GradeSnapshot;
 public class StudentWithListOfGrades {
 
 	@Mappings({
-		@Map(to = "gradeSnapshots", withElementsType = GradeSnapshot.class, of = { StudentWithListOfGradeSnapshots.class,
-			StudentWithArrayOfGradeSnapshots.class }),
-			@Map(to = "grades", withElementsType = Grade.class, of = StudentWithArrayOfGrades.class)
+			@Map(to = "gradeSnapshots", elementsAs = GradeSnapshot.class, of = { StudentWithListOfGradeSnapshots.class,
+					StudentWithArrayOfGradeSnapshots.class }),
+			@Map(to = "grades", elementsAs = Grade.class, of = StudentWithArrayOfGrades.class)
 	})
 	private List<Grade> grades;
 
