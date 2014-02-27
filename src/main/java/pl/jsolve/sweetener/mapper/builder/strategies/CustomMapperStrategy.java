@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.mapper.custom.strategies;
+package pl.jsolve.sweetener.mapper.builder.strategies;
 
 public interface CustomMapperStrategy {
 

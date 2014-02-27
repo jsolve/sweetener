@@ -1,17 +1,17 @@
-package pl.jsolve.sweetener.mapper.custom.strategies;
+package pl.jsolve.sweetener.mapper.builder.strategies;
 
 import java.lang.reflect.Array;
 
-import pl.jsolve.sweetener.mapper.custom.CustomMapper;
+import pl.jsolve.sweetener.mapper.builder.MapperBuilder;
 
 public class ArrayElementsMapperStrategy implements CustomMapperStrategy {
 
 	private final Class<?> elementsType;
-	private final CustomMapper mapper;
+	private final MapperBuilder mapper;
 
 	public ArrayElementsMapperStrategy(Class<?> elementsType) {
 		this.elementsType = elementsType;
-		mapper = CustomMapper.toType(elementsType).usingAnnotations().usingTypeConvertion();
+		mapper = MapperBuilder.toType(elementsType).usingAnnotations().usingTypeConvertion();
 	}
 
 	@Override

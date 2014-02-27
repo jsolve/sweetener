@@ -8,7 +8,7 @@ import pl.jsolve.sweetener.core.Reflections;
 import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
 import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Mappings;
 import pl.jsolve.sweetener.mapper.annotationdriven.exception.MappingException;
-import pl.jsolve.sweetener.mapper.custom.CustomMapper;
+import pl.jsolve.sweetener.mapper.builder.MapperBuilder;
 
 class MapAnnotationMapping implements AnnotationMapping {
 
@@ -88,7 +88,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 	private Object mapObjectToTargetType(Object object, Class<?> targetType, Map mapAnnotation) {
 		if (object != null) {
 			Class<?> elementsType = mapAnnotation.elementsAs();
-			object = CustomMapper.toType(targetType).arrayElementsTo(elementsType)
+			object = MapperBuilder.toType(targetType).arrayElementsTo(elementsType)
 					.collectionElementsTo(elementsType).usingAnnotations()
 					.usingTypeConvertion().map(object);
 		}

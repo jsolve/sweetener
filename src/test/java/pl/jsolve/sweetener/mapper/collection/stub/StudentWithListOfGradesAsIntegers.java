@@ -10,8 +10,8 @@ import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Mappings;
 public class StudentWithListOfGradesAsIntegers {
 
 	@Mappings({
-		@Map(to = "grades", elementsAs = String.class, of = { StudentWithSetOfGradesAsStrings.class,
-			StudentWithArrayOfGradesAsStrings.class }),
+			@Map(to = "grades", elementsAs = String.class, of = { StudentWithSetOfGradesAsStrings.class,
+					StudentWithArrayOfGradesAsStrings.class }),
 			@Map(to = "integers", of = StudentWithListOfIntegers.class)
 	})
 	private List<Integer> grades;
