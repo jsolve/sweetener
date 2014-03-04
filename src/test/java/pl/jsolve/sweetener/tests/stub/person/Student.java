@@ -1,8 +1,8 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.MappableTo;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Mappings;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.MappableTo;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Mappings;
 
 @MappableTo({ StudentSnapshot.class, StudentDTO.class })
 public class Student extends Person {
