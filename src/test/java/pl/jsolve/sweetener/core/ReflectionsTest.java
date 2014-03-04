@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
-import pl.jsolve.sweetener.mapper.annotationDriven.annotation.Map;
+import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class ReflectionsTest {

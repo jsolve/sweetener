@@ -38,7 +38,7 @@ public final class Reflections {
 		return getFieldValue(field.getOwner(), field.getField());
 	}
 
-	public static void setFieldValue(Object object, String stringOfFieldsName, final Object value) {
+	public static void setFieldValue(Object object, String stringOfFieldsName, Object value) {
 		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
 		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
 		setField(field.getOwner(), field.getField(), value);
