@@ -28,6 +28,8 @@ import pl.jsolve.sweetener.mapper.simple.stub.GradeSnapshot;
 
 public class AnnotationDrivenMapperCollectionsTest {
 
+	private static final String THEORY_OF_COMPUTER_SCIENCE = "Theory of Computer Science";
+	private static final String NUMERICAL_METHODS = "Numerical Methods";
 	private static final String EXAM_NAME_PROPERTY = "name";
 	private static final String CLASS = "class";
 	private static final String GRADE_VALUE_PROPERTY = "value";
@@ -171,8 +173,8 @@ public class AnnotationDrivenMapperCollectionsTest {
 		// given
 		StudentWithMapOfGrades studentWithGrades = new StudentWithMapOfGrades();
 		HashMap<Exam, Grade> grades = Maps.newHashMap();
-		grades.put(new Exam("Numerical Methods"), Grade.valueOf(4));
-		grades.put(new Exam("Theory of Computer Science"), Grade.valueOf(5));
+		grades.put(new Exam(NUMERICAL_METHODS), Grade.valueOf(4));
+		grades.put(new Exam(THEORY_OF_COMPUTER_SCIENCE), Grade.valueOf(5));
 		studentWithGrades.setGrades(grades);
 
 		// when
@@ -182,9 +184,29 @@ public class AnnotationDrivenMapperCollectionsTest {
 		// then
 		assertCollectionHasElementsWithType(studentWithGradeSnapshots.getGradeSnapshots().keySet(), ExamSnapshot.class);
 		assertThat(studentWithGradeSnapshots.getGradeSnapshots().keySet()).onProperty(EXAM_NAME_PROPERTY)
-				.containsOnly("Numerical Methods", "Theory of Computer Science");
+				.containsOnly(NUMERICAL_METHODS, THEORY_OF_COMPUTER_SCIENCE);
 		assertCollectionHasElementsWithType(studentWithGradeSnapshots.getGradeSnapshots().values(), GradeSnapshot.class);
 		assertThat(studentWithGradeSnapshots.getGradeSnapshots().values()).onProperty(GRADE_VALUE_PROPERTY).containsOnly(4, 5);
+	}
+
+	@Test
+	public void shouldMapStudentWithMapOfGradeSnapshotsToStudentWithMapOfGrades() {
+		// given
+		StudentWithMapOfGradeSnapshots studentWithGradeSnapshots = new StudentWithMapOfGradeSnapshots();
+		HashMap<ExamSnapshot, GradeSnapshot> gradeSnapshots = Maps.newHashMap();
+		gradeSnapshots.put(new ExamSnapshot(NUMERICAL_METHODS), GradeSnapshot.valueOf(4));
+		gradeSnapshots.put(new ExamSnapshot(THEORY_OF_COMPUTER_SCIENCE), GradeSnapshot.valueOf(5));
+		studentWithGradeSnapshots.setGradeSnapshots(gradeSnapshots);
+
+		// when
+		StudentWithMapOfGrades studentWithGrades = AnnotationDrivenMapper.map(studentWithGradeSnapshots, StudentWithMapOfGrades.class);
+
+		// then
+		assertCollectionHasElementsWithType(studentWithGrades.getGrades().keySet(), Exam.class);
+		assertThat(studentWithGrades.getGrades().keySet()).onProperty(EXAM_NAME_PROPERTY).containsOnly(NUMERICAL_METHODS,
+				THEORY_OF_COMPUTER_SCIENCE);
+		assertCollectionHasElementsWithType(studentWithGrades.getGrades().values(), Grade.class);
+		assertThat(studentWithGrades.getGrades().values()).onProperty(GRADE_VALUE_PROPERTY).containsOnly(4, 5);
 	}
 
 	private void assertCollectionHasElementsWithType(Collection<?> collection, Class<?> clazz) {

@@ -59,6 +59,19 @@ public class AnnotationDrivenMapperTest {
 	}
 
 	@Test
+	public void shouldMapHeroWithNullFieldsToHeroSnapshot() {
+		// given
+		Hero hero = aHero().build();
+
+		// when
+		HeroSnapshot result = AnnotationDrivenMapper.map(hero, HeroSnapshot.class);
+
+		// then
+		assertThat(result.getId()).isNull();
+		assertThat(result.getName()).isNull();
+	}
+
+	@Test
 	public void shouldMapHeroToHeroDTO() {
 		// given
 		Hero hero = aHero().withId(ID).withNickname(NICKNAME).build();
@@ -328,6 +341,7 @@ public class AnnotationDrivenMapperTest {
 		});
 
 		// then
-		assertThrowable(caughtException).isThrown().withMessage("Type conversion between fields failed.");
+		assertThrowable(caughtException).isThrown().withMessage(
+				"Type conversion between fields of type " + Grade.class + " and int failed.");
 	}
 }
