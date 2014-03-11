@@ -7,9 +7,10 @@ import pl.jsolve.sweetener.mapper.builder.strategies.AnnotationDrivenMapperStrat
 import pl.jsolve.sweetener.mapper.builder.strategies.ArrayElementsMapperStrategy;
 import pl.jsolve.sweetener.mapper.builder.strategies.CollectionElementsMapperStrategy;
 import pl.jsolve.sweetener.mapper.builder.strategies.CustomMapperStrategy;
+import pl.jsolve.sweetener.mapper.builder.strategies.MapKeysAndValuesMapperStrategy;
 import pl.jsolve.sweetener.mapper.builder.strategies.TypeConverterStrategy;
 
-public class MapperBuilder {
+public class MapperBuilder<T> {
 
 	private final List<CustomMapperStrategy> strategies = Collections.newLinkedList();
 	private final Class<?> targetType;
@@ -18,34 +19,40 @@ public class MapperBuilder {
 		this.targetType = targetType;
 	}
 
-	public static MapperBuilder toType(Class<?> targetType) {
-		return new MapperBuilder(targetType);
+	public static <T> MapperBuilder<T> toType(Class<T> targetType) {
+		return new MapperBuilder<>(targetType);
 	}
 
-	public MapperBuilder usingAnnotations() {
+	public MapperBuilder<T> usingAnnotations() {
 		strategies.add(new AnnotationDrivenMapperStrategy());
 		return this;
 	}
 
-	public MapperBuilder usingTypeConvertion() {
+	public MapperBuilder<T> usingTypeConvertion() {
 		strategies.add(new TypeConverterStrategy());
 		return this;
 	}
 
-	public MapperBuilder arrayElementsTo(Class<?> elementsType) {
+	public MapperBuilder<T> arrayElementsTo(Class<?> elementsType) {
 		strategies.add(new ArrayElementsMapperStrategy(elementsType));
 		return this;
 	}
 
-	public MapperBuilder collectionElementsTo(Class<?> elementsType) {
+	public MapperBuilder<T> collectionElementsTo(Class<?> elementsType) {
 		strategies.add(new CollectionElementsMapperStrategy(elementsType));
 		return this;
 	}
 
-	public Object map(Object object) {
+	public MapperBuilder<T> mapKeysAndValuesTo(Class<?> keysType, Class<?> valuesType) {
+		strategies.add(new MapKeysAndValuesMapperStrategy(keysType, valuesType));
+		return this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T map(Object object) {
 		for (CustomMapperStrategy strategy : strategies) {
 			object = strategy.apply(object, targetType);
 		}
-		return object;
+		return (T) object;
 	}
 }
