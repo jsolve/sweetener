@@ -87,13 +87,11 @@ class MapAnnotationMapping implements AnnotationMapping {
 
 	private Object mapObjectToTargetType(Object object, Class<?> targetType, Map mapAnnotation) {
 		if (object != null) {
-			Class<?> elementsType = mapAnnotation.elementsAs();
-			Class<?> keysType = mapAnnotation.keysAs();
-			Class<?> valuesType = mapAnnotation.valuesAs();
 			object = MapperBuilder.toType(targetType)
-					.arrayElementsTo(elementsType)
-					.collectionElementsTo(elementsType).usingAnnotations()
-					.mapKeysAndValuesTo(keysType, valuesType)
+					.arrayElementsTo(mapAnnotation.elementsAs())
+					.collectionElementsTo(mapAnnotation.elementsAs())
+					.mapKeysAndValuesTo(mapAnnotation.keysAs(), mapAnnotation.valuesAs())
+					.usingAnnotations()
 					.usingTypeConvertion().map(object);
 		}
 		return object;
