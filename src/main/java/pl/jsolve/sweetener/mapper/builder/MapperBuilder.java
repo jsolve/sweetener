@@ -51,7 +51,9 @@ public class MapperBuilder<T> {
 	@SuppressWarnings("unchecked")
 	public T map(Object object) {
 		for (CustomMapperStrategy strategy : strategies) {
-			object = strategy.apply(object, targetType);
+			if (object != null) {
+				object = strategy.apply(object, targetType);
+			}
 		}
 		return (T) object;
 	}

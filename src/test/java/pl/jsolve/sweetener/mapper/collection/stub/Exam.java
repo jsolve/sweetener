@@ -7,7 +7,10 @@ import pl.jsolve.sweetener.mapper.annotationdriven.annotation.MappableTo;
 public class Exam {
 
 	@Map
-	private final String name;
+	private String name;
+
+	public Exam() {
+	}
 
 	public Exam(String name) {
 		this.name = name;
