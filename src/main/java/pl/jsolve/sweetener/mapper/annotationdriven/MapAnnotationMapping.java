@@ -91,6 +91,7 @@ class MapAnnotationMapping implements AnnotationMapping {
 				.collectionElementsTo(mapAnnotation.elementsAs())
 				.mapKeysAndValuesTo(mapAnnotation.keysAs(), mapAnnotation.valuesAs())
 				.usingAnnotations()
-				.usingTypeConvertion().map(object);
+				.usingTypeConvertion()
+				.map(object);
 	}
 }

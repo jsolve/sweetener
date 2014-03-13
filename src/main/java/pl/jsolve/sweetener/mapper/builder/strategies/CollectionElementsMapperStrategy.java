@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import pl.jsolve.sweetener.mapper.builder.MapperBuilder;
 
-public class CollectionElementsMapperStrategy implements CustomMapperStrategy {
+public class CollectionElementsMapperStrategy implements MapperBuilderStrategy {
 
 	private final Class<?> elementsType;
 	private final MapperBuilder<?> mapper;

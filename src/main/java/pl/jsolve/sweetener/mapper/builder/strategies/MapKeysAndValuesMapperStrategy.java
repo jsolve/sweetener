@@ -5,7 +5,7 @@ import java.util.Map;
 import pl.jsolve.sweetener.collection.Maps;
 import pl.jsolve.sweetener.mapper.builder.MapperBuilder;
 
-public class MapKeysAndValuesMapperStrategy implements CustomMapperStrategy {
+public class MapKeysAndValuesMapperStrategy implements MapperBuilderStrategy {
 
 	private final MapperBuilder<?> keysMapper;
 	private final MapperBuilder<?> valuesMapper;

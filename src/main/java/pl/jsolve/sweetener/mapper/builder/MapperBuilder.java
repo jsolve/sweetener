@@ -6,16 +6,16 @@ import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.mapper.builder.strategies.AnnotationDrivenMapperStrategy;
 import pl.jsolve.sweetener.mapper.builder.strategies.ArrayElementsMapperStrategy;
 import pl.jsolve.sweetener.mapper.builder.strategies.CollectionElementsMapperStrategy;
-import pl.jsolve.sweetener.mapper.builder.strategies.CustomMapperStrategy;
 import pl.jsolve.sweetener.mapper.builder.strategies.MapKeysAndValuesMapperStrategy;
+import pl.jsolve.sweetener.mapper.builder.strategies.MapperBuilderStrategy;
 import pl.jsolve.sweetener.mapper.builder.strategies.TypeConverterStrategy;
 
 public class MapperBuilder<T> {
 
-	private final List<CustomMapperStrategy> strategies = Collections.newLinkedList();
-	private final Class<?> targetType;
+	private final List<MapperBuilderStrategy> strategies = Collections.newLinkedList();
+	private final Class<T> targetType;
 
-	private MapperBuilder(Class<?> targetType) {
+	private MapperBuilder(Class<T> targetType) {
 		this.targetType = targetType;
 	}
 
@@ -50,7 +50,7 @@ public class MapperBuilder<T> {
 
 	@SuppressWarnings("unchecked")
 	public T map(Object object) {
-		for (CustomMapperStrategy strategy : strategies) {
+		for (MapperBuilderStrategy strategy : strategies) {
 			if (object != null) {
 				object = strategy.apply(object, targetType);
 			}
