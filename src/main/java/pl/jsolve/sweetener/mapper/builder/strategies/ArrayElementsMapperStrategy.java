@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 
 import pl.jsolve.sweetener.mapper.builder.MapperBuilder;
 
-public class ArrayElementsMapperStrategy implements CustomMapperStrategy {
+public class ArrayElementsMapperStrategy implements MapperBuilderStrategy {
 
 	private final Class<?> elementsType;
 	private final MapperBuilder<?> mapper;
