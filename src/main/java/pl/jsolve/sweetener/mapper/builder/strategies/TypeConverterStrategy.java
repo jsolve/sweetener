@@ -4,7 +4,7 @@ import pl.jsolve.sweetener.converter.TypeConverter;
 import pl.jsolve.sweetener.exception.ConversionException;
 import pl.jsolve.sweetener.mapper.annotationdriven.exception.MappingException;
 
-public class TypeConverterStrategy implements CustomMapperStrategy {
+public class TypeConverterStrategy implements MapperBuilderStrategy {
 
 	@Override
 	public Object apply(Object object, Class<?> targetType) {
@@ -18,7 +18,7 @@ public class TypeConverterStrategy implements CustomMapperStrategy {
 		try {
 			return TypeConverter.convert(object, targetType);
 		} catch (ConversionException ce) {
-			throw new MappingException(ce, "Type conversion between fields failed.");
+			throw new MappingException(ce, "Type conversion between fields of type %s and %s failed.", object.getClass(), targetType);
 		}
 	}
 }

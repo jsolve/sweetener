@@ -15,5 +15,9 @@ public @interface Map {
 
 	Class<?>[] of() default Object.class;
 
+	Class<?> keysAs() default Object.class;
+
+	Class<?> valuesAs() default Object.class;
+
 	Class<?> elementsAs() default Object.class;
 }
