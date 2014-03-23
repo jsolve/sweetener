@@ -86,12 +86,12 @@ class MapAnnotationMapping implements AnnotationMapping {
 	}
 
 	private Object mapObjectToTargetType(Object object, Class<?> targetType, Map mapAnnotation) {
-		if (object != null) {
-			Class<?> elementsType = mapAnnotation.elementsAs();
-			object = MapperBuilder.toType(targetType).arrayElementsTo(elementsType)
-					.collectionElementsTo(elementsType).usingAnnotations()
-					.usingTypeConvertion().map(object);
-		}
-		return object;
+		return MapperBuilder.toType(targetType)
+				.arrayElementsTo(mapAnnotation.elementsAs())
+				.collectionElementsTo(mapAnnotation.elementsAs())
+				.mapKeysAndValuesTo(mapAnnotation.keysAs(), mapAnnotation.valuesAs())
+				.usingAnnotations()
+				.usingTypeConvertion()
+				.map(object);
 	}
 }

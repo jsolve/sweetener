@@ -2,7 +2,7 @@ package pl.jsolve.sweetener.mapper.builder.strategies;
 
 import pl.jsolve.sweetener.mapper.annotationdriven.AnnotationDrivenMapper;
 
-public class AnnotationDrivenMapperStrategy implements CustomMapperStrategy {
+public class AnnotationDrivenMapperStrategy implements MapperBuilderStrategy {
 
 	@Override
 	public Object apply(Object object, Class<?> targetType) {
