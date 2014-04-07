@@ -1,20 +1,9 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
-import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Map;
-import pl.jsolve.sweetener.mapper.annotationdriven.annotation.MappableTo;
-import pl.jsolve.sweetener.mapper.annotationdriven.annotation.Mappings;
-
-@MappableTo({ StudentSnapshot.class, StudentDTO.class })
 public class Student extends Person {
 
-	@Mappings({
-		@Map(to = "semester", of = StudentSnapshot.class),
-		@Map(to = "totalSemesters", of = StudentDTO.class) })
 	private int semester;
-
-	@Map(of = StudentSnapshot.class)
 	private FieldOfStudy fieldOfStudy;
-
 	private Department department;
 
 	public Student() {

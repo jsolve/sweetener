@@ -1,6 +1,5 @@
 package pl.jsolve.sweetener.tests.stub.person;
 
-
 public class Address {
 
 	private String street;
