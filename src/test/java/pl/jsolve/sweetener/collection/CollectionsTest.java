@@ -235,7 +235,6 @@ public class CollectionsTest {
 		assertThat(pagination.getElementsOfPage()).isEmpty();
 	}
 
-
 	@Test
 	public void shouldChopCollection() {
 		// given
@@ -371,7 +370,7 @@ public class CollectionsTest {
 				new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI));
 		assertThat(groups.get(new GroupKey(3, FieldOfStudy.MATHS, Department.AEI))).onProperty("lastName").contains("Deep");
 		assertThat(groups.get(new GroupKey(3, FieldOfStudy.BIOINFORMATICS, Department.AEI))).onProperty("lastName")
-		.contains("Duke", "Knee");
+				.contains("Duke", "Knee");
 		assertThat(groups.get(new GroupKey(5, FieldOfStudy.BIOINFORMATICS, Department.MT))).onProperty("lastName").contains("Hunt");
 		assertThat(groups.get(new GroupKey(7, FieldOfStudy.COMPUTER_SCIENCE, Department.AEI))).onProperty("lastName").contains("Sky");
 	}

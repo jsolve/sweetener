@@ -4,12 +4,37 @@
 	<groupId>pl.jsolve</groupId>
 	<artifactId>sweetener</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>sweetener</name>
+	<description>Sweetener provides a set of classes to facilitate the work with the Java language.</description>
+	<url>https://github.com/jsolve/sweetener</url>
+
+	<organization>
+		<name>jsolve</name>
+		<url>http://jsolve.pl</url>
+	</organization>
+
+	<issueManagement>
+		<url>https://github.com/jsolve/sweetener/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/jsolve/sweetener</url>
+	</ciManagement>
+
+	<scm>
+		<url>git@github.com:jsolve/sweetener.git</url>
+		<connection>scm:git:git@github.com:jsolve/sweetener.git</connection>
+		<developerConnection>scm:git:git@github.com:jsolve/sweetener.git</developerConnection>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
 		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<wagon-ftp.version>2.4</wagon-ftp.version>
 
 		<jackson-mapper-asl.version>1.9.12</jackson-mapper-asl.version>
 		<fest-assert.version>1.4</fest-assert.version>
@@ -23,7 +48,6 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>${jackson-mapper-asl.version}</version>
 		</dependency>
-
 		<!-- For testing -->
 		<dependency>
 			<groupId>org.easytesting</groupId>
@@ -68,5 +92,20 @@
 				</executions>
 			</plugin>
 		</plugins>
+
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ftp</artifactId>
+				<version>${wagon-ftp.version}</version>
+			</extension>
+		</extensions>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>jsolve-maven</id>
+			<url>ftp://jsolve.pl/maven</url>
+		</repository>
+	</distributionManagement>
 </project>
