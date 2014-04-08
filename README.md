@@ -8,13 +8,9 @@ Main categories:
     * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
 * comparer
     * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
-* converter
-    * [TypeConverter](https://github.com/jsolve/sweetener/wiki/Type-converter)
 * core
     * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
     * [Reflections] (https://github.com/jsolve/sweetener/wiki/Reflections)
-* mapper 
-    * [Mapper](https://github.com/jsolve/sweetener/wiki/Mapper)
 * maths
     * [Maths](https://github.com/jsolve/sweetener/wiki/Maths)
 * io
