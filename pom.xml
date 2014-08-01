@@ -105,7 +105,7 @@
 	<distributionManagement>
 		<repository>
 			<id>jsolve-maven</id>
-			<url>ftp://jsolve.pl/maven</url>
+			<url>ftp://ftp.kurylek.pl/www/maven2</url>
 		</repository>
 	</distributionManagement>
 </project>
