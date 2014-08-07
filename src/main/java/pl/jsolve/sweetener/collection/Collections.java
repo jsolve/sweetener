@@ -65,7 +65,7 @@ public final class Collections {
 		return result;
 	}
 
-	private static <T extends Collection<E>, E> T createNewInstanceOfCollection(Class<T> clazz) {
+	public static <T extends Collection<E>, E> T createNewInstanceOfCollection(Class<T> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
