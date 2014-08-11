@@ -29,6 +29,10 @@ public final class ExceptionAssert {
 		throw new AssertionError("Expected exception message [" + exceptionMessage + "] but was [" + throwable.getMessage() + "].");
 	}
 
+	public ExceptionAssert withMessage(String format, Object ... objects) {
+		return withMessage(String.format(format, objects));
+	}
+
 	public ExceptionAssert withMessageContaining(String message) {
 		if (throwable == null || throwable.getMessage().contains(message)) {
 			return this;
