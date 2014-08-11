@@ -1,17 +1,16 @@
 package pl.jsolve.sweetener.math;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
-import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
+import org.junit.Test;
+import pl.jsolve.sweetener.collection.Collections;
+import pl.jsolve.sweetener.exception.OutOfRangeException;
+import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Test;
-
-import pl.jsolve.sweetener.collection.Collections;
-import pl.jsolve.sweetener.exception.OutOfRangeException;
-import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
+import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
+import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 
 public class NormalizeTest {
 
@@ -102,7 +101,7 @@ public class NormalizeTest {
 		});
 
 		// then
-		assertThrowable(caughtException).withMessage("The value 11,000000 is out of the range: <-10,000000; 10,000000>").isThrown();
+		assertThrowable(caughtException).withMessage("The value %f is out of the range: <%f; %f>", value, min, max).isThrown();
 	}
 
 	@Test
