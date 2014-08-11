@@ -1,15 +1,14 @@
 package pl.jsolve.sweetener.math.random;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import pl.jsolve.sweetener.math.Generator;
 import pl.jsolve.sweetener.math.Maths;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 public class RandomShortTest {
 
@@ -57,7 +56,7 @@ public class RandomShortTest {
 		short lowerRange = 0;
 		short upperRange = 4;
 
-		given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+		given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
 		// when
 		short random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -72,7 +71,7 @@ public class RandomShortTest {
 		short lowerRange = 0;
 		short upperRange = 4;
 
-		given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+		given(mockedGenerator.generate()).willReturn(0.9999999999999999);
 
 		// when
 		short random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -132,7 +131,7 @@ public class RandomShortTest {
 		short lowerRange = -1;
 		short upperRange = 2;
 
-		given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+		given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
 		// when
 		short random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -147,7 +146,7 @@ public class RandomShortTest {
 		short lowerRange = -1;
 		short upperRange = 2;
 
-		given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+		given(mockedGenerator.generate()).willReturn(0.9999999999999999);
 
 		// when
 		short random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -207,7 +206,7 @@ public class RandomShortTest {
 		short lowerRange = Short.MIN_VALUE;
 		short upperRange = Short.MAX_VALUE;
 
-		given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+		given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
 		// when
 		short random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -222,7 +221,7 @@ public class RandomShortTest {
 		short lowerRange = Short.MIN_VALUE;
 		short upperRange = Short.MAX_VALUE;
 
-		given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+		given(mockedGenerator.generate()).willReturn(0.9999999999999999);
 
 		// when
 		short random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -245,5 +244,4 @@ public class RandomShortTest {
 		// then
 		assertThat(random).isEqualTo((short) 0);
 	}
-
 }

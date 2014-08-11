@@ -1,15 +1,14 @@
 package pl.jsolve.sweetener.math.random;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import pl.jsolve.sweetener.math.Generator;
 import pl.jsolve.sweetener.math.Maths;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 public class RandomDoubleTest {
 
@@ -57,7 +56,7 @@ public class RandomDoubleTest {
 		double lowerRange = 0;
 		double upperRange = 4;
 
-		given(mockedGenerator.generate()).willReturn(0.0000000000000000000000000000000000000001);
+		given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
 		// when
 		double random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -132,7 +131,7 @@ public class RandomDoubleTest {
 		double lowerRange = -1;
 		double upperRange = 2;
 
-		given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+		given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
 		// when
 		double random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -147,7 +146,7 @@ public class RandomDoubleTest {
 		double lowerRange = -1;
 		double upperRange = 2;
 
-		given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+		given(mockedGenerator.generate()).willReturn(0.99999999999999999);
 
 		// when
 		double random = Maths.random(lowerRange, upperRange, mockedGenerator);
