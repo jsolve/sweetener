@@ -1,17 +1,17 @@
 package pl.jsolve.sweetener.math;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.core.Objects;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 import pl.jsolve.sweetener.exception.OutOfRangeException;
 import pl.jsolve.sweetener.exception.OutOfRangeException.Range;
 import pl.jsolve.sweetener.exception.ParseException;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Maths {
 
@@ -23,12 +23,12 @@ public class Maths {
 	// if range is negative:
 	// 2a: generate random value (if generated value is really long, for example 0.9999999999999999999999999999 it is
 	// automatically round to 1.0 ;( )
-	// 3a: calcute result as larger numeric type
-	// 4a: if generated value is equal to 1.0, substract one from the result
+	// 3a: calculate result as larger numeric type
+	// 4a: if generated value is equal to 1.0, subtract one from the result
 	// otherwise
 	// 2b: generate random value
 	// 3b: calculate result
-	// 4b: if generated value is equal to 1.0, substract one from the result
+	// 4b: if generated value is equal to 1.0, subtract one from the result
 	//
 
 	public static byte random(byte lowerRange, byte upperRange) {
@@ -41,7 +41,7 @@ public class Maths {
 		}
 		byte range = (byte) (upperRange - lowerRange);
 		double random = generator.generate();
-		byte result = 0;
+		byte result;
 		if (range < 0) {
 			int intRange = upperRange - lowerRange + 1;
 
@@ -62,7 +62,7 @@ public class Maths {
 		}
 		short range = (short) (upperRange - lowerRange);
 		double random = generator.generate();
-		short result = 0;
+		short result;
 		if (range < 0) {
 			int intRange = upperRange - lowerRange + 1;
 
@@ -83,7 +83,7 @@ public class Maths {
 		}
 		int range = (upperRange - lowerRange);
 		double random = generator.generate();
-		int result = 0;
+		int result;
 		if (range < 0) {
 			long longRange = ((long) upperRange) - ((long) lowerRange) + 1;
 
@@ -104,7 +104,7 @@ public class Maths {
 		}
 		long range = upperRange - lowerRange;
 		double random = generator.generate();
-		long result = 0;
+		long result;
 		if (range < 0) {
 			BigDecimal bigIntegerRange = BigDecimal.valueOf(upperRange).subtract(BigDecimal.valueOf(lowerRange))
 					.add(BigDecimal.ONE);
@@ -112,7 +112,7 @@ public class Maths {
 			result = BigDecimal.valueOf(lowerRange).add(BigDecimal.valueOf(random).multiply(bigIntegerRange))
 					.setScale(0, RoundingMode.HALF_UP).longValue();
 		} else {
-			result = (long) (lowerRange + (long) (random * (range + 1)));
+			result = lowerRange + (long) (random * (range + 1));
 		}
 		return random == 1.0 ? result - 1 : result;
 	}
@@ -126,13 +126,13 @@ public class Maths {
 			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
 		}
 		float range = (upperRange - lowerRange);
-		float result = 0;
+		float result;
 		if (range < 0) {
 			double longRange = ((double) upperRange) - ((double) lowerRange);
 
-			result = (float) (lowerRange + (double) (generator.generate() * longRange));
+			result = (float) (lowerRange + generator.generate() * longRange);
 		} else {
-			result = (float) (lowerRange + (double) (generator.generate() * range));
+			result = (float) (lowerRange + generator.generate() * range);
 		}
 		return result;
 	}
@@ -146,14 +146,14 @@ public class Maths {
 			throw new InvalidArgumentException("Lower range cannot be greater than or equal to upper range");
 		}
 		double range = upperRange - lowerRange;
-		double result = 0;
+		double result;
 		if (range < 0) {
 			BigDecimal bigIntegerRange = BigDecimal.valueOf(upperRange).subtract(BigDecimal.valueOf(lowerRange));
 
 			result = BigDecimal.valueOf(lowerRange).add(BigDecimal.valueOf(generator.generate()).multiply(bigIntegerRange))
 					.setScale(0, RoundingMode.HALF_UP).longValue();
 		} else {
-			result = (double) (lowerRange + (double) (generator.generate() * (range)));
+			result = lowerRange + generator.generate() * (range);
 		}
 		return result;
 	}
@@ -363,7 +363,7 @@ public class Maths {
 		}
 		return (double) (value - minValue) / (double) (maxValue - minValue);
 	}
-	
+
 	public static double normalize(long value, long minValue, long maxValue) {
 		if (value < minValue || value > maxValue) {
 			throw new OutOfRangeException(String.format("The value %d is out of the range: <%d, %d>", value, minValue, maxValue));
@@ -382,7 +382,7 @@ public class Maths {
 		if (value < minValue || value > maxValue) {
 			throw new OutOfRangeException(String.format("The value %f is out of the range: <%f; %f>", value, minValue, maxValue));
 		}
-		return (double) (value - minValue) / (double) (maxValue - minValue);
+		return (value - minValue) / (maxValue - minValue);
 	}
 
 	// MinMax for collection
@@ -403,7 +403,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Byte>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Short> minMaxShort(Collection<Short> values) {
@@ -422,7 +422,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Short>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Integer> minMaxInteger(Collection<Integer> values) {
@@ -441,7 +441,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Integer>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Long> minMaxLong(Collection<Long> values) {
@@ -460,7 +460,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Long>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Float> minMaxFloat(Collection<Float> values) {
@@ -479,7 +479,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Float>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Double> minMaxDouble(Collection<Double> values) {
@@ -498,7 +498,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Double>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	// MinMax for varArg, array
@@ -519,7 +519,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Byte>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Short> minMaxShort(Short... values) {
@@ -538,7 +538,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Short>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Integer> minMaxInteger(Integer... values) {
@@ -557,7 +557,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Integer>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Long> minMaxLong(Long... values) {
@@ -576,7 +576,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Long>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Float> minMaxFloat(Float... values) {
@@ -595,7 +595,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Float>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	public static MinMaxValue<Double> minMaxDouble(Double... values) {
@@ -614,7 +614,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<Double>(min, max);
+		return new MinMaxValue<>(min, max);
 	}
 
 	// Normalize collection
@@ -688,7 +688,7 @@ public class Maths {
 	// Normalize array
 
 	public static Collection<Double> normalizeByte(Byte... values) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		MinMaxValue<Byte> minMaxByte = minMaxByte(values);
 
 		for (Byte value : values) {
@@ -698,7 +698,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeShort(Short... values) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		MinMaxValue<Short> minMaxByte = minMaxShort(values);
 
 		for (Short value : values) {
@@ -708,7 +708,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeInt(Integer... values) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		MinMaxValue<Integer> minMaxByte = minMaxInteger(values);
 
 		for (Integer value : values) {
@@ -718,7 +718,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeLong(Long... values) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		MinMaxValue<Long> minMaxByte = minMaxLong(values);
 
 		for (Long value : values) {
@@ -728,7 +728,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeFloat(Float... values) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		MinMaxValue<Float> minMaxByte = minMaxFloat(values);
 
 		for (Float value : values) {
@@ -738,7 +738,7 @@ public class Maths {
 	}
 
 	public static List<Double> normalizeDouble(Double... values) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 		MinMaxValue<Double> minMaxByte = minMaxDouble(values);
 
 		for (Double value : values) {

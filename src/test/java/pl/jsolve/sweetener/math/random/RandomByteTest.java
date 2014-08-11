@@ -1,19 +1,20 @@
 package pl.jsolve.sweetener.math.random;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import pl.jsolve.sweetener.math.Generator;
 import pl.jsolve.sweetener.math.Maths;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+
 public class RandomByteTest {
 
-    @Mock
+	private static final double NEAR_ONE_VALUE = 0.9999999999999999;
+	private static final double NEAR_ZERO_VALUE = 0.00000000000000001;
+	@Mock
     private Generator mockedGenerator;
 
     @Before
@@ -57,7 +58,7 @@ public class RandomByteTest {
         byte lowerRange = 0;
         byte upperRange = 4;
 
-        given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+        given(mockedGenerator.generate()).willReturn(NEAR_ZERO_VALUE);
 
         // when
         byte random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -72,7 +73,7 @@ public class RandomByteTest {
         byte lowerRange = 0;
         byte upperRange = 4;
 
-        given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+        given(mockedGenerator.generate()).willReturn(NEAR_ONE_VALUE);
 
         // when
         byte random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -132,7 +133,7 @@ public class RandomByteTest {
         byte lowerRange = -1;
         byte upperRange = 2;
 
-        given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+        given(mockedGenerator.generate()).willReturn(NEAR_ZERO_VALUE);
 
         // when
         byte random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -147,7 +148,7 @@ public class RandomByteTest {
         byte lowerRange = -1;
         byte upperRange = 2;
 
-        given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+        given(mockedGenerator.generate()).willReturn(NEAR_ONE_VALUE);
 
         // when
         byte random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -209,7 +210,7 @@ public class RandomByteTest {
         byte upperRange = Byte.MAX_VALUE;
 
 
-        given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+        given(mockedGenerator.generate()).willReturn(NEAR_ZERO_VALUE);
 
         // when
         byte random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -225,7 +226,7 @@ public class RandomByteTest {
         byte upperRange = Byte.MAX_VALUE;
 
 
-        given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+        given(mockedGenerator.generate()).willReturn(NEAR_ONE_VALUE);
 
         // when
         byte random = Maths.random(lowerRange, upperRange, mockedGenerator);

@@ -1,15 +1,14 @@
 package pl.jsolve.sweetener.math.random;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import pl.jsolve.sweetener.math.Generator;
 import pl.jsolve.sweetener.math.Maths;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
 public class RandomIntTest {
 
@@ -57,7 +56,7 @@ public class RandomIntTest {
         int lowerRange = 0;
         int upperRange = 4;
 
-        given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+        given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -72,7 +71,7 @@ public class RandomIntTest {
         int lowerRange = 0;
         int upperRange = 4;
 
-        given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+        given(mockedGenerator.generate()).willReturn(0.9999999999999999);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -132,7 +131,7 @@ public class RandomIntTest {
         int lowerRange = -1;
         int upperRange = 2;
 
-        given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+        given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -147,7 +146,7 @@ public class RandomIntTest {
         int lowerRange = -1;
         int upperRange = 2;
 
-        given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+        given(mockedGenerator.generate()).willReturn(0.9999999999999999);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -177,7 +176,7 @@ public class RandomIntTest {
         int lowerRange = Integer.MIN_VALUE;
         int upperRange = Integer.MAX_VALUE;
 
-        given(mockedGenerator.generate()).willReturn(0.000000000000001);
+        given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -192,7 +191,7 @@ public class RandomIntTest {
         int lowerRange = Integer.MIN_VALUE;
         int upperRange = Integer.MAX_VALUE;
 
-        given(mockedGenerator.generate()).willReturn(0.999999999999999999999999999999999999);
+        given(mockedGenerator.generate()).willReturn(0.9999999999999999);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -207,7 +206,7 @@ public class RandomIntTest {
         int lowerRange = Integer.MIN_VALUE;
         int upperRange = Integer.MAX_VALUE;
 
-        given(mockedGenerator.generate()).willReturn(0.00000000000000000000000000000000000000000000000001);
+        given(mockedGenerator.generate()).willReturn(0.00000000000000001);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
@@ -222,7 +221,7 @@ public class RandomIntTest {
         int lowerRange = Integer.MIN_VALUE;
         int upperRange = Integer.MAX_VALUE;
 
-        given(mockedGenerator.generate()).willReturn(0.99999999999999999999999999999999999999999999999999999);
+        given(mockedGenerator.generate()).willReturn(0.9999999999999999);
 
         // when
         int random = Maths.random(lowerRange, upperRange, mockedGenerator);
