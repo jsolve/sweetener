@@ -58,8 +58,10 @@ public final class Collections {
 	public static <T extends Collection<E>, E> T createNewInstanceOfCollection(Class<T> clazz) {
 		try {
 			return clazz.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException();
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -82,19 +84,19 @@ public final class Collections {
 		if(from < collection.size()) {
 			elementsOfPage = truncate(collection, from, to);
 		}
-		return new Pagination<>(page, resultsPerPage, totalElements, elementsOfPage);
+		return new Pagination<T>(page, resultsPerPage, totalElements, elementsOfPage);
 	}
 
 	public static <T> ChoppedElements<T> chopElements(Collection<T> collection, int resultsPerPage) {
 		int totalElements = collection.size();
 		int numberOfPages = (totalElements + resultsPerPage - 1) / resultsPerPage;
-		List<Collection<T>> listOfPages = new ArrayList<>();
+		List<Collection<T>> listOfPages = Collections.newArrayList();
 		for (int i = 0; i < numberOfPages; i++) {
 			Collection<T> elementsOfPage = truncate(collection, i * resultsPerPage,
 					getTo(resultsPerPage, totalElements, i * resultsPerPage));
 			listOfPages.add(elementsOfPage);
 		}
-		return new ChoppedElements<>(0, resultsPerPage, totalElements, listOfPages);
+		return new ChoppedElements<T>(0, resultsPerPage, totalElements, listOfPages);
 	}
 
 	private static int getTo(int resultsPerPage, int totalElements, int from) {
@@ -104,7 +106,7 @@ public final class Collections {
 	}
 
 	public static <E> Map<GroupKey, List<E>> group(Collection<E> collection, String ... properties) {
-		Map<GroupKey, List<E>> map = new HashMap<>();
+		Map<GroupKey, List<E>> map = Maps.newHashMap();
 
 		// prepare map of duplicates
 		for (E element : collection) {
@@ -113,7 +115,7 @@ public final class Collections {
 			if (map.containsKey(groupKey)) {
 				map.get(groupKey).add(element);
 			} else {
-				List<E> list = new ArrayList<>();
+				List<E> list = Collections.newArrayList();
 				list.add(element);
 				map.put(groupKey, list);
 			}
@@ -133,7 +135,7 @@ public final class Collections {
 		Map<GroupKey, List<E>> groups = group(collection, properties);
 
 		// prepare keys to remove
-		List<GroupKey> keysToRemove = new ArrayList<>();
+		List<GroupKey> keysToRemove = Collections.newArrayList();
 		for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
 			if (entry.getValue().size() == 1) {
 				keysToRemove.add(entry.getKey());
@@ -171,18 +173,18 @@ public final class Collections {
 	// List
 
 	public static <E> ArrayList<E> newArrayList() {
-		return new ArrayList<>();
+		return new ArrayList<E>();
 	}
 
 	@SafeVarargs
 	public static <E> ArrayList<E> newArrayList(E... elements) {
-		ArrayList<E> list = new ArrayList<>();
+		ArrayList<E> list = new ArrayList<E>();
 		java.util.Collections.addAll(list, elements);
 		return list;
 	}
 
 	public static <E> ArrayList<E> newArrayList(Iterable<? extends E> elements) {
-		ArrayList<E> arrayList = new ArrayList<>();
+		ArrayList<E> arrayList = new ArrayList<E>();
 		for (E e : elements) {
 			arrayList.add(e);
 		}
@@ -190,22 +192,22 @@ public final class Collections {
 	}
 
 	public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
-		return new ArrayList<>(initialArraySize);
+		return new ArrayList<E>(initialArraySize);
 	}
 
 	public static <E> LinkedList<E> newLinkedList() {
-		return new LinkedList<>();
+		return new LinkedList<E>();
 	}
 
 	@SafeVarargs
 	public static <E> LinkedList<E> newLinkedList(E... elements) {
-		LinkedList<E> list = new LinkedList<>();
+		LinkedList<E> list = new LinkedList<E>();
 		java.util.Collections.addAll(list, elements);
 		return list;
 	}
 
 	public static <E> LinkedList<E> newLinkedList(Iterable<? extends E> elements) {
-		LinkedList<E> linkedList = new LinkedList<>();
+		LinkedList<E> linkedList = new LinkedList<E>();
 		for (E e : elements) {
 			linkedList.add(e);
 		}
@@ -215,7 +217,7 @@ public final class Collections {
 	// Sets
 
 	public static <E> HashSet<E> newHashSet() {
-		return new HashSet<>();
+		return new HashSet<E>();
 	}
 
 	@SafeVarargs
@@ -226,11 +228,11 @@ public final class Collections {
 	}
 
 	public static <E> HashSet<E> newHashSetWithInitialCapacity(int initialCapacity) {
-		return new HashSet<>(initialCapacity);
+		return new HashSet<E>(initialCapacity);
 	}
 
 	public static <E> LinkedHashSet<E> newLinkedHashSet() {
-		return new LinkedHashSet<>();
+		return new LinkedHashSet<E>();
 	}
 
 	@SafeVarargs
@@ -241,12 +243,12 @@ public final class Collections {
 	}
 
 	public static <E> LinkedHashSet<E> newLinkedHashSetWithInitialCapacity(int initialCapacity) {
-		return new LinkedHashSet<>(initialCapacity);
+		return new LinkedHashSet<E>(initialCapacity);
 	}
 
 	@SafeVarargs
 	public static <E extends Comparable<?>> TreeSet<E> newTreeSet(E... elements) {
-		TreeSet<E> set = new TreeSet<>();
+		TreeSet<E> set = new TreeSet<E>();
 		java.util.Collections.addAll(set, elements);
 		return set;
 	}
@@ -263,6 +265,6 @@ public final class Collections {
 		if (comparator == null) {
 			throw new NullPointerException("Comparator cannot be null");
 		}
-		return new TreeSet<>(comparator);
+		return new TreeSet<E>(comparator);
 	}
 }

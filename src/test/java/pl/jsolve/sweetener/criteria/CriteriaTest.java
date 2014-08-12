@@ -1,18 +1,16 @@
 package pl.jsolve.sweetener.criteria;
 
-import static org.fest.assertions.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
-
 import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.collection.data.Address;
 import pl.jsolve.sweetener.collection.data.Company;
 import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.criteria.Restriction.RestrictionLevel;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class CriteriaTest {
 
@@ -250,7 +248,7 @@ public class CriteriaTest {
     }
 
     private List<Person> prepareListOfPeople() {
-	List<Person> people = new ArrayList<>();
+	List<Person> people = Collections.newArrayList();
 
 	people.add(new Person("John", "Wolf", 27, null, null));
 	people.add(new Person("John", "Sky", 31, new Company("EA", new Address("street1", "city1")), prepareListOfCategories("B")));
@@ -260,7 +258,7 @@ public class CriteriaTest {
     }
 
     private List<String> prepareListOfCategories(String... values) {
-	List<String> categories = new ArrayList<>();
+	List<String> categories = Collections.newArrayList();
 	for (String s : values) {
 	    categories.add(s);
 	}
