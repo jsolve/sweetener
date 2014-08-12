@@ -1,25 +1,15 @@
 package pl.jsolve.sweetener.io;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
+import pl.jsolve.sweetener.collection.Collections;
+import pl.jsolve.sweetener.exception.FileNotFoundException;
+import pl.jsolve.sweetener.exception.ResourceException;
+
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-
-import pl.jsolve.sweetener.exception.FileNotFoundException;
-import pl.jsolve.sweetener.exception.ResourceException;
 
 public final class Resources {
 
@@ -44,7 +34,7 @@ public final class Resources {
 			Files.walkFileTree(startingDir, finder);
 			return finder.getPaths();
 		} catch (IOException ioe) {
-			return new ArrayList<>();
+			return Collections.newArrayList();
 		}
 	}
 
@@ -70,7 +60,7 @@ public final class Resources {
 
 	public static OutputStream asOutputStream(InputStream is, OutputStream os) {
 		try {
-			int read = 0;
+			int read;
 			byte[] bytes = new byte[1024];
 
 			while ((read = is.read(bytes)) != -1) {
@@ -97,7 +87,7 @@ public final class Resources {
 
 	private static List<String> readLines(Reader fileReader) {
 		try {
-			List<String> lines = new ArrayList<>();
+			List<String> lines = Collections.newArrayList();
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			try {
 				String line = bufferedReader.readLine();

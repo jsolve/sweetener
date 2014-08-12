@@ -1,11 +1,12 @@
 package pl.jsolve.sweetener.criteria;
 
-import java.util.ArrayList;
+import pl.jsolve.sweetener.collection.Collections;
+
 import java.util.List;
 
 public class Criteria {
 
-    private final List<Restriction> restrictions = new ArrayList<>();
+    private final List<Restriction> restrictions = Collections.newArrayList();
 
     private Criteria() {
     }

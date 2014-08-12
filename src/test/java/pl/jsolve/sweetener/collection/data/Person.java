@@ -1,6 +1,7 @@
 package pl.jsolve.sweetener.collection.data;
 
-import java.util.ArrayList;
+import pl.jsolve.sweetener.collection.Collections;
+
 import java.util.List;
 
 public class Person {
@@ -9,7 +10,7 @@ public class Person {
 	private String lastName;
 	private int age;
 	private Company company;
-	private List<String> categoriesOfDrivingLicense = new ArrayList<>();
+	private List<String> categoriesOfDrivingLicense = Collections.newArrayList();
 
 	public Person() {
 	}
@@ -66,7 +67,4 @@ public class Person {
 	public String toString() {
 		return "Person [name=" + name + ", lastName=" + lastName + "]";
 	}
-	
-	
-
 }
