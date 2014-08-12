@@ -1,29 +1,9 @@
 package pl.jsolve.sweetener.collection;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
-import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
-import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aCaptainAmerica;
-import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aHulk;
-import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.aRedScull;
-import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.anIronMan;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
@@ -31,6 +11,13 @@ import pl.jsolve.sweetener.tests.stub.hero.Hero;
 import pl.jsolve.sweetener.tests.stub.person.Department;
 import pl.jsolve.sweetener.tests.stub.person.FieldOfStudy;
 import pl.jsolve.sweetener.tests.stub.person.Student;
+
+import java.util.*;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
+import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
+import static pl.jsolve.sweetener.tests.stub.hero.HeroProfiledBuilder.*;
 
 public class CollectionsTest {
 
@@ -43,7 +30,7 @@ public class CollectionsTest {
 
 	@Before
 	public void setUp() {
-		alphabet = new ArrayList<>();
+		alphabet = Collections.newArrayList();
 		alphabet.add("A");
 		alphabet.add("B");
 		alphabet.add("C");
@@ -337,7 +324,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnGroups() {
 		// given
-		List<Person> people = new ArrayList<>();
+		List<Person> people = Collections.newArrayList();
 		people.add(new Person("John", "Deep", 23, null, null));
 		people.add(new Person("Marry", "Deep", 32, null, null));
 		people.add(new Person("John", "Knee", 37, null, null));
@@ -354,7 +341,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnGroupsForMultiKey() {
 		// given
-		List<Student> students = new ArrayList<>();
+		List<Student> students = Collections.newArrayList();
 		students.add(new Student("John", "Deep", 3, FieldOfStudy.MATHS, Department.AEI));
 		students.add(new Student("Marry", "Duke", 3, FieldOfStudy.BIOINFORMATICS, Department.AEI));
 		students.add(new Student("John", "Knee", 3, FieldOfStudy.BIOINFORMATICS, Department.AEI));
@@ -378,7 +365,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnDuplicates() {
 		// given
-		List<Person> people = new ArrayList<>();
+		List<Person> people = Collections.newArrayList();
 		people.add(new Person("John", "Deep", 23, null, null));
 		people.add(new Person("Marry", "Deep", 32, null, null));
 		people.add(new Person("John", "Knee", 37, null, null));
@@ -394,7 +381,7 @@ public class CollectionsTest {
 	@Test
 	public void shouldReturnUniques() {
 		// given
-		List<Person> people = new ArrayList<>();
+		List<Person> people = Collections.newArrayList();
 		people.add(new Person("John", "Deep", 23, null, null));
 		people.add(new Person("Marry", "Deep", 32, null, null));
 		people.add(new Person("John", "Knee", 37, null, null));

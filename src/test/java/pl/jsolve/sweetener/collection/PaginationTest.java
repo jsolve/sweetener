@@ -1,8 +1,8 @@
 package pl.jsolve.sweetener.collection;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import org.junit.Test;
+
+import static org.fest.assertions.Assertions.assertThat;
 
 public class PaginationTest {
 
@@ -14,7 +14,7 @@ public class PaginationTest {
 		int totalElements = 100;
 
 		// when
-		Pagination<?> pagination = new Pagination<>(page, resultsParPage, totalElements, null);
+		Pagination<?> pagination = new Pagination<Object>(page, resultsParPage, totalElements, null);
 
 		// then
 		assertThat(pagination.getNumberOfPages()).isEqualTo(10);
@@ -28,7 +28,7 @@ public class PaginationTest {
 		int totalElements = 0;
 
 		// when
-		Pagination<?> pagination = new Pagination<>(page, resultsParPage, totalElements, null);
+		Pagination<?> pagination = new Pagination<Object>(page, resultsParPage, totalElements, null);
 
 		// then
 		assertThat(pagination.getNumberOfPages()).isEqualTo(0);
@@ -42,7 +42,7 @@ public class PaginationTest {
 		int totalElements = 23;
 
 		// when
-		Pagination<?> pagination = new Pagination<>(page, resultsParPage, totalElements, null);
+		Pagination<?> pagination = new Pagination<Object>(page, resultsParPage, totalElements, null);
 
 		// then
 		assertThat(pagination.getNumberOfPages()).isEqualTo(4);

@@ -24,7 +24,7 @@ public class Strings {
 	private static final String EMPTY_STRING = "";
 	public static final String DOT = "/.";
 
-	private static final List<Character> symbols = new ArrayList<>(62);
+	private static final List<Character> symbols = new ArrayList<Character>(62);
 	private static final Random random = new Random();
 
 	static {
@@ -124,7 +124,7 @@ public class Strings {
 
 	public static List<Integer> indexesOf(String sourceObject, String sequence, boolean ignoreRegexp) {
 		if (sequence == null) {
-			return new ArrayList<>();
+			return Collections.newArrayList();
 		}
 		if (ignoreRegexp) {
 			return indexesOf(sourceObject, Escapes.escapeRegexp(sequence));
@@ -133,7 +133,7 @@ public class Strings {
 	}
 
 	public static List<Integer> indexesOf(String sourceObject, String sequence) {
-		List<Integer> indexes = new ArrayList<>();
+		List<Integer> indexes = Collections.newArrayList();
 		if (sourceObject == null || sequence == null || sequence.isEmpty()) {
 			return indexes;
 		}
@@ -147,7 +147,7 @@ public class Strings {
 
 	public static List<Integer> indexesOf(String sourceObject, Character c, boolean ignoreRegexp) {
 		if (c == null) {
-			return new ArrayList<>();
+			return Collections.newArrayList();
 		}
 		if (ignoreRegexp) {
 			return indexesOf(sourceObject, Escapes.escapeRegexp(c.toString()));
@@ -161,7 +161,7 @@ public class Strings {
 
 	public static List<FoundGroup> groups(String sourceObject, String sequence, boolean ignoreRegexp) {
 		if (sequence == null) {
-			return new ArrayList<>();
+			return Collections.newArrayList();
 		}
 		if (ignoreRegexp) {
 			return groups(sourceObject, Escapes.escapeRegexp(sequence));
@@ -170,7 +170,7 @@ public class Strings {
 	}
 
 	public static List<FoundGroup> groups(String sourceObject, String sequence) {
-		List<FoundGroup> indexes = new ArrayList<>();
+		List<FoundGroup> indexes = Collections.newArrayList();
 		Pattern pattern = Pattern.compile(sequence);
 		Matcher matcher = pattern.matcher(sourceObject);
 		while (matcher.find()) {
@@ -185,7 +185,7 @@ public class Strings {
 
 	public static List<FoundGroup> groups(String sourceObject, Character c, boolean ignoreRegexp) {
 		if (c == null) {
-			return new ArrayList<>();
+			return Collections.newArrayList();
 		}
 		if (ignoreRegexp) {
 			return groups(sourceObject, Escapes.escapeRegexp(c.toString()));

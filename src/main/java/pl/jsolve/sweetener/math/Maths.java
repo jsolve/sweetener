@@ -403,7 +403,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Byte>(min, max);
 	}
 
 	public static MinMaxValue<Short> minMaxShort(Collection<Short> values) {
@@ -422,7 +422,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Short>(min, max);
 	}
 
 	public static MinMaxValue<Integer> minMaxInteger(Collection<Integer> values) {
@@ -441,7 +441,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Integer>(min, max);
 	}
 
 	public static MinMaxValue<Long> minMaxLong(Collection<Long> values) {
@@ -460,7 +460,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Long>(min, max);
 	}
 
 	public static MinMaxValue<Float> minMaxFloat(Collection<Float> values) {
@@ -479,7 +479,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Float>(min, max);
 	}
 
 	public static MinMaxValue<Double> minMaxDouble(Collection<Double> values) {
@@ -498,7 +498,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Double>(min, max);
 	}
 
 	// MinMax for varArg, array
@@ -519,7 +519,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Byte>(min, max);
 	}
 
 	public static MinMaxValue<Short> minMaxShort(Short... values) {
@@ -538,7 +538,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Short>(min, max);
 	}
 
 	public static MinMaxValue<Integer> minMaxInteger(Integer... values) {
@@ -557,7 +557,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Integer>(min, max);
 	}
 
 	public static MinMaxValue<Long> minMaxLong(Long... values) {
@@ -576,7 +576,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Long>(min, max);
 	}
 
 	public static MinMaxValue<Float> minMaxFloat(Float... values) {
@@ -595,7 +595,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Float>(min, max);
 	}
 
 	public static MinMaxValue<Double> minMaxDouble(Double... values) {
@@ -614,7 +614,7 @@ public class Maths {
 				max = value;
 			}
 		}
-		return new MinMaxValue<>(min, max);
+		return new MinMaxValue<Double>(min, max);
 	}
 
 	// Normalize collection
@@ -688,7 +688,7 @@ public class Maths {
 	// Normalize array
 
 	public static Collection<Double> normalizeByte(Byte... values) {
-		List<Double> result = new ArrayList<>();
+		List<Double> result = new ArrayList<Double>();
 		MinMaxValue<Byte> minMaxByte = minMaxByte(values);
 
 		for (Byte value : values) {
@@ -698,7 +698,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeShort(Short... values) {
-		List<Double> result = new ArrayList<>();
+		List<Double> result = new ArrayList<Double>();
 		MinMaxValue<Short> minMaxByte = minMaxShort(values);
 
 		for (Short value : values) {
@@ -708,7 +708,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeInt(Integer... values) {
-		List<Double> result = new ArrayList<>();
+		List<Double> result = new ArrayList<Double>();
 		MinMaxValue<Integer> minMaxByte = minMaxInteger(values);
 
 		for (Integer value : values) {
@@ -718,7 +718,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeLong(Long... values) {
-		List<Double> result = new ArrayList<>();
+		List<Double> result = new ArrayList<Double>();
 		MinMaxValue<Long> minMaxByte = minMaxLong(values);
 
 		for (Long value : values) {
@@ -728,7 +728,7 @@ public class Maths {
 	}
 
 	public static Collection<Double> normalizeFloat(Float... values) {
-		List<Double> result = new ArrayList<>();
+		List<Double> result = new ArrayList<Double>();
 		MinMaxValue<Float> minMaxByte = minMaxFloat(values);
 
 		for (Float value : values) {
@@ -738,7 +738,7 @@ public class Maths {
 	}
 
 	public static List<Double> normalizeDouble(Double... values) {
-		List<Double> result = new ArrayList<>();
+		List<Double> result = new ArrayList<Double>();
 		MinMaxValue<Double> minMaxByte = minMaxDouble(values);
 
 		for (Double value : values) {
@@ -1130,5 +1130,4 @@ public class Maths {
 	public static double standardDeviationDouble(Double... values) {
 		return Math.sqrt(varianceDouble(values));
 	}
-
 }

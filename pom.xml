@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.jsolve</groupId>
 	<artifactId>sweetener</artifactId>
@@ -31,10 +31,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
+		<java.version>1.6</java.version>
 		<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
 		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
-		<wagon-ftp.version>2.4</wagon-ftp.version>
+		<wagon-ftp.version>2.6</wagon-ftp.version>
 
 		<jackson-mapper-asl.version>1.9.12</jackson-mapper-asl.version>
 		<fest-assert.version>1.4</fest-assert.version>
@@ -92,7 +92,6 @@
 				</executions>
 			</plugin>
 		</plugins>
-
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>

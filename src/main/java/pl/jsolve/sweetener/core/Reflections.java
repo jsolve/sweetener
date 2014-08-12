@@ -1,17 +1,16 @@
 package pl.jsolve.sweetener.core;
 
-import static pl.jsolve.sweetener.core.ConditionFactory.createAlwaysSatisfiedCondition;
+import pl.jsolve.sweetener.collection.Collections;
+import pl.jsolve.sweetener.exception.AccessToFieldException;
+import pl.jsolve.sweetener.exception.InstanceCreationException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import pl.jsolve.sweetener.exception.AccessToFieldException;
-import pl.jsolve.sweetener.exception.InstanceCreationException;
+import static pl.jsolve.sweetener.core.ConditionFactory.createAlwaysSatisfiedCondition;
 
 public final class Reflections {
 
@@ -124,7 +123,7 @@ public final class Reflections {
 	}
 
 	public static List<Class<?>> getClassesSatisfyingCondition(Class<?> clazz, Condition<Class<?>> classesCondition) {
-		List<Class<?>> classes = new LinkedList<>();
+		List<Class<?>> classes = Collections.newLinkedList();
 		classes.add(clazz);
 		while (!Object.class.equals(clazz) && !clazz.isInterface() && !clazz.isPrimitive()) {
 			clazz = clazz.getSuperclass();
@@ -148,7 +147,7 @@ public final class Reflections {
 	}
 
 	public static List<Field> getFieldsSatisfyingCondition(Object object, Condition<Field> fieldCondition) {
-		List<Field> fields = new LinkedList<>();
+		List<Field> fields = Collections.newLinkedList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Field[] arrayOfFields = clazz.getDeclaredFields();
@@ -177,7 +176,7 @@ public final class Reflections {
 	}
 
 	public static List<Annotation> getAnnotationsSatisfyingCondition(Object object, Condition<Annotation> condition) {
-		List<Annotation> annotations = new ArrayList<>();
+		List<Annotation> annotations = Collections.newArrayList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Annotation[] arrayOfAnnotations = clazz.getDeclaredAnnotations();
@@ -196,7 +195,7 @@ public final class Reflections {
 	}
 
 	public static List<Constructor<?>> getConstructorsSatisfyingCondition(Object object, Condition<Constructor<?>> condition) {
-		List<Constructor<?>> constructors = new ArrayList<>();
+		List<Constructor<?>> constructors = Collections.newArrayList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
@@ -215,7 +214,7 @@ public final class Reflections {
 	}
 
 	public static List<Method> getMethodsSatisfyingCondition(Object object, Condition<Method> methodsCondition) {
-		List<Method> methods = new ArrayList<>();
+		List<Method> methods = Collections.newArrayList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
 			Method[] declaredMethods = clazz.getDeclaredMethods();
@@ -246,7 +245,9 @@ public final class Reflections {
 	public static <T> T tryToCreateNewInstance(Class<T> clazz) {
 		try {
 			return clazz.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException e) {
+			throw new InstanceCreationException("Could not create an instance of class " + clazz, e);
+		} catch (IllegalAccessException e) {
 			throw new InstanceCreationException("Could not create an instance of class " + clazz, e);
 		}
 	}
