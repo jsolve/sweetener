@@ -1,18 +1,17 @@
 package pl.jsolve.sweetener.text;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import pl.jsolve.sweetener.collection.Maps;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
+import java.util.Map;
+
 public class Escapes {
 
-	private static final Map<Character, String> regexpSpecials = new HashMap<>();
-	private static final Map<Character, String> htmlSpecials = new HashMap<>();
-	private static final Map<Character, String> urlSpecials = new HashMap<>();
-	private static final Map<Character, String> xmlSpecials = new HashMap<>();
-	private static final Map<Character, String> jsonSpecials = new HashMap<>();
+	private static final Map<Character, String> regexpSpecials = Maps.newHashMap();
+	private static final Map<Character, String> htmlSpecials = Maps.newHashMap();
+	private static final Map<Character, String> urlSpecials = Maps.newHashMap();
+	private static final Map<Character, String> xmlSpecials = Maps.newHashMap();
+	private static final Map<Character, String> jsonSpecials = Maps.newHashMap();
 
 	static {
 		regexpSpecial();

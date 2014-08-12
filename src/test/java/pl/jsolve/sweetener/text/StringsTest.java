@@ -1,25 +1,24 @@
 package pl.jsolve.sweetener.text;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
-import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
 import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.collection.data.Person;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
+import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 
 public class StringsTest {
 
 	@Test
 	public void shouldJoinCollectionOfStrings() {
 		// given
-		List<String> strings = new ArrayList<>();
+		List<String> strings = new ArrayList<String>();
 		strings.add("A");
 		strings.add("B");
 		strings.add("C");
@@ -35,7 +34,7 @@ public class StringsTest {
 	@Test
 	public void shouldJoinEmptyCollectionOfStrings() {
 		// given
-		List<String> strings = new ArrayList<>();
+		List<String> strings = new ArrayList<String>();
 
 		// when
 		String result = Strings.join(", ", strings);
@@ -59,7 +58,7 @@ public class StringsTest {
 	@Test
 	public void shouldJoinCollectionOfPeople() {
 		// given
-		List<Person> people = new ArrayList<>();
+		List<Person> people = new ArrayList<Person>();
 		people.add(new Person("John", "Deep", 19, null, null));
 		people.add(null);
 		people.add(new Person("Marry", "Duke", 21, null, null));
@@ -371,7 +370,7 @@ public class StringsTest {
 	@Test
 	public void shouldGenerateRandomStringWithGivenCollectionOfSymbols() {
 		// given
-		List<Character> symbols = new ArrayList<>();
+		List<Character> symbols = new ArrayList<Character>();
 		symbols.add('A');
 		symbols.add('B');
 		symbols.add('C');
@@ -389,7 +388,7 @@ public class StringsTest {
 	@Test
 	public void shouldGenerateRandomStringWithGivenCollectionOfSymbolsWhenCollectionIsEmpty() {
 		// given
-		List<Character> symbols = new ArrayList<>();
+		List<Character> symbols = new ArrayList<Character>();
 
 		// when
 		String result = Strings.random(symbols, 40);

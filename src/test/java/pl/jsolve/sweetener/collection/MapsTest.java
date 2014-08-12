@@ -1,8 +1,7 @@
 package pl.jsolve.sweetener.collection;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
-import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
+import org.junit.Test;
+import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -13,9 +12,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.Test;
-
-import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
+import static org.fest.assertions.Assertions.assertThat;
+import static pl.jsolve.sweetener.tests.assertion.ThrowableAssertions.assertThrowable;
+import static pl.jsolve.sweetener.tests.catcher.ExceptionCatcher.tryToCatch;
 
 public class MapsTest {
 
@@ -63,7 +62,7 @@ public class MapsTest {
 	@Test
 	public void shouldCreateNewEnumMapWithTheSameMappingsAsGiven() {
 		// given
-		EnumMap<SomeEnum, Object> mappings = new EnumMap<>(SomeEnum.class);
+		EnumMap<SomeEnum, Object> mappings = new EnumMap<SomeEnum, Object>(SomeEnum.class);
 
 		// when
 		EnumMap<SomeEnum, Object> result = Maps.newEnumMap(mappings);
@@ -85,7 +84,7 @@ public class MapsTest {
 	@Test
 	public void shouldCreateNewHashMapWithTheSameMappingsAsGiven() {
 		// given
-		HashMap<SomeEnum, Object> mappings = new HashMap<>();
+		HashMap<SomeEnum, Object> mappings = new HashMap<SomeEnum, Object>();
 
 		// when
 		HashMap<SomeEnum, Object> result = Maps.newHashMap(mappings);
@@ -116,7 +115,7 @@ public class MapsTest {
 	@Test
 	public void shouldCreateNewLinkedHashMapWithTheSameMappingsAsGiven() {
 		// given
-		LinkedHashMap<Object, Object> mappings = new LinkedHashMap<>();
+		LinkedHashMap<Object, Object> mappings = new LinkedHashMap<Object, Object>();
 
 		// when
 		LinkedHashMap<Object, Object> result = Maps.newLinkedHashMap(mappings);
