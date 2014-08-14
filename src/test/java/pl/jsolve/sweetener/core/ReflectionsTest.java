@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.data.Person;
+import pl.jsolve.sweetener.tests.stub.ClassWithPrivateConstructor;
 import pl.jsolve.sweetener.tests.stub.hero.Hero;
 
 public class ReflectionsTest {
@@ -215,5 +216,16 @@ public class ReflectionsTest {
 
 		// then
 		assertThat(methods).as("hero class is does not have deprecated methods").isEmpty();
+	}
+
+	@Test
+	public void shouldCreateObjectWithPrivateDefaultConstructor() {
+		// given
+
+		// when
+		ClassWithPrivateConstructor instance = Reflections.tryToCreateNewInstance(ClassWithPrivateConstructor.class);
+
+		// then
+		assertThat(instance != null);
 	}
 }
