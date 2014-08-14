@@ -7,6 +7,7 @@ import pl.jsolve.sweetener.exception.InstanceCreationException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -22,7 +23,8 @@ public final class Reflections {
 	private static final Condition<Method> ALWAYS_SATISFIED_METHOD_CONDITION = createAlwaysSatisfiedCondition();
 
 	private Reflections() {
-		throw new AssertionError("Using constructor of this class is prohibited.");
+		throw new AssertionError(
+				"Using constructor of this class is prohibited.");
 	}
 
 	public static Class<?> getFieldType(Object object, String stringOfFieldsName) {
@@ -37,23 +39,28 @@ public final class Reflections {
 		return getFieldValue(field.getOwner(), field.getField());
 	}
 
-	public static void setFieldValue(Object object, String stringOfFieldsName, Object value) {
+	public static void setFieldValue(Object object, String stringOfFieldsName,
+			Object value) {
 		FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
 		throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);
 		setField(field.getOwner(), field.getField(), value);
 	}
 
-	private static void throwExceptonWhenFieldIsNotPresent(FieldWithOwner field, String stringOfFieldsName) {
+	private static void throwExceptonWhenFieldIsNotPresent(
+			FieldWithOwner field, String stringOfFieldsName) {
 		if (field == null) {
-			throw new AccessToFieldException("The field %s does not exist", stringOfFieldsName);
+			throw new AccessToFieldException("The field %s does not exist",
+					stringOfFieldsName);
 		}
 	}
 
-	public static boolean isFieldPresent(Object object, String stringOfFieldsName) {
+	public static boolean isFieldPresent(Object object,
+			String stringOfFieldsName) {
 		return getLastNestedField(object, stringOfFieldsName) != null;
 	}
 
-	private static FieldWithOwner getLastNestedField(Object object, String stringOfFieldsName) {
+	private static FieldWithOwner getLastNestedField(Object object,
+			String stringOfFieldsName) {
 		String[] fieldsName = stringOfFieldsName.split(DOT);
 		int levelOfNestedObject = 0;
 		Class<?> clazz = object.getClass();
@@ -86,7 +93,8 @@ public final class Reflections {
 				field.set(object, newInstance);
 			}
 		} catch (Exception ex) {
-			throw new InstanceCreationException("Could not create new instance of " + field.getType(), ex);
+			throw new InstanceCreationException(
+					"Could not create new instance of " + field.getType(), ex);
 		} finally {
 			field.setAccessible(false);
 		}
@@ -97,7 +105,9 @@ public final class Reflections {
 			field.setAccessible(true);
 			field.set(object, value);
 		} catch (Exception e) {
-			throw new AccessToFieldException("Exception during setting value of %s field\n%s", field.getName(), e.getMessage());
+			throw new AccessToFieldException(
+					"Exception during setting value of %s field\n%s",
+					field.getName(), e.getMessage());
 		} finally {
 			field.setAccessible(false);
 		}
@@ -108,7 +118,9 @@ public final class Reflections {
 			field.setAccessible(true);
 			return field.get(object);
 		} catch (Exception e) {
-			throw new AccessToFieldException("Exception during getting value of %s field", field.getName());
+			throw new AccessToFieldException(
+					"Exception during getting value of %s field",
+					field.getName());
 		} finally {
 			field.setAccessible(false);
 		}
@@ -122,10 +134,12 @@ public final class Reflections {
 		}
 	}
 
-	public static List<Class<?>> getClassesSatisfyingCondition(Class<?> clazz, Condition<Class<?>> classesCondition) {
+	public static List<Class<?>> getClassesSatisfyingCondition(Class<?> clazz,
+			Condition<Class<?>> classesCondition) {
 		List<Class<?>> classes = Collections.newLinkedList();
 		classes.add(clazz);
-		while (!Object.class.equals(clazz) && !clazz.isInterface() && !clazz.isPrimitive()) {
+		while (!Object.class.equals(clazz) && !clazz.isInterface()
+				&& !clazz.isPrimitive()) {
 			clazz = clazz.getSuperclass();
 			if (classesCondition.isSatisfied(clazz)) {
 				classes.add(clazz);
@@ -134,19 +148,24 @@ public final class Reflections {
 		return classes;
 	}
 
-	public static List<Class<?>> getClassesSatisfyingCondition(Object object, Condition<Class<?>> classesCondition) {
-		return getClassesSatisfyingCondition(object.getClass(), classesCondition);
+	public static List<Class<?>> getClassesSatisfyingCondition(Object object,
+			Condition<Class<?>> classesCondition) {
+		return getClassesSatisfyingCondition(object.getClass(),
+				classesCondition);
 	}
 
 	public static List<Class<?>> getClasses(Class<?> clazz) {
-		return getClassesSatisfyingCondition(clazz, ALWAYS_SATISFIED_CLASS_CONDITION);
+		return getClassesSatisfyingCondition(clazz,
+				ALWAYS_SATISFIED_CLASS_CONDITION);
 	}
 
 	public static List<Class<?>> getClasses(Object object) {
-		return getClassesSatisfyingCondition(object, ALWAYS_SATISFIED_CLASS_CONDITION);
+		return getClassesSatisfyingCondition(object,
+				ALWAYS_SATISFIED_CLASS_CONDITION);
 	}
 
-	public static List<Field> getFieldsSatisfyingCondition(Object object, Condition<Field> fieldCondition) {
+	public static List<Field> getFieldsSatisfyingCondition(Object object,
+			Condition<Field> fieldCondition) {
 		List<Field> fields = Collections.newLinkedList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
@@ -162,10 +181,12 @@ public final class Reflections {
 	}
 
 	public static List<Field> getFields(Object object) {
-		return getFieldsSatisfyingCondition(object, ALWAYS_SATISFIED_FIELD_CONDITION);
+		return getFieldsSatisfyingCondition(object,
+				ALWAYS_SATISFIED_FIELD_CONDITION);
 	}
 
-	public static List<Field> getFieldsAnnotatedBy(Object object, final Class<? extends Annotation> annotation) {
+	public static List<Field> getFieldsAnnotatedBy(Object object,
+			final Class<? extends Annotation> annotation) {
 		return getFieldsSatisfyingCondition(object, new Condition<Field>() {
 
 			@Override
@@ -175,7 +196,8 @@ public final class Reflections {
 		});
 	}
 
-	public static List<Annotation> getAnnotationsSatisfyingCondition(Object object, Condition<Annotation> condition) {
+	public static List<Annotation> getAnnotationsSatisfyingCondition(
+			Object object, Condition<Annotation> condition) {
 		List<Annotation> annotations = Collections.newArrayList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
@@ -191,14 +213,17 @@ public final class Reflections {
 	}
 
 	public static List<Annotation> getAnnotations(Object object) {
-		return getAnnotationsSatisfyingCondition(object, ALWAYS_SATISFIED_ANNOTATION_CONDITION);
+		return getAnnotationsSatisfyingCondition(object,
+				ALWAYS_SATISFIED_ANNOTATION_CONDITION);
 	}
 
-	public static List<Constructor<?>> getConstructorsSatisfyingCondition(Object object, Condition<Constructor<?>> condition) {
+	public static List<Constructor<?>> getConstructorsSatisfyingCondition(
+			Object object, Condition<Constructor<?>> condition) {
 		List<Constructor<?>> constructors = Collections.newArrayList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
-			Constructor<?>[] declaredConstructors = clazz.getDeclaredConstructors();
+			Constructor<?>[] declaredConstructors = clazz
+					.getDeclaredConstructors();
 			for (Constructor<?> declaredConstructor : declaredConstructors) {
 				if (condition.isSatisfied(declaredConstructor)) {
 					constructors.add(declaredConstructor);
@@ -210,10 +235,12 @@ public final class Reflections {
 	}
 
 	public static List<Constructor<?>> getConstructors(Object object) {
-		return getConstructorsSatisfyingCondition(object, ALWAYS_SATISFIED_CONSTRUCTOR_CONDITION);
+		return getConstructorsSatisfyingCondition(object,
+				ALWAYS_SATISFIED_CONSTRUCTOR_CONDITION);
 	}
 
-	public static List<Method> getMethodsSatisfyingCondition(Object object, Condition<Method> methodsCondition) {
+	public static List<Method> getMethodsSatisfyingCondition(Object object,
+			Condition<Method> methodsCondition) {
 		List<Method> methods = Collections.newArrayList();
 		Class<?> clazz = object.getClass();
 		while (!Object.class.equals(clazz)) {
@@ -229,10 +256,12 @@ public final class Reflections {
 	}
 
 	public static List<Method> getMethods(Object object) {
-		return getMethodsSatisfyingCondition(object, ALWAYS_SATISFIED_METHOD_CONDITION);
+		return getMethodsSatisfyingCondition(object,
+				ALWAYS_SATISFIED_METHOD_CONDITION);
 	}
 
-	public static List<Method> getMethodsAnnotatedBy(Object object, final Class<? extends Annotation> annotation) {
+	public static List<Method> getMethodsAnnotatedBy(Object object,
+			final Class<? extends Annotation> annotation) {
 		return getMethodsSatisfyingCondition(object, new Condition<Method>() {
 
 			@Override
@@ -244,11 +273,24 @@ public final class Reflections {
 
 	public static <T> T tryToCreateNewInstance(Class<T> clazz) {
 		try {
-			return clazz.newInstance();
+
+			Constructor constructor = clazz.getDeclaredConstructor();
+			constructor.setAccessible(true);
+
+			return (T)constructor.newInstance();
+
 		} catch (InstantiationException e) {
-			throw new InstanceCreationException("Could not create an instance of class " + clazz, e);
+			throw new InstanceCreationException(
+					"Could not create an instance of class " + clazz, e);
 		} catch (IllegalAccessException e) {
-			throw new InstanceCreationException("Could not create an instance of class " + clazz, e);
+			throw new InstanceCreationException(
+					"Could not create an instance of class " + clazz, e);
+		} catch (NoSuchMethodException e) {
+			throw new InstanceCreationException(
+					"Could not create an instance of class " + clazz, e);
+		} catch (InvocationTargetException e) {
+			throw new InstanceCreationException(
+					"Could not create an instance of class " + clazz, e);
 		}
 	}
 }
