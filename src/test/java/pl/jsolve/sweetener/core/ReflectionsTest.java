@@ -1,19 +1,16 @@
 package pl.jsolve.sweetener.core;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.aHero;
+import org.junit.*;
+import pl.jsolve.sweetener.collection.data.*;
+import pl.jsolve.sweetener.tests.stub.constructors.*;
+import pl.jsolve.sweetener.tests.stub.hero.*;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.List;
+import java.lang.annotation.*;
+import java.lang.reflect.*;
+import java.util.*;
 
-import org.junit.Test;
-
-import pl.jsolve.sweetener.collection.data.Person;
-import pl.jsolve.sweetener.tests.stub.ClassWithPrivateConstructor;
-import pl.jsolve.sweetener.tests.stub.hero.Hero;
+import static org.fest.assertions.Assertions.*;
+import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.*;
 
 public class ReflectionsTest {
 
@@ -153,8 +150,7 @@ public class ReflectionsTest {
 		};
 
 		// when
-		List<Constructor<?>> constructors = Reflections.getConstructorsSatisfyingCondition(person,
-				constructorsWithoutParametersCondition);
+		List<Constructor<?>> constructors = Reflections.getConstructorsSatisfyingCondition(person, constructorsWithoutParametersCondition);
 
 		// then
 		assertThat(constructors).as("person class has only one constructor with no parameters").hasSize(1);
@@ -220,12 +216,24 @@ public class ReflectionsTest {
 
 	@Test
 	public void shouldCreateObjectWithPrivateDefaultConstructor() {
-		// given
-
 		// when
-		ClassWithPrivateConstructor instance = Reflections.tryToCreateNewInstance(ClassWithPrivateConstructor.class);
+		ClassWithPrivateDefaultConstructor instance = Reflections.tryToCreateNewInstance(ClassWithPrivateDefaultConstructor.class);
 
 		// then
-		assertThat(instance != null);
+		assertThat(instance).isNotNull().isInstanceOf(ClassWithPrivateDefaultConstructor.class);
+	}
+
+	@Test
+	public void shouldCreateObjectWithPrivateNonDefaultConstructor() throws NoSuchMethodException {
+		// given
+		int parameter = 0;
+		Constructor<ClassWithPrivateNonDefaultConstructor> constructor = ClassWithPrivateNonDefaultConstructor.class.getDeclaredConstructor(int.class);
+
+		// when
+		ClassWithPrivateNonDefaultConstructor instance = Reflections.tryToCreateNewInstance(constructor, parameter);
+
+		// then
+		assertThat(instance).isNotNull();
+		assertThat(instance.getValue()).isEqualTo(parameter);
 	}
 }
