@@ -10,41 +10,41 @@ public abstract class Builder<T> {
 
     private final T builtObject;
     private final InstanceFromParametrizedTypeCreator instanceCreator = new InstanceFromParametrizedTypeCreator(
-	    getClass());
+            getClass());
 
     protected Builder(T builtObject) {
-	this.builtObject = builtObject;
+        this.builtObject = builtObject;
     }
 
     protected Builder() {
-	builtObject = instanceCreator.createObjectFromParametrizedType();
+        builtObject = instanceCreator.createObjectFromParametrizedType();
     }
 
     public final <V> Builder<T> with(String fieldName, V fieldValue) {
-	try {
-	    setBuildedObjectField(fieldName, fieldValue);
-	} catch (Exception e) {
-	    throw new BuilderWithMethodBindingException(e, fieldName, nullSafeToString(fieldValue));
-	}
-	return this;
+        try {
+            setBuildedObjectField(fieldName, fieldValue);
+        } catch (Exception e) {
+            throw new BuilderWithMethodBindingException(e, fieldName, nullSafeToString(fieldValue));
+        }
+        return this;
     }
 
     private <V> void setBuildedObjectField(String fieldName, V fieldValue) throws NoSuchFieldException,
-	    IllegalAccessException {
-	Field field = builtObject.getClass().getDeclaredField(fieldName);
-	try {
-	    field.setAccessible(true);
-	    field.set(builtObject, fieldValue);
-	} finally {
-	    field.setAccessible(false);
-	}
+            IllegalAccessException {
+        Field field = builtObject.getClass().getDeclaredField(fieldName);
+        try {
+            field.setAccessible(true);
+            field.set(builtObject, fieldValue);
+        } finally {
+            field.setAccessible(false);
+        }
     }
 
     protected final T getBuiltObject() {
-	return builtObject;
+        return builtObject;
     }
 
     public final T build() {
-	return builtObject;
+        return builtObject;
     }
 }

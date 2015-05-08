@@ -17,34 +17,34 @@ public class ExceptionCatcherTest {
 
     @Test
     public void shouldTryToCatchAnException() {
-	// when
-	ExpectedException caughtException = tryToCatch(ExpectedException.class, new ExceptionalOperation() {
+        // when
+        ExpectedException caughtException = tryToCatch(ExpectedException.class, new ExceptionalOperation() {
 
-	    @Override
-	    public void operate() throws Exception {
-		operationThatWillThrowException();
-	    }
-	});
-	// then
-	assertThrowable(caughtException).isThrown();
+            @Override
+            public void operate() throws Exception {
+                operationThatWillThrowException();
+            }
+        });
+        // then
+        assertThrowable(caughtException).isThrown();
     }
 
     private void operationThatWillThrowException() throws ExpectedException {
-	throw new ExpectedException();
+        throw new ExpectedException();
     }
 
     @Test
     public void shouldNotCatchNotThrownException() {
-	// when
-	ExpectedException caughtException = tryToCatch(ExpectedException.class, new ExceptionalOperation() {
+        // when
+        ExpectedException caughtException = tryToCatch(ExpectedException.class, new ExceptionalOperation() {
 
-	    @Override
-	    public void operate() throws Exception {
-		operationThatWillNotThrowAnyException();
-	    }
-	});
-	// then
-	assertThrowable(caughtException).isNotThrown();
+            @Override
+            public void operate() throws Exception {
+                operationThatWillNotThrowAnyException();
+            }
+        });
+        // then
+        assertThrowable(caughtException).isNotThrown();
     }
 
     private void operationThatWillNotThrowAnyException() {
@@ -52,19 +52,19 @@ public class ExceptionCatcherTest {
 
     @Test
     public void shouldNotCatchOtherExceptionThanExpected() {
-	// when
-	ExpectedException caughtException = tryToCatch(ExpectedException.class, new ExceptionalOperation() {
+        // when
+        ExpectedException caughtException = tryToCatch(ExpectedException.class, new ExceptionalOperation() {
 
-	    @Override
-	    public void operate() throws Exception {
-		operationThatWillThrowOtherException();
-	    }
-	});
-	// then
-	assertThrowable(caughtException).isNotThrown();
+            @Override
+            public void operate() throws Exception {
+                operationThatWillThrowOtherException();
+            }
+        });
+        // then
+        assertThrowable(caughtException).isNotThrown();
     }
 
     private void operationThatWillThrowOtherException() throws Exception {
-	throw new OtherException();
+        throw new OtherException();
     }
 }

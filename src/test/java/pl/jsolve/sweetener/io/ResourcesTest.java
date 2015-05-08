@@ -10,32 +10,35 @@ import org.junit.Test;
 
 public class ResourcesTest {
 
-	@Test
-	public void shouldFindPathForGivenFile() {
-		// given
-		String fileName = "testFile.txt";
+    @Test
+    public void shouldFindPathForGivenFile() {
+        // given
+        String fileName = "testFile.txt";
 
-		// when
-		List<Path> paths = Resources.findFilePaths(fileName);
+        // when
+        List<Path> paths = Resources.findFilePaths(fileName);
 
-		// then
-		assertThat(paths.size()).isGreaterThan(1);
-		assertThat(paths.toString()).contains("src"+File.separatorChar+"main"+File.separatorChar+"resources"+File.separatorChar+"testFile.txt");
-	}
+        // then
+        assertThat(paths.size()).isGreaterThan(1);
+        assertThat(paths.toString()).contains(
+                "src" + File.separatorChar + "main" + File.separatorChar + "resources" + File.separatorChar
+                        + "testFile.txt");
+    }
 
-	@Test
-	public void shouldFindPathForGivenFilePath() {
-		// given
-		String fileName = "testFile.txt";
-		String startingDir = "src/main/resources/";
+    @Test
+    public void shouldFindPathForGivenFilePath() {
+        // given
+        String fileName = "testFile.txt";
+        String startingDir = "src/main/resources/";
 
-		// when
-		List<Path> paths = Resources.findFilePaths(startingDir, fileName);
+        // when
+        List<Path> paths = Resources.findFilePaths(startingDir, fileName);
 
-		// then
-		assertThat(paths).hasSize(1);
-		assertThat(paths.get(0).toString()).isEqualTo(
-				"src" + File.separatorChar + "main" + File.separatorChar + "resources" + File.separatorChar + "testFile.txt");
-	}
+        // then
+        assertThat(paths).hasSize(1);
+        assertThat(paths.get(0).toString()).isEqualTo(
+                "src" + File.separatorChar + "main" + File.separatorChar + "resources" + File.separatorChar
+                        + "testFile.txt");
+    }
 
 }

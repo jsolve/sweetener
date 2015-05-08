@@ -10,50 +10,51 @@ public class NotLike implements FieldRestriction {
     private final boolean ignoreCase;
 
     public NotLike(String fieldName, Object value) {
-	this.fieldName = fieldName;
-	this.value = value;
-	this.ignoreCase = false;
+        this.fieldName = fieldName;
+        this.value = value;
+        this.ignoreCase = false;
     }
 
     public NotLike(String fieldName, Object value, boolean ignoreCase) {
-	this.fieldName = fieldName;
-	this.value = value;
-	this.ignoreCase = ignoreCase;
+        this.fieldName = fieldName;
+        this.value = value;
+        this.ignoreCase = ignoreCase;
     }
 
     @Override
     public String getFieldName() {
-	return fieldName;
+        return fieldName;
     }
 
     public Object getValue() {
-	return value;
+        return value;
     }
 
     public boolean getIgnoreCase() {
-	return ignoreCase;
+        return ignoreCase;
     }
 
     @Override
     public RestrictionLevel getRestrictionLevel() {
-	return RestrictionLevel.MEDIUM;
+        return RestrictionLevel.MEDIUM;
     }
 
     @Override
     public boolean satisfies(Object fieldValue) {
-	if (fieldValue != null) {
-	    if (!(fieldValue instanceof String)) {
-		throw new AccessToFieldException("Type mismatch. Expected String but was " + value.getClass().getCanonicalName());
-	    }
-	    return !satisfiesString((String) fieldValue);
-	}
-	return false;
+        if (fieldValue != null) {
+            if (!(fieldValue instanceof String)) {
+                throw new AccessToFieldException("Type mismatch. Expected String but was "
+                        + value.getClass().getCanonicalName());
+            }
+            return !satisfiesString((String) fieldValue);
+        }
+        return false;
     }
 
     private boolean satisfiesString(String fieldValue) {
-	if (ignoreCase) {
-	    return fieldValue.toLowerCase().contains(((String) value).toLowerCase());
-	}
-	return fieldValue.contains((String) value);
+        if (ignoreCase) {
+            return fieldValue.toLowerCase().contains(((String) value).toLowerCase());
+        }
+        return fieldValue.contains((String) value);
     }
 }

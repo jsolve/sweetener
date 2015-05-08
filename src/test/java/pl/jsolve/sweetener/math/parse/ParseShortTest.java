@@ -14,192 +14,192 @@ import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 
 public class ParseShortTest {
 
-	private final static String positiveValue = "32770";
-	private final static String negativeValue = "-32770";
+    private final static String positiveValue = "32770";
+    private final static String negativeValue = "-32770";
 
-	@Test
-	public void shouldParseShort() {
-		// given
-		String value = "15";
+    @Test
+    public void shouldParseShort() {
+        // given
+        String value = "15";
 
-		// when
-		short result = Maths.parseShort(value);
+        // when
+        short result = Maths.parseShort(value);
 
-		// then
-		assertThat(result).isEqualTo((short) 15);
-	}
+        // then
+        assertThat(result).isEqualTo((short) 15);
+    }
 
-	// Default context
+    // Default context
 
-	@Test
-	public void shouldParseIncorrectShort() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectShort() {
+        // given
+        String value = "1a5";
 
-		// when
-		short result = Maths.parseShort(value);
+        // when
+        short result = Maths.parseShort(value);
 
-		// then
-		assertThat(result).isEqualTo((short) 0);
-	}
+        // then
+        assertThat(result).isEqualTo((short) 0);
+    }
 
-	@Test
-	public void shouldParseTooLargeShort() {
-		// given
+    @Test
+    public void shouldParseTooLargeShort() {
+        // given
 
-		// when
-		short result = Maths.parseShort(positiveValue);
+        // when
+        short result = Maths.parseShort(positiveValue);
 
-		// then
-		assertThat(result).isEqualTo(Short.MAX_VALUE);
-	}
+        // then
+        assertThat(result).isEqualTo(Short.MAX_VALUE);
+    }
 
-	@Test
-	public void shouldParseTooSmallShort() {
-		// given
+    @Test
+    public void shouldParseTooSmallShort() {
+        // given
 
-		// when
-		short result = Maths.parseShort(negativeValue);
+        // when
+        short result = Maths.parseShort(negativeValue);
 
-		// then
-		assertThat(result).isEqualTo(Short.MIN_VALUE);
-	}
+        // then
+        assertThat(result).isEqualTo(Short.MIN_VALUE);
+    }
 
-	// Always zero
+    // Always zero
 
-	@Test
-	public void shouldParseIncorrectShortWhenContextIsALwaysZero() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectShortWhenContextIsALwaysZero() {
+        // given
+        String value = "1a5";
 
-		// when
-		short result = Maths.parseShort(value, ParseContext.ALWAYS_ZERO);
+        // when
+        short result = Maths.parseShort(value, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo((short) 0);
-	}
+        // then
+        assertThat(result).isEqualTo((short) 0);
+    }
 
-	@Test
-	public void shouldParseTooLargeShortWhenContextIsALwaysZero() {
-		// given
+    @Test
+    public void shouldParseTooLargeShortWhenContextIsALwaysZero() {
+        // given
 
-		// when
-		short result = Maths.parseShort(positiveValue, ParseContext.ALWAYS_ZERO);
+        // when
+        short result = Maths.parseShort(positiveValue, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo((short) 0);
-	}
+        // then
+        assertThat(result).isEqualTo((short) 0);
+    }
 
-	@Test
-	public void shouldParseTooSmallShortWhenContextIsALwaysZero() {
-		// given
+    @Test
+    public void shouldParseTooSmallShortWhenContextIsALwaysZero() {
+        // given
 
-		// when
-		short result = Maths.parseShort(negativeValue, ParseContext.ALWAYS_ZERO);
+        // when
+        short result = Maths.parseShort(negativeValue, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo((short) 0);
-	}
+        // then
+        assertThat(result).isEqualTo((short) 0);
+    }
 
-	// Zero when incorrect
+    // Zero when incorrect
 
-	@Test
-	public void shouldParseIncorrectShortWhenContextIsZeroWhenIncorrect() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectShortWhenContextIsZeroWhenIncorrect() {
+        // given
+        String value = "1a5";
 
-		// when
-		short result = Maths.parseShort(value, ParseContext.ZERO_WHEN_INCORRECT);
+        // when
+        short result = Maths.parseShort(value, ParseContext.ZERO_WHEN_INCORRECT);
 
-		// then
-		assertThat(result).isEqualTo((short) 0);
-	}
+        // then
+        assertThat(result).isEqualTo((short) 0);
+    }
 
-	@Test
-	public void shouldParseTooLargeShortWhenContextIsZeroWhenIncorrect() {
-		// given
+    @Test
+    public void shouldParseTooLargeShortWhenContextIsZeroWhenIncorrect() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseShort(positiveValue, ParseContext.ZERO_WHEN_INCORRECT);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseShort(positiveValue, ParseContext.ZERO_WHEN_INCORRECT);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
+    }
 
-	@Test
-	public void shouldParseTooSmallShortWhenContextIsZeroWhenIncorrect() {
-		// given
+    @Test
+    public void shouldParseTooSmallShortWhenContextIsZeroWhenIncorrect() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseShort(negativeValue, ParseContext.ZERO_WHEN_INCORRECT);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseShort(negativeValue, ParseContext.ZERO_WHEN_INCORRECT);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
+    }
 
-	// Exception
+    // Exception
 
-	@Test
-	public void shouldParseIncorrectShortWhenContextIsException() {
-		// given
-		final String value = "1a5";
+    @Test
+    public void shouldParseIncorrectShortWhenContextIsException() {
+        // given
+        final String value = "1a5";
 
-		// when
-		ParseException caughtException = tryToCatch(ParseException.class, new ExceptionalOperation() {
+        // when
+        ParseException caughtException = tryToCatch(ParseException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseShort(value, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseShort(value, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException).isNotNull();
-	}
+        // then
+        assertThat(caughtException).isNotNull();
+    }
 
-	@Test
-	public void shouldParseTooLargeShortWhenContextIsException() {
-		// given
+    @Test
+    public void shouldParseTooLargeShortWhenContextIsException() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseShort(positiveValue, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseShort(positiveValue, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
+    }
 
-	@Test
-	public void shouldParseTooSmallShortWhenContextIsException() {
-		// given
+    @Test
+    public void shouldParseTooSmallShortWhenContextIsException() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseShort(negativeValue, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseShort(negativeValue, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
+    }
 }

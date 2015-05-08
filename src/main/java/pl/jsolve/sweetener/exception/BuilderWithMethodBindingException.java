@@ -4,6 +4,6 @@ package pl.jsolve.sweetener.exception;
 public class BuilderWithMethodBindingException extends RuntimeException {
 
     public BuilderWithMethodBindingException(Exception e, String fieldName, String fieldValue) {
-	super("Could not set field " + fieldName + " to value " + fieldValue, e);
+        super("Could not set field " + fieldName + " to value " + fieldValue, e);
     }
 }

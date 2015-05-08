@@ -10,35 +10,35 @@ public final class InstanceFromParametrizedTypeCreator {
     private final Class<?> genericClass;
 
     public InstanceFromParametrizedTypeCreator(Class<?> genericClass) {
-	this.genericClass = genericClass;
+        this.genericClass = genericClass;
     }
 
     public <T> T newInstance() {
-	try {
-	    return (T) genericClass.newInstance();
-	} catch (Exception e) {
-	    throw new InstanceCreationException("Cannot create new instance of class" + genericClass, e);
-	}
+        try {
+            return (T) genericClass.newInstance();
+        } catch (Exception e) {
+            throw new InstanceCreationException("Cannot create new instance of class" + genericClass, e);
+        }
     }
 
     public <T> T createObjectFromParametrizedType() {
-	return createObjectFromParametrizedType(DEFUALT_PARAMETER_INDEX);
+        return createObjectFromParametrizedType(DEFUALT_PARAMETER_INDEX);
     }
 
     public <T> T createObjectFromParametrizedType(int parameterIndex) {
-	try {
-	    return (T) getClassFromParameterizedType(parameterIndex).newInstance();
-	} catch (Exception e) {
-	    throw new InstanceCreationException("Cannot create new instance of parametrized type", e);
-	}
+        try {
+            return (T) getClassFromParameterizedType(parameterIndex).newInstance();
+        } catch (Exception e) {
+            throw new InstanceCreationException("Cannot create new instance of parametrized type", e);
+        }
     }
 
     @SuppressWarnings("unchecked")
     private <T> Class<T> getClassFromParameterizedType(int parameterIndex) {
-	return (Class<T>) getParameterizedType().getActualTypeArguments()[parameterIndex];
+        return (Class<T>) getParameterizedType().getActualTypeArguments()[parameterIndex];
     }
 
     private ParameterizedType getParameterizedType() {
-	return (ParameterizedType) genericClass.getGenericSuperclass();
+        return (ParameterizedType) genericClass.getGenericSuperclass();
     }
 }

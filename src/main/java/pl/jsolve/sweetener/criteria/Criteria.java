@@ -3,8 +3,6 @@ package pl.jsolve.sweetener.criteria;
 import java.util.List;
 
 import pl.jsolve.sweetener.collection.Collections;
-import pl.jsolve.sweetener.criteria.restriction.AndRestriction;
-import pl.jsolve.sweetener.criteria.restriction.OrRestriction;
 
 public class Criteria {
 
@@ -22,16 +20,6 @@ public class Criteria {
         return this;
     }
 
-  /*  public Criteria or(Restriction... restrictions) {
-        this.restrictions.add(new OrRestriction(restrictions));
-        return this;
-    }
-
-    public Criteria and(Restriction... restrictions) {
-        this.restrictions.add(new AndRestriction(restrictions));
-        return this;
-    }
-*/
     public List<Restriction> getRestrictions() {
         return restrictions;
     }

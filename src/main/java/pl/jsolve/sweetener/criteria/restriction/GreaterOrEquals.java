@@ -9,32 +9,33 @@ public class GreaterOrEquals implements FieldRestriction {
     private final Number value;
 
     public GreaterOrEquals(String fieldName, Number value) {
-	this.fieldName = fieldName;
-	this.value = value;
+        this.fieldName = fieldName;
+        this.value = value;
     }
 
     @Override
     public String getFieldName() {
-	return fieldName;
+        return fieldName;
     }
 
     public Number getValue() {
-	return value;
+        return value;
     }
 
     @Override
     public RestrictionLevel getRestrictionLevel() {
-	return RestrictionLevel.LOW;
+        return RestrictionLevel.LOW;
     }
 
     @Override
     public boolean satisfies(Object fieldValue) {
-	if (fieldValue != null) {
-	    if (!(fieldValue instanceof Number)) {
-		throw new AccessToFieldException("Type mismatch. Expected Number but was " + fieldValue.getClass().getCanonicalName());
-	    }
-	    return ((Number) fieldValue).doubleValue() >= value.doubleValue();
-	}
-	return false;
+        if (fieldValue != null) {
+            if (!(fieldValue instanceof Number)) {
+                throw new AccessToFieldException("Type mismatch. Expected Number but was "
+                        + fieldValue.getClass().getCanonicalName());
+            }
+            return ((Number) fieldValue).doubleValue() >= value.doubleValue();
+        }
+        return false;
     }
 }

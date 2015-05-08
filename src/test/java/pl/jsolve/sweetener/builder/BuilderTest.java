@@ -18,39 +18,39 @@ public class BuilderTest {
 
     @Test
     public void shouldBuildHero() {
-	// when
-	Hero result = aHero().build();
+        // when
+        Hero result = aHero().build();
 
-	// then
-	assertThat(result).isNotNull().isInstanceOf(Hero.class);
+        // then
+        assertThat(result).isNotNull().isInstanceOf(Hero.class);
     }
 
     @Test
     public void shouldSetHeroFirstNameFieldViaWithMethod() {
-	// when
-	Hero result = null;
-	Exception caughtException = null;
-	try {
-	    result = aHero().with(HERO_FIRST_NAME_FIELD, HERO_FIRST_NAME_VALUE).build();
-	} catch (Exception e) {
-	    caughtException = e;
-	}
-	// then
-	assertThat(caughtException).isNull();
-	assertThat(result.getFirstName()).isEqualTo(HERO_FIRST_NAME_VALUE);
+        // when
+        Hero result = null;
+        Exception caughtException = null;
+        try {
+            result = aHero().with(HERO_FIRST_NAME_FIELD, HERO_FIRST_NAME_VALUE).build();
+        } catch (Exception e) {
+            caughtException = e;
+        }
+        // then
+        assertThat(caughtException).isNull();
+        assertThat(result.getFirstName()).isEqualTo(HERO_FIRST_NAME_VALUE);
     }
 
     @Test
     public void shouldNotSetNonExistingHeroFieldViaWithMethod() {
-	// when
-	Exception caughtException = null;
-	try {
-	    aHero().with(NON_EXISTING_FIELD, ANY_VALUE).build();
-	    fail("Expected exception because of passing non existing field " + NON_EXISTING_FIELD);
-	} catch (Exception e) {
-	    caughtException = e;
-	}
-	// then
-	assertThat(caughtException).isInstanceOf(BuilderWithMethodBindingException.class);
+        // when
+        Exception caughtException = null;
+        try {
+            aHero().with(NON_EXISTING_FIELD, ANY_VALUE).build();
+            fail("Expected exception because of passing non existing field " + NON_EXISTING_FIELD);
+        } catch (Exception e) {
+            caughtException = e;
+        }
+        // then
+        assertThat(caughtException).isInstanceOf(BuilderWithMethodBindingException.class);
     }
 }

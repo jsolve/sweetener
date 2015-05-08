@@ -18,109 +18,109 @@ public class NullSafeTest {
 
     @Test
     public void shouldToStringNotNullObject() {
-	// given
-	Hero captainAmerica = aCaptainAmerica().build();
+        // given
+        Hero captainAmerica = aCaptainAmerica().build();
 
-	// when
-	String result = nullSafeToString(captainAmerica);
+        // when
+        String result = nullSafeToString(captainAmerica);
 
-	// then
-	assertThat(result).isEqualTo(captainAmerica.toString());
+        // then
+        assertThat(result).isEqualTo(captainAmerica.toString());
     }
-    
+
     @Test
     public void shouldReturnNewDoubleForNullValue() {
-	// given
-	Double d = null;
-	
-	// when
-	d = Objects.nullSafeDouble(d);
-	
-	// then
-	assertThat(d).isZero();
+        // given
+        Double d = null;
+
+        // when
+        d = Objects.nullSafeDouble(d);
+
+        // then
+        assertThat(d).isZero();
     }
-    
+
     @Test
     public void shouldReturnNewIntegerForNullValue() {
-	// given
-	Integer value = null;
-	
-	// when
-	value = Objects.nullSafeInteger(value);
-	
-	// then
-	assertThat(value).isZero();
+        // given
+        Integer value = null;
+
+        // when
+        value = Objects.nullSafeInteger(value);
+
+        // then
+        assertThat(value).isZero();
     }
 
     @Test
     public void shouldToStringBeEmptyStringOnNullObject() {
-	// when
-	String result = nullSafeToString(NULL_HERO);
+        // when
+        String result = nullSafeToString(NULL_HERO);
 
-	// then
-	assertThat(result).isEmpty();
+        // then
+        assertThat(result).isEmpty();
     }
 
     @Test
     public void shouldReturnSameHeroWhenPassedIsNotNull() {
-	// given
-	Hero captainAmerica = aCaptainAmerica().build();
+        // given
+        Hero captainAmerica = aCaptainAmerica().build();
 
-	// when
-	Hero result = nullSafe(captainAmerica, new OnNullStrategy<Hero>() {
+        // when
+        Hero result = nullSafe(captainAmerica, new OnNullStrategy<Hero>() {
 
-	    @Override
-	    public Hero onNull() {
-		return new Hero();
-	    }
-	});
+            @Override
+            public Hero onNull() {
+                return new Hero();
+            }
+        });
 
-	// then
-	assertThat(result).isSameAs(captainAmerica);
+        // then
+        assertThat(result).isSameAs(captainAmerica);
     }
 
     @Test
     public void shouldReturnNewHeroWhenPassedIsNull() {
-	// when
-	Hero result = nullSafe(NULL_HERO, new OnNullStrategy<Hero>() {
+        // when
+        Hero result = nullSafe(NULL_HERO, new OnNullStrategy<Hero>() {
 
-	    @Override
-	    public Hero onNull() {
-		return new Hero();
-	    }
-	});
+            @Override
+            public Hero onNull() {
+                return new Hero();
+            }
+        });
 
-	// then
-	assertThat(result).isNotNull().isInstanceOf(Hero.class);
+        // then
+        assertThat(result).isNotNull().isInstanceOf(Hero.class);
     }
 
     @Test
     public void shouldReturnNewObjectWhenPassedIsNull() {
-	// when
-	Object result = nullSafe(NULL_OBJECT, new OnNullStrategy<Object>() {
+        // when
+        Object result = nullSafe(NULL_OBJECT, new OnNullStrategy<Object>() {
 
-	    @Override
-	    public Object onNull() {
-		return new Object();
-	    }
-	});
+            @Override
+            public Object onNull() {
+                return new Object();
+            }
+        });
 
-	// then
-	assertThat(result).isNotNull();
+        // then
+        assertThat(result).isNotNull();
     }
 
     @Test
     public void shouldReturnZeroWhenPassedIntegerIsNull() {
-	// when
-	Integer result = nullSafe(NULL_INTEGER, new OnNullStrategy<Integer>() {
+        // when
+        Integer result = nullSafe(NULL_INTEGER, new OnNullStrategy<Integer>() {
 
-	    @Override
-	    public Integer onNull() {
-		return 0;
-	    }
-	});
+            @Override
+            public Integer onNull() {
+                return 0;
+            }
+        });
 
-	// then
-	assertThat(result).isEqualTo(ZERO);
+        // then
+        assertThat(result).isEqualTo(ZERO);
     }
 }

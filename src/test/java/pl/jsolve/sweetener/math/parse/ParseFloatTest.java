@@ -14,199 +14,199 @@ import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 
 public class ParseFloatTest {
 
-	@Test
-	public void shouldParseFloat() {
-		// given
-		String value = "15.3";
+    @Test
+    public void shouldParseFloat() {
+        // given
+        String value = "15.3";
 
-		// when
-		float result = Maths.parseFloat(value);
+        // when
+        float result = Maths.parseFloat(value);
 
-		// then
-		assertThat(result).isEqualTo(15.3f);
-	}
+        // then
+        assertThat(result).isEqualTo(15.3f);
+    }
 
-	// Default context
+    // Default context
 
-	@Test
-	public void shouldParseIncorrectFloat() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectFloat() {
+        // given
+        String value = "1a5";
 
-		// when
-		float result = Maths.parseFloat(value);
+        // when
+        float result = Maths.parseFloat(value);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooLargeFloat() {
-		// given
-		String value = "999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooLargeFloat() {
+        // given
+        String value = "999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		float result = Maths.parseFloat(value);
+        // when
+        float result = Maths.parseFloat(value);
 
-		// then
-		assertThat(result).isEqualTo(Float.MAX_VALUE);
-	}
+        // then
+        assertThat(result).isEqualTo(Float.MAX_VALUE);
+    }
 
-	@Test
-	public void shouldParseTooSmallFloat() {
-		// given
-		String value = "-999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooSmallFloat() {
+        // given
+        String value = "-999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		float result = Maths.parseFloat(value);
+        // when
+        float result = Maths.parseFloat(value);
 
-		// then
-		assertThat(result).isEqualTo(Float.MIN_VALUE);
-	}
+        // then
+        assertThat(result).isEqualTo(Float.MIN_VALUE);
+    }
 
-	// Always zero
+    // Always zero
 
-	@Test
-	public void shouldParseIncorrectFloatWhenContextIsALwaysZero() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectFloatWhenContextIsALwaysZero() {
+        // given
+        String value = "1a5";
 
-		// when
-		float result = Maths.parseFloat(value, ParseContext.ALWAYS_ZERO);
+        // when
+        float result = Maths.parseFloat(value, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooLargeFloatWhenContextIsALwaysZero() {
-		// given
-		String value = "999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooLargeFloatWhenContextIsALwaysZero() {
+        // given
+        String value = "999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		float result = Maths.parseFloat(value, ParseContext.ALWAYS_ZERO);
+        // when
+        float result = Maths.parseFloat(value, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooSmallFloatWhenContextIsALwaysZero() {
-		// given
-		String value = "-999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooSmallFloatWhenContextIsALwaysZero() {
+        // given
+        String value = "-999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		float result = Maths.parseFloat(value, ParseContext.ALWAYS_ZERO);
+        // when
+        float result = Maths.parseFloat(value, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	// Zero when incorrect
+    // Zero when incorrect
 
-	@Test
-	public void shouldParseIncorrectFloatWhenContextIsZeroWhenIncorrect() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectFloatWhenContextIsZeroWhenIncorrect() {
+        // given
+        String value = "1a5";
 
-		// when
-		float result = Maths.parseFloat(value, ParseContext.ZERO_WHEN_INCORRECT);
+        // when
+        float result = Maths.parseFloat(value, ParseContext.ZERO_WHEN_INCORRECT);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooLargeFloatWhenContextIsZeroWhenIncorrect() {
-		// given
-		final String value = "999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooLargeFloatWhenContextIsZeroWhenIncorrect() {
+        // given
+        final String value = "999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				float parseFloat = Maths.parseFloat(value, ParseContext.ZERO_WHEN_INCORRECT);
-				System.out.println(parseFloat);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                float parseFloat = Maths.parseFloat(value, ParseContext.ZERO_WHEN_INCORRECT);
+                System.out.println(parseFloat);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
+    }
 
-	@Test
-	public void shouldParseTooSmallFloatWhenContextIsZeroWhenIncorrect() {
-		// given
-		final String value = "-999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooSmallFloatWhenContextIsZeroWhenIncorrect() {
+        // given
+        final String value = "-999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseFloat(value, ParseContext.ZERO_WHEN_INCORRECT);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseFloat(value, ParseContext.ZERO_WHEN_INCORRECT);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
+    }
 
-	// Exception
+    // Exception
 
-	@Test
-	public void shouldParseIncorrectFloatWhenContextIsException() {
-		// given
-		final String value = "1a5";
+    @Test
+    public void shouldParseIncorrectFloatWhenContextIsException() {
+        // given
+        final String value = "1a5";
 
-		// when
-		ParseException caughtException = tryToCatch(ParseException.class, new ExceptionalOperation() {
+        // when
+        ParseException caughtException = tryToCatch(ParseException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseFloat(value, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseFloat(value, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException).isNotNull();
-	}
+        // then
+        assertThat(caughtException).isNotNull();
+    }
 
-	@Test
-	public void shouldParseTooLargeFloatWhenContextIsException() {
-		// given
-		final String value = "999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooLargeFloatWhenContextIsException() {
+        // given
+        final String value = "999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseFloat(value, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseFloat(value, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
+    }
 
-	@Test
-	public void shouldParseTooSmallFloatWhenContextIsException() {
-		// given
-		final String value = "-999999999999999999999999999999999999999999999999999999.9999";
+    @Test
+    public void shouldParseTooSmallFloatWhenContextIsException() {
+        // given
+        final String value = "-999999999999999999999999999999999999999999999999999999.9999";
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseFloat(value, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseFloat(value, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
+    }
 
 }

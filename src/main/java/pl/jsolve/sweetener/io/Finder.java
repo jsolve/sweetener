@@ -14,39 +14,39 @@ import static pl.jsolve.sweetener.collection.Collections.newArrayList;
 
 public class Finder extends SimpleFileVisitor<Path> {
 
-	private final PathMatcher matcher;
-	private final List<Path> paths = newArrayList();
+    private final PathMatcher matcher;
+    private final List<Path> paths = newArrayList();
 
-	Finder(String pattern) {
-		matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
-	}
+    Finder(String pattern) {
+        matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+    }
 
-	void find(Path file) {
-		Path fileName = file.getFileName();
-		if (fileName != null && matcher.matches(fileName)) {
-			paths.add(file);
-		}
-	}
+    void find(Path file) {
+        Path fileName = file.getFileName();
+        if (fileName != null && matcher.matches(fileName)) {
+            paths.add(file);
+        }
+    }
 
-	@Override
-	public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-		find(file);
-		return CONTINUE;
-	}
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+        find(file);
+        return CONTINUE;
+    }
 
-	@Override
-	public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-		find(dir);
-		return CONTINUE;
-	}
+    @Override
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+        find(dir);
+        return CONTINUE;
+    }
 
-	@Override
-	public FileVisitResult visitFileFailed(Path file, IOException exc) {
-		// Ignore failed file
-		return CONTINUE;
-	}
+    @Override
+    public FileVisitResult visitFileFailed(Path file, IOException exc) {
+        // Ignore failed file
+        return CONTINUE;
+    }
 
-	List<Path> getPaths() {
-		return paths;
-	}
+    List<Path> getPaths() {
+        return paths;
+    }
 }

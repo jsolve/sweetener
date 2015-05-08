@@ -11,37 +11,37 @@ public class ThrowableAssertionsTest {
 
     @Test
     public void shouldAssertThatExceptionIsThrown() {
-	// when
-	Exception exception = new Exception();
+        // when
+        Exception exception = new Exception();
 
-	// then
-	assertThrowable(exception).isThrown();
+        // then
+        assertThrowable(exception).isThrown();
     }
 
     @Test
     public void shouldAssertThatExceptionIsNotThrown() {
-	// when
-	Exception exception = null;
+        // when
+        Exception exception = null;
 
-	// then
-	assertThrowable(exception).isNotThrown();
+        // then
+        assertThrowable(exception).isNotThrown();
     }
 
     @Test
     public void shouldAssertThatExceptionHasExpectedMessage() {
-	// when
-	Exception exception = new Exception(EXCEPTION_MESSAGE);
+        // when
+        Exception exception = new Exception(EXCEPTION_MESSAGE);
 
-	// then
-	assertThrowable(exception).withMessage(EXCEPTION_MESSAGE).isThrown();
+        // then
+        assertThrowable(exception).withMessage(EXCEPTION_MESSAGE).isThrown();
     }
 
     @Test
     public void shouldAssertThatExceptionMessageContainsSequence() {
-	// given
-	Exception exception = new Exception(EXCEPTION_MESSAGE);
+        // given
+        Exception exception = new Exception(EXCEPTION_MESSAGE);
 
-	// then
-	assertThrowable(exception).withMessageContaining(EXCEPTION_MESSAGE_SUBSTRING).isThrown();
+        // then
+        assertThrowable(exception).withMessageContaining(EXCEPTION_MESSAGE_SUBSTRING).isThrown();
     }
 }

@@ -12,59 +12,60 @@ public class Contains implements FieldRestriction {
     private final Object[] value;
 
     public Contains(String fieldName, boolean exactlyAllObjects, Object[] value) {
-	this.fieldName = fieldName;
-	this.exactlyAllObjects = exactlyAllObjects;
-	this.value = value;
+        this.fieldName = fieldName;
+        this.exactlyAllObjects = exactlyAllObjects;
+        this.value = value;
     }
 
     @Override
     public String getFieldName() {
-	return fieldName;
+        return fieldName;
     }
 
     public boolean isExactlyAllObjects() {
-	return exactlyAllObjects;
+        return exactlyAllObjects;
     }
 
     public Object[] getValue() {
-	return value;
+        return value;
     }
 
     @Override
     public RestrictionLevel getRestrictionLevel() {
-	return RestrictionLevel.LOW;
+        return RestrictionLevel.LOW;
     }
 
     @Override
     public boolean satisfies(Object fieldValue) {
-	if (fieldValue == null) {
-	    return false;
-	}
-	if (!(fieldValue instanceof Collection)) {
-	    throw new AccessToFieldException("Type mismatch. Expected Collection but was " + value.getClass().getCanonicalName());
-	}
-	Collection<?> fieldValueAsCollection = ((Collection<?>) fieldValue);
-	if (exactlyAllObjects) {
-	    return forExactlyAllObjects(fieldValueAsCollection);
-	}
-	return forAnyObject(fieldValueAsCollection);
+        if (fieldValue == null) {
+            return false;
+        }
+        if (!(fieldValue instanceof Collection)) {
+            throw new AccessToFieldException("Type mismatch. Expected Collection but was "
+                    + value.getClass().getCanonicalName());
+        }
+        Collection<?> fieldValueAsCollection = ((Collection<?>) fieldValue);
+        if (exactlyAllObjects) {
+            return forExactlyAllObjects(fieldValueAsCollection);
+        }
+        return forAnyObject(fieldValueAsCollection);
     }
 
     private boolean forExactlyAllObjects(Collection<?> fieldValueAsCollection) {
-	for (Object o : value) {
-	    if (!fieldValueAsCollection.contains(o)) {
-		return false;
-	    }
-	}
-	return true;
+        for (Object o : value) {
+            if (!fieldValueAsCollection.contains(o)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean forAnyObject(Collection<?> fieldValueAsCollection) {
-	for (Object o : value) {
-	    if (fieldValueAsCollection.contains(o)) {
-		return true;
-	    }
-	}
-	return false;
+        for (Object o : value) {
+            if (fieldValueAsCollection.contains(o)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

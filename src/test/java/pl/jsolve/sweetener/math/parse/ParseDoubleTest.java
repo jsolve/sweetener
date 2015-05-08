@@ -14,206 +14,206 @@ import pl.jsolve.sweetener.tests.catcher.ExceptionalOperation;
 
 public class ParseDoubleTest {
 
-	private static final String positiveValue = "999999999999999999999999999999999999999999999999999999999999999999" +
-			"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.9999";
+    private static final String positiveValue = "999999999999999999999999999999999999999999999999999999999999999999"
+            + "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.9999";
 
-	private static final String negativeValue = "-999999999999999999999999999999999999999999999999999999999999999999" +
-			"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999" +
-			"99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.9999";
+    private static final String negativeValue = "-999999999999999999999999999999999999999999999999999999999999999999"
+            + "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999"
+            + "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.9999";
 
-	@Test
-	public void shouldParseDouble() {
-		// given
-		String value = "15.3";
+    @Test
+    public void shouldParseDouble() {
+        // given
+        String value = "15.3";
 
-		// when
-		double result = Maths.parseDouble(value);
+        // when
+        double result = Maths.parseDouble(value);
 
-		// then
-		assertThat(result).isEqualTo(15.3);
-	}
+        // then
+        assertThat(result).isEqualTo(15.3);
+    }
 
-	// Default context
+    // Default context
 
-	@Test
-	public void shouldParseIncorrectDouble() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectDouble() {
+        // given
+        String value = "1a5";
 
-		// when
-		double result = Maths.parseDouble(value);
+        // when
+        double result = Maths.parseDouble(value);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooLargeDouble() {
-		// given
+    @Test
+    public void shouldParseTooLargeDouble() {
+        // given
 
-		// when
-		double result = Maths.parseDouble(positiveValue);
+        // when
+        double result = Maths.parseDouble(positiveValue);
 
-		// then
-		assertThat(result).isEqualTo(Double.MAX_VALUE);
-	}
+        // then
+        assertThat(result).isEqualTo(Double.MAX_VALUE);
+    }
 
-	@Test
-	public void shouldParseTooSmallDouble() {
-		// given
+    @Test
+    public void shouldParseTooSmallDouble() {
+        // given
 
-		// when
-		double result = Maths.parseDouble(negativeValue);
+        // when
+        double result = Maths.parseDouble(negativeValue);
 
-		// then
-		assertThat(result).isEqualTo(Double.MIN_VALUE);
-	}
+        // then
+        assertThat(result).isEqualTo(Double.MIN_VALUE);
+    }
 
-	// Always zero
+    // Always zero
 
-	@Test
-	public void shouldParseIncorrectDoubleWhenContextIsALwaysZero() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectDoubleWhenContextIsALwaysZero() {
+        // given
+        String value = "1a5";
 
-		// when
-		double result = Maths.parseDouble(value, ParseContext.ALWAYS_ZERO);
+        // when
+        double result = Maths.parseDouble(value, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooLargeDoubleWhenContextIsALwaysZero() {
-		// given
+    @Test
+    public void shouldParseTooLargeDoubleWhenContextIsALwaysZero() {
+        // given
 
-		// when
-		double result = Maths.parseDouble(positiveValue, ParseContext.ALWAYS_ZERO);
+        // when
+        double result = Maths.parseDouble(positiveValue, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooSmallDoubleWhenContextIsALwaysZero() {
-		// given
+    @Test
+    public void shouldParseTooSmallDoubleWhenContextIsALwaysZero() {
+        // given
 
-		// when
-		double result = Maths.parseDouble(negativeValue, ParseContext.ALWAYS_ZERO);
+        // when
+        double result = Maths.parseDouble(negativeValue, ParseContext.ALWAYS_ZERO);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	// Zero when incorrect
+    // Zero when incorrect
 
-	@Test
-	public void shouldParseIncorrectDoubleWhenContextIsZeroWhenIncorrect() {
-		// given
-		String value = "1a5";
+    @Test
+    public void shouldParseIncorrectDoubleWhenContextIsZeroWhenIncorrect() {
+        // given
+        String value = "1a5";
 
-		// when
-		double result = Maths.parseDouble(value, ParseContext.ZERO_WHEN_INCORRECT);
+        // when
+        double result = Maths.parseDouble(value, ParseContext.ZERO_WHEN_INCORRECT);
 
-		// then
-		assertThat(result).isEqualTo(0);
-	}
+        // then
+        assertThat(result).isEqualTo(0);
+    }
 
-	@Test
-	public void shouldParseTooLargeDoubleWhenContextIsZeroWhenIncorrect() {
-		// given
+    @Test
+    public void shouldParseTooLargeDoubleWhenContextIsZeroWhenIncorrect() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseDouble(positiveValue, ParseContext.ZERO_WHEN_INCORRECT);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseDouble(positiveValue, ParseContext.ZERO_WHEN_INCORRECT);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
+    }
 
-	@Test
-	public void shouldParseTooSmallDoubleWhenContextIsZeroWhenIncorrect() {
-		// given
+    @Test
+    public void shouldParseTooSmallDoubleWhenContextIsZeroWhenIncorrect() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseDouble(negativeValue, ParseContext.ZERO_WHEN_INCORRECT);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseDouble(negativeValue, ParseContext.ZERO_WHEN_INCORRECT);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
+    }
 
-	// Exception
+    // Exception
 
-	@Test
-	public void shouldParseIncorrectDoubleWhenContextIsException() {
-		// given
-		final String value = "1a5";
+    @Test
+    public void shouldParseIncorrectDoubleWhenContextIsException() {
+        // given
+        final String value = "1a5";
 
-		// when
-		ParseException caughtException = tryToCatch(ParseException.class, new ExceptionalOperation() {
+        // when
+        ParseException caughtException = tryToCatch(ParseException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseDouble(value, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseDouble(value, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException).isNotNull();
-	}
+        // then
+        assertThat(caughtException).isNotNull();
+    }
 
-	@Test
-	public void shouldParseTooLargeDoubleWhenContextIsException() {
-		// given
+    @Test
+    public void shouldParseTooLargeDoubleWhenContextIsException() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseDouble(positiveValue, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseDouble(positiveValue, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MAX);
+    }
 
-	@Test
-	public void shouldParseTooSmallDoubleWhenContextIsException() {
-		// given
+    @Test
+    public void shouldParseTooSmallDoubleWhenContextIsException() {
+        // given
 
-		// when
-		OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
+        // when
+        OutOfRangeException caughtException = tryToCatch(OutOfRangeException.class, new ExceptionalOperation() {
 
-			@Override
-			public void operate() throws Exception {
-				Maths.parseDouble(negativeValue, ParseContext.EXCEPTION);
-			}
-		});
+            @Override
+            public void operate() throws Exception {
+                Maths.parseDouble(negativeValue, ParseContext.EXCEPTION);
+            }
+        });
 
-		// then
-		assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
-	}
+        // then
+        assertThat(caughtException.getRange()).isEqualTo(Range.MIN);
+    }
 
 }

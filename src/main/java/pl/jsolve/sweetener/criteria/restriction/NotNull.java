@@ -7,21 +7,21 @@ public class NotNull implements FieldRestriction {
     private final String fieldName;
 
     public NotNull(String fieldName) {
-	this.fieldName = fieldName;
+        this.fieldName = fieldName;
     }
 
     @Override
     public String getFieldName() {
-	return fieldName;
+        return fieldName;
     }
 
     @Override
     public RestrictionLevel getRestrictionLevel() {
-	return RestrictionLevel.HIGH;
+        return RestrictionLevel.HIGH;
     }
 
     @Override
     public boolean satisfies(Object fieldValue) {
-	return fieldValue != null;
+        return fieldValue != null;
     }
 }

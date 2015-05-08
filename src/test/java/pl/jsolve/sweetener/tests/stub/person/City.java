@@ -2,30 +2,30 @@ package pl.jsolve.sweetener.tests.stub.person;
 
 public class City {
 
-	private String name;
-	private long population;
+    private String name;
+    private long population;
 
-	public City() {
-	}
+    public City() {
+    }
 
-	public City(String name, long population) {
-		this.name = name;
-		this.population = population;
-	}
+    public City(String name, long population) {
+        this.name = name;
+        this.population = population;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public long getPopulation() {
-		return population;
-	}
+    public long getPopulation() {
+        return population;
+    }
 
-	public void setPopulation(long population) {
-		this.population = population;
-	}
+    public void setPopulation(long population) {
+        this.population = population;
+    }
 }

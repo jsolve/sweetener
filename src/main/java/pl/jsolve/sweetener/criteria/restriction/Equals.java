@@ -10,54 +10,55 @@ public class Equals implements FieldRestriction {
     private final boolean ignoreCase;
 
     public Equals(String fieldName, Object value) {
-	this.fieldName = fieldName;
-	this.value = value;
-	this.ignoreCase = false;
+        this.fieldName = fieldName;
+        this.value = value;
+        this.ignoreCase = false;
     }
 
     public Equals(String fieldName, Object value, boolean ignoreCase) {
-	this.fieldName = fieldName;
-	this.value = value;
-	this.ignoreCase = ignoreCase;
+        this.fieldName = fieldName;
+        this.value = value;
+        this.ignoreCase = ignoreCase;
     }
 
     @Override
     public String getFieldName() {
-	return fieldName;
+        return fieldName;
     }
 
     public Object getValue() {
-	return value;
+        return value;
     }
 
     public boolean getIgnoreCase() {
-	return ignoreCase;
+        return ignoreCase;
     }
 
     @Override
     public RestrictionLevel getRestrictionLevel() {
-	return RestrictionLevel.MEDIUM;
+        return RestrictionLevel.MEDIUM;
     }
 
     @Override
     public boolean satisfies(Object fieldValue) {
-	if (fieldValue != null) {
-	    if (fieldValue instanceof String) {
-		return satisfiesString((String) fieldValue);
-	    }
-	    return fieldValue.equals(value);
-	}
-	return false;
+        if (fieldValue != null) {
+            if (fieldValue instanceof String) {
+                return satisfiesString((String) fieldValue);
+            }
+            return fieldValue.equals(value);
+        }
+        return false;
     }
 
     private boolean satisfiesString(String fieldValue) {
-	if (!(value instanceof String)) {
-	    throw new AccessToFieldException("Type mismatch. Expected String but was " + value.getClass().getCanonicalName());
-	}
-	if (ignoreCase) {
-	    return fieldValue.equalsIgnoreCase((String) value);
-	}
-	return fieldValue.equals(value);
+        if (!(value instanceof String)) {
+            throw new AccessToFieldException("Type mismatch. Expected String but was "
+                    + value.getClass().getCanonicalName());
+        }
+        if (ignoreCase) {
+            return fieldValue.equalsIgnoreCase((String) value);
+        }
+        return fieldValue.equals(value);
     }
 
 }

@@ -12,9 +12,9 @@ import static org.mockito.BDDMockito.given;
 
 public class RandomByteTest {
 
-	private static final double NEAR_ONE_VALUE = 0.9999999999999999;
-	private static final double NEAR_ZERO_VALUE = 0.00000000000000001;
-	@Mock
+    private static final double NEAR_ONE_VALUE = 0.9999999999999999;
+    private static final double NEAR_ZERO_VALUE = 0.00000000000000001;
+    @Mock
     private Generator mockedGenerator;
 
     @Before
@@ -171,7 +171,7 @@ public class RandomByteTest {
         // then
         assertThat(random).isEqualTo((byte) 0);
     }
-    
+
     @Test
     public void shouldReturnRandomByteWhenRandom3ValueIsNearToZero() {
         // given
@@ -193,7 +193,6 @@ public class RandomByteTest {
         byte lowerRange = Byte.MIN_VALUE;
         byte upperRange = Byte.MAX_VALUE;
 
-
         given(mockedGenerator.generate()).willReturn(0.999);
 
         // when
@@ -208,7 +207,6 @@ public class RandomByteTest {
         // given
         byte lowerRange = Byte.MIN_VALUE;
         byte upperRange = Byte.MAX_VALUE;
-
 
         given(mockedGenerator.generate()).willReturn(NEAR_ZERO_VALUE);
 
@@ -225,7 +223,6 @@ public class RandomByteTest {
         byte lowerRange = Byte.MIN_VALUE;
         byte upperRange = Byte.MAX_VALUE;
 
-
         given(mockedGenerator.generate()).willReturn(NEAR_ONE_VALUE);
 
         // when
@@ -241,7 +238,6 @@ public class RandomByteTest {
         byte lowerRange = Byte.MIN_VALUE;
         byte upperRange = Byte.MAX_VALUE;
 
-
         given(mockedGenerator.generate()).willReturn(0.501016489465);
 
         // when
@@ -250,7 +246,5 @@ public class RandomByteTest {
         // then
         assertThat(random).isEqualTo((byte) 0);
     }
-
- 
 
 }

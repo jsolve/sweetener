@@ -12,45 +12,46 @@ public class NotContains implements FieldRestriction {
     private final Object[] value;
 
     public NotContains(String fieldName, boolean exactlyAllObjects, Object[] value) {
-	this.fieldName = fieldName;
-	this.exactlyAllObjects = exactlyAllObjects;
-	this.value = value;
+        this.fieldName = fieldName;
+        this.exactlyAllObjects = exactlyAllObjects;
+        this.value = value;
     }
 
     @Override
     public String getFieldName() {
-	return fieldName;
+        return fieldName;
     }
 
     public boolean isExactlyAllObjects() {
-	return exactlyAllObjects;
+        return exactlyAllObjects;
     }
 
     public Object[] getValue() {
-	return value;
+        return value;
     }
 
     @Override
     public RestrictionLevel getRestrictionLevel() {
-	return RestrictionLevel.LOW;
+        return RestrictionLevel.LOW;
     }
 
     @Override
     public boolean satisfies(Object fieldValue) {
-	if (fieldValue == null) { // null indicates that collection does not
-				  // contain any objects
-	    return true;
-	}
-	if (!(fieldValue instanceof Collection)) {
-	    throw new AccessToFieldException("Type mismatch. Expected Collection but was " + value.getClass().getCanonicalName());
-	}
-	Collection<?> fieldValueAsCollection = ((Collection<?>) fieldValue);
-	int numberOfObject = 0;
-	for (Object o : value) {
-	    if (fieldValueAsCollection.contains(o)) {
-		numberOfObject++;
-	    }
-	}
-	return numberOfObject != value.length;
+        if (fieldValue == null) { // null indicates that collection does not
+            // contain any objects
+            return true;
+        }
+        if (!(fieldValue instanceof Collection)) {
+            throw new AccessToFieldException("Type mismatch. Expected Collection but was "
+                    + value.getClass().getCanonicalName());
+        }
+        Collection<?> fieldValueAsCollection = ((Collection<?>) fieldValue);
+        int numberOfObject = 0;
+        for (Object o : value) {
+            if (fieldValueAsCollection.contains(o)) {
+                numberOfObject++;
+            }
+        }
+        return numberOfObject != value.length;
     }
 }
