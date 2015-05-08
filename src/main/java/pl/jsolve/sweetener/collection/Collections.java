@@ -1,270 +1,289 @@
 package pl.jsolve.sweetener.collection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeSet;
+
 import pl.jsolve.sweetener.core.Reflections;
+import pl.jsolve.sweetener.criteria.ComplexRestriction;
 import pl.jsolve.sweetener.criteria.Criteria;
+import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.criteria.Restriction;
 import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
-import java.util.*;
-import java.util.Map.Entry;
-
 public final class Collections {
 
-	private Collections() {
-		throw new AssertionError("Using constructor of this class is prohibited.");
-	}
+    private Collections() {
+        throw new AssertionError("Using constructor of this class is prohibited.");
+    }
 
-	public static <T> Collection<T> filter(Collection<T> collection, Criteria criteria) {
-		Collection<T> result = createNewInstanceOfCollection(collection.getClass());
+    public static <T> Collection<T> filter(Collection<T> collection, Criteria criteria) {
+        Collection<T> result = createNewInstanceOfCollection(collection.getClass());
 
-		for (T t : collection) {
-			if (checkIfElementSatisfiesConditions(t, criteria)) {
-				result.add(t);
-			}
-		}
-		return result;
-	}
+        for (T t : collection) {
+            if (checkIfElementSatisfiesConditions(t, criteria)) {
+                result.add(t);
+            }
+        }
+        return result;
+    }
 
-	public static <T extends Collection<E>, E> T truncate(T collection, int to) {
-		return truncate(collection, 0, to);
-	}
+    public static <T extends Collection<E>, E> T truncate(T collection, int to) {
+        return truncate(collection, 0, to);
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <T extends Collection<E>, E> T truncate(T collection, int from, int to) {
-		int countOfElements = collection.size();
-		if (to < 0) {
-			to = countOfElements + to;
-		}
-		if (from < 0) {
-			throw new InvalidArgumentException("The 'From' value cannot be negative");
-		}
-		if (from > countOfElements - 1) {
-			throw new InvalidArgumentException("The 'From' value cannot be greater than size of collection");
-		}
-		if (from > to) {
-			throw new InvalidArgumentException("The 'From' value cannot be greater than the 'to' value");
-		}
-		if (to > countOfElements - 1) {
-			throw new InvalidArgumentException("The 'To' value cannot be greater than size of collection");
-		}
-		T result = (T) createNewInstanceOfCollection(collection.getClass());
-		Object[] array = collection.toArray();
-		for (int i = from; i <= to; i++) {
-			result.add((E) array[i]);
-		}
-		return result;
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends Collection<E>, E> T truncate(T collection, int from, int to) {
+        int countOfElements = collection.size();
+        if (to < 0) {
+            to = countOfElements + to;
+        }
+        if (from < 0) {
+            throw new InvalidArgumentException("The 'From' value cannot be negative");
+        }
+        if (from > countOfElements - 1) {
+            throw new InvalidArgumentException("The 'From' value cannot be greater than size of collection");
+        }
+        if (from > to) {
+            throw new InvalidArgumentException("The 'From' value cannot be greater than the 'to' value");
+        }
+        if (to > countOfElements - 1) {
+            throw new InvalidArgumentException("The 'To' value cannot be greater than size of collection");
+        }
+        T result = (T) createNewInstanceOfCollection(collection.getClass());
+        Object[] array = collection.toArray();
+        for (int i = from; i <= to; i++) {
+            result.add((E) array[i]);
+        }
+        return result;
+    }
 
-	public static <T extends Collection<E>, E> T createNewInstanceOfCollection(Class<T> clazz) {
-		try {
-			return clazz.newInstance();
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public static <T extends Collection<E>, E> T createNewInstanceOfCollection(Class<T> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	private static boolean checkIfElementSatisfiesConditions(Object o, Criteria criteria) {
-		for (Restriction restriction : criteria.getSortedRestrictions()) {
-			Object fieldValue = Reflections.getFieldValue(o, restriction.getFieldName());
-			if (!restriction.satisfies(fieldValue)) {
-				return false;
-			}
-		}
-		return true;
-	}
+    private static boolean checkIfElementSatisfiesConditions(Object o, Criteria criteria) {
+        for (Restriction restriction : criteria.getSortedRestrictions()) {
 
-	@SuppressWarnings("unchecked")
-	public static <T> Pagination<T> paginate(Collection<T> collection, int page, int resultsPerPage) {
-		int totalElements = collection.size();
-		int from = page * resultsPerPage;
-		int to = getTo(resultsPerPage, totalElements, from);
-		Collection<T> elementsOfPage = createNewInstanceOfCollection(collection.getClass());
-		if(from < collection.size()) {
-			elementsOfPage = truncate(collection, from, to);
-		}
-		return new Pagination<T>(page, resultsPerPage, totalElements, elementsOfPage);
-	}
+            if (restriction instanceof FieldRestriction) {
+                Object fieldValue = Reflections.getFieldValue(o, ((FieldRestriction) restriction).getFieldName());
+                if (!restriction.satisfies(fieldValue)) {
+                    return false;
+                }
+            } else if (restriction instanceof ComplexRestriction) {
+                if (!restriction.satisfies(o)) {
+                    return false;
+                }
+            }
 
-	public static <T> ChoppedElements<T> chopElements(Collection<T> collection, int resultsPerPage) {
-		int totalElements = collection.size();
-		int numberOfPages = (totalElements + resultsPerPage - 1) / resultsPerPage;
-		List<Collection<T>> listOfPages = Collections.newArrayList();
-		for (int i = 0; i < numberOfPages; i++) {
-			Collection<T> elementsOfPage = truncate(collection, i * resultsPerPage,
-					getTo(resultsPerPage, totalElements, i * resultsPerPage));
-			listOfPages.add(elementsOfPage);
-		}
-		return new ChoppedElements<T>(0, resultsPerPage, totalElements, listOfPages);
-	}
+        }
+        return true;
+    }
 
-	private static int getTo(int resultsPerPage, int totalElements, int from) {
-		int to = from + resultsPerPage;
-		to = to > totalElements - 1 ? totalElements : to;
-		return to - 1;
-	}
+    @SuppressWarnings("unchecked")
+    public static <T> Pagination<T> paginate(Collection<T> collection, int page, int resultsPerPage) {
+        int totalElements = collection.size();
+        int from = page * resultsPerPage;
+        int to = getTo(resultsPerPage, totalElements, from);
+        Collection<T> elementsOfPage = createNewInstanceOfCollection(collection.getClass());
+        if (from < collection.size()) {
+            elementsOfPage = truncate(collection, from, to);
+        }
+        return new Pagination<T>(page, resultsPerPage, totalElements, elementsOfPage);
+    }
 
-	public static <E> Map<GroupKey, List<E>> group(Collection<E> collection, String ... properties) {
-		Map<GroupKey, List<E>> map = Maps.newHashMap();
+    public static <T> ChoppedElements<T> chopElements(Collection<T> collection, int resultsPerPage) {
+        int totalElements = collection.size();
+        int numberOfPages = (totalElements + resultsPerPage - 1) / resultsPerPage;
+        List<Collection<T>> listOfPages = Collections.newArrayList();
+        for (int i = 0; i < numberOfPages; i++) {
+            Collection<T> elementsOfPage = truncate(collection, i * resultsPerPage,
+                    getTo(resultsPerPage, totalElements, i * resultsPerPage));
+            listOfPages.add(elementsOfPage);
+        }
+        return new ChoppedElements<T>(0, resultsPerPage, totalElements, listOfPages);
+    }
 
-		// prepare map of duplicates
-		for (E element : collection) {
-			Object[] fieldValues = getFieldsValues(element, properties);
-			GroupKey groupKey = new GroupKey(fieldValues);
-			if (map.containsKey(groupKey)) {
-				map.get(groupKey).add(element);
-			} else {
-				List<E> list = Collections.newArrayList();
-				list.add(element);
-				map.put(groupKey, list);
-			}
-		}
-		return map;
-	}
+    private static int getTo(int resultsPerPage, int totalElements, int from) {
+        int to = from + resultsPerPage;
+        to = to > totalElements - 1 ? totalElements : to;
+        return to - 1;
+    }
 
-	private static Object[] getFieldsValues(Object object, String... property) {
-		Object[] fieldValues = new Object[property.length];
-		for (int i = 0; i < property.length; i++) {
-			fieldValues[i] = Reflections.getFieldValue(object, property[i]);
-		}
-		return fieldValues;
-	}
+    public static <E> Map<GroupKey, List<E>> group(Collection<E> collection, String... properties) {
+        Map<GroupKey, List<E>> map = Maps.newHashMap();
 
-	public static <E> Map<GroupKey, List<E>> duplicates(Collection<E> collection, String ... properties) {
-		Map<GroupKey, List<E>> groups = group(collection, properties);
+        // prepare map of duplicates
+        for (E element : collection) {
+            Object[] fieldValues = getFieldsValues(element, properties);
+            GroupKey groupKey = new GroupKey(fieldValues);
+            if (map.containsKey(groupKey)) {
+                map.get(groupKey).add(element);
+            } else {
+                List<E> list = Collections.newArrayList();
+                list.add(element);
+                map.put(groupKey, list);
+            }
+        }
+        return map;
+    }
 
-		// prepare keys to remove
-		List<GroupKey> keysToRemove = Collections.newArrayList();
-		for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
-			if (entry.getValue().size() == 1) {
-				keysToRemove.add(entry.getKey());
-			}
-		}
-		// remove unique values
-		for (GroupKey key : keysToRemove) {
-			groups.remove(key);
-		}
-		return groups;
-	}
+    private static Object[] getFieldsValues(Object object, String... property) {
+        Object[] fieldValues = new Object[property.length];
+        for (int i = 0; i < property.length; i++) {
+            fieldValues[i] = Reflections.getFieldValue(object, property[i]);
+        }
+        return fieldValues;
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <E, T extends Collection<E>> T uniques(T collection, String ... properties) {
-		Map<GroupKey, List<E>> groups = group(collection, properties);
+    public static <E> Map<GroupKey, List<E>> duplicates(Collection<E> collection, String... properties) {
+        Map<GroupKey, List<E>> groups = group(collection, properties);
 
-		Collection<E> uniques = createNewInstanceOfCollection(collection.getClass());
+        // prepare keys to remove
+        List<GroupKey> keysToRemove = Collections.newArrayList();
+        for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
+            if (entry.getValue().size() == 1) {
+                keysToRemove.add(entry.getKey());
+            }
+        }
+        // remove unique values
+        for (GroupKey key : keysToRemove) {
+            groups.remove(key);
+        }
+        return groups;
+    }
 
-		for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
-			if (entry.getValue().size() == 1) {
-				uniques.addAll(entry.getValue());
-			}
-		}
-		return (T) uniques;
-	}
+    @SuppressWarnings("unchecked")
+    public static <E, T extends Collection<E>> T uniques(T collection, String... properties) {
+        Map<GroupKey, List<E>> groups = group(collection, properties);
 
-	public static <T extends Collection<?>> boolean containsAny(T collectionA, T collectionB) {
-		return !java.util.Collections.disjoint(collectionA, collectionB);
-	}
+        Collection<E> uniques = createNewInstanceOfCollection(collection.getClass());
 
-	public static <E, T extends Collection<E>> boolean containsAny(T collection, E[] elements) {
-		return containsAny(collection, Arrays.asList(elements));
-	}
+        for (Entry<GroupKey, List<E>> entry : groups.entrySet()) {
+            if (entry.getValue().size() == 1) {
+                uniques.addAll(entry.getValue());
+            }
+        }
+        return (T) uniques;
+    }
 
-	// List
+    public static <T extends Collection<?>> boolean containsAny(T collectionA, T collectionB) {
+        return !java.util.Collections.disjoint(collectionA, collectionB);
+    }
 
-	public static <E> ArrayList<E> newArrayList() {
-		return new ArrayList<E>();
-	}
+    public static <E, T extends Collection<E>> boolean containsAny(T collection, E[] elements) {
+        return containsAny(collection, Arrays.asList(elements));
+    }
 
-	@SafeVarargs
-	public static <E> ArrayList<E> newArrayList(E... elements) {
-		ArrayList<E> list = new ArrayList<E>();
-		java.util.Collections.addAll(list, elements);
-		return list;
-	}
+    // List
 
-	public static <E> ArrayList<E> newArrayList(Iterable<? extends E> elements) {
-		ArrayList<E> arrayList = new ArrayList<E>();
-		for (E e : elements) {
-			arrayList.add(e);
-		}
-		return arrayList;
-	}
+    public static <E> ArrayList<E> newArrayList() {
+        return new ArrayList<E>();
+    }
 
-	public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
-		return new ArrayList<E>(initialArraySize);
-	}
+    @SafeVarargs
+    public static <E> ArrayList<E> newArrayList(E... elements) {
+        ArrayList<E> list = new ArrayList<E>();
+        java.util.Collections.addAll(list, elements);
+        return list;
+    }
 
-	public static <E> LinkedList<E> newLinkedList() {
-		return new LinkedList<E>();
-	}
+    public static <E> ArrayList<E> newArrayList(Iterable<? extends E> elements) {
+        ArrayList<E> arrayList = new ArrayList<E>();
+        for (E e : elements) {
+            arrayList.add(e);
+        }
+        return arrayList;
+    }
 
-	@SafeVarargs
-	public static <E> LinkedList<E> newLinkedList(E... elements) {
-		LinkedList<E> list = new LinkedList<E>();
-		java.util.Collections.addAll(list, elements);
-		return list;
-	}
+    public static <E> ArrayList<E> newArrayListWithCapacity(int initialArraySize) {
+        return new ArrayList<E>(initialArraySize);
+    }
 
-	public static <E> LinkedList<E> newLinkedList(Iterable<? extends E> elements) {
-		LinkedList<E> linkedList = new LinkedList<E>();
-		for (E e : elements) {
-			linkedList.add(e);
-		}
-		return linkedList;
-	}
+    public static <E> LinkedList<E> newLinkedList() {
+        return new LinkedList<E>();
+    }
 
-	// Sets
+    @SafeVarargs
+    public static <E> LinkedList<E> newLinkedList(E... elements) {
+        LinkedList<E> list = new LinkedList<E>();
+        java.util.Collections.addAll(list, elements);
+        return list;
+    }
 
-	public static <E> HashSet<E> newHashSet() {
-		return new HashSet<E>();
-	}
+    public static <E> LinkedList<E> newLinkedList(Iterable<? extends E> elements) {
+        LinkedList<E> linkedList = new LinkedList<E>();
+        for (E e : elements) {
+            linkedList.add(e);
+        }
+        return linkedList;
+    }
 
-	@SafeVarargs
-	public static <E> HashSet<E> newHashSet(E... elements) {
-		HashSet<E> set = newHashSet();
-		java.util.Collections.addAll(set, elements);
-		return set;
-	}
+    // Sets
 
-	public static <E> HashSet<E> newHashSetWithInitialCapacity(int initialCapacity) {
-		return new HashSet<E>(initialCapacity);
-	}
+    public static <E> HashSet<E> newHashSet() {
+        return new HashSet<E>();
+    }
 
-	public static <E> LinkedHashSet<E> newLinkedHashSet() {
-		return new LinkedHashSet<E>();
-	}
+    @SafeVarargs
+    public static <E> HashSet<E> newHashSet(E... elements) {
+        HashSet<E> set = newHashSet();
+        java.util.Collections.addAll(set, elements);
+        return set;
+    }
 
-	@SafeVarargs
-	public static <E> LinkedHashSet<E> newLinkedHashSet(E... elements) {
-		LinkedHashSet<E> set = newLinkedHashSet();
-		java.util.Collections.addAll(set, elements);
-		return set;
-	}
+    public static <E> HashSet<E> newHashSetWithInitialCapacity(int initialCapacity) {
+        return new HashSet<E>(initialCapacity);
+    }
 
-	public static <E> LinkedHashSet<E> newLinkedHashSetWithInitialCapacity(int initialCapacity) {
-		return new LinkedHashSet<E>(initialCapacity);
-	}
+    public static <E> LinkedHashSet<E> newLinkedHashSet() {
+        return new LinkedHashSet<E>();
+    }
 
-	@SafeVarargs
-	public static <E extends Comparable<?>> TreeSet<E> newTreeSet(E... elements) {
-		TreeSet<E> set = new TreeSet<E>();
-		java.util.Collections.addAll(set, elements);
-		return set;
-	}
+    @SafeVarargs
+    public static <E> LinkedHashSet<E> newLinkedHashSet(E... elements) {
+        LinkedHashSet<E> set = newLinkedHashSet();
+        java.util.Collections.addAll(set, elements);
+        return set;
+    }
 
-	public static <E extends Comparable<?>> TreeSet<E> newTreeSet(Iterable<? extends E> elements) {
-		TreeSet<E> set = newTreeSet();
-		for (E e : elements) {
-			set.add(e);
-		}
-		return set;
-	}
+    public static <E> LinkedHashSet<E> newLinkedHashSetWithInitialCapacity(int initialCapacity) {
+        return new LinkedHashSet<E>(initialCapacity);
+    }
 
-	public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
-		if (comparator == null) {
-			throw new NullPointerException("Comparator cannot be null");
-		}
-		return new TreeSet<E>(comparator);
-	}
+    @SafeVarargs
+    public static <E extends Comparable<?>> TreeSet<E> newTreeSet(E... elements) {
+        TreeSet<E> set = new TreeSet<E>();
+        java.util.Collections.addAll(set, elements);
+        return set;
+    }
+
+    public static <E extends Comparable<?>> TreeSet<E> newTreeSet(Iterable<? extends E> elements) {
+        TreeSet<E> set = newTreeSet();
+        for (E e : elements) {
+            set.add(e);
+        }
+        return set;
+    }
+
+    public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
+        if (comparator == null) {
+            throw new NullPointerException("Comparator cannot be null");
+        }
+        return new TreeSet<E>(comparator);
+    }
 }

@@ -1,8 +1,8 @@
 package pl.jsolve.sweetener.criteria.restriction;
 
-import pl.jsolve.sweetener.criteria.Restriction;
+import pl.jsolve.sweetener.criteria.FieldRestriction;
 
-public class NotNull implements Restriction {
+public class NotNull implements FieldRestriction {
 
     private final String fieldName;
 

@@ -1,9 +1,9 @@
 package pl.jsolve.sweetener.criteria.restriction;
 
-import pl.jsolve.sweetener.criteria.Restriction;
+import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
 
-public class Equals implements Restriction {
+public class Equals implements FieldRestriction {
 
     private final String fieldName;
     private final Object value;

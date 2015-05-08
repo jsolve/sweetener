@@ -2,10 +2,10 @@ package pl.jsolve.sweetener.criteria.restriction;
 
 import java.util.Collection;
 
-import pl.jsolve.sweetener.criteria.Restriction;
+import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
 
-public class NotContains implements Restriction {
+public class NotContains implements FieldRestriction {
 
     private final String fieldName;
     private final boolean exactlyAllObjects;
