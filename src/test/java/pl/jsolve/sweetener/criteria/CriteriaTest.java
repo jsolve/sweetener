@@ -316,6 +316,96 @@ public class CriteriaTest {
         assertThat(filteredList).onProperty("lastName").contains("Sky", "Duke", "Hunt");
     }
 
+    @Test
+    public void shouldFilterGivenCollectionByBetweenRestriction() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.between("age", 27, 33)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("John", "John");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf", "Sky");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByBetweenRestriction2() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.between("age", 27, 27)));
+
+        // then
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("name").contains("John");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByBetweenRestriction3() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.between("age", 27, 41, false, false)));
+
+        // then
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("name").contains("John");
+        assertThat(filteredList).onProperty("lastName").contains("Sky");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByBetweenRestriction4() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.between("age", 27, 41, true, false)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("John", "John");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf", "Sky");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByBetweenRestriction5() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.between("age", 27, 41, false, true)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("John", "Peter");
+        assertThat(filteredList).onProperty("lastName").contains("Hunt", "Sky");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByBetweenRestriction6() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.between("age", 27, 41, true, true)));
+
+        // then
+        assertThat(filteredList).hasSize(3);
+        assertThat(filteredList).onProperty("name").contains("John", "John", "Peter");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf", "Hunt", "Sky");
+    }
+
     private List<Person> prepareListOfPeople() {
         List<Person> people = Collections.newArrayList();
 
