@@ -2,6 +2,7 @@ package pl.jsolve.sweetener.criteria.restriction;
 
 import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
+import pl.jsolve.sweetener.exception.InvalidArgumentException;
 
 public class NotBetween implements FieldRestriction {
 
@@ -12,6 +13,7 @@ public class NotBetween implements FieldRestriction {
     private final boolean rightInclusive;
 
     public NotBetween(String fieldName, Number minValue, Number maxValue) {
+        checkRange(minValue, maxValue);
         this.fieldName = fieldName;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -20,11 +22,24 @@ public class NotBetween implements FieldRestriction {
     }
 
     public NotBetween(String fieldName, Number minValue, Number maxValue, boolean leftInclusive, boolean rightInclusive) {
+        checkRange(minValue, maxValue);
         this.fieldName = fieldName;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.leftInclusive = leftInclusive;
         this.rightInclusive = rightInclusive;
+    }
+
+    private void checkRange(Number minValue, Number maxValue) {
+        if (minValue == null) {
+            throw new InvalidArgumentException("The lower range cannot be null");
+        }
+        if (maxValue == null) {
+            throw new InvalidArgumentException("The upper range cannot be null");
+        }
+        if (minValue.doubleValue() > maxValue.doubleValue()) {
+            throw new InvalidArgumentException("The lower range cannot be greater than the upper range");
+        }
     }
 
     @Override
