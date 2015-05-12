@@ -3,7 +3,7 @@ package pl.jsolve.sweetener.criteria.restriction;
 import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
 
-public class Between implements FieldRestriction {
+public class NotBetween implements FieldRestriction {
 
     private final String fieldName;
     private final Number minValue;
@@ -11,7 +11,7 @@ public class Between implements FieldRestriction {
     private final boolean leftInclusive;
     private final boolean rightInclusive;
 
-    public Between(String fieldName, Number minValue, Number maxValue) {
+    public NotBetween(String fieldName, Number minValue, Number maxValue) {
         this.fieldName = fieldName;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -19,7 +19,7 @@ public class Between implements FieldRestriction {
         this.rightInclusive = true;
     }
 
-    public Between(String fieldName, Number minValue, Number maxValue, boolean leftInclusive, boolean rightInclusive) {
+    public NotBetween(String fieldName, Number minValue, Number maxValue, boolean leftInclusive, boolean rightInclusive) {
         this.fieldName = fieldName;
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -62,20 +62,20 @@ public class Between implements FieldRestriction {
             }
             if (leftInclusive) {
                 if (rightInclusive) {
-                    return ((Number) fieldValue).doubleValue() >= minValue.doubleValue()
-                            && ((Number) fieldValue).doubleValue() <= maxValue.doubleValue();
+                    return !(((Number) fieldValue).doubleValue() >= minValue.doubleValue() && ((Number) fieldValue)
+                            .doubleValue() <= maxValue.doubleValue());
                 } else {
-                    return ((Number) fieldValue).doubleValue() >= minValue.doubleValue()
-                            && ((Number) fieldValue).doubleValue() < maxValue.doubleValue();
+                    return !(((Number) fieldValue).doubleValue() >= minValue.doubleValue() && ((Number) fieldValue)
+                            .doubleValue() < maxValue.doubleValue());
                 }
 
             } else {
                 if (rightInclusive) {
-                    return ((Number) fieldValue).doubleValue() > minValue.doubleValue()
-                            && ((Number) fieldValue).doubleValue() <= maxValue.doubleValue();
+                    return !(((Number) fieldValue).doubleValue() > minValue.doubleValue() && ((Number) fieldValue)
+                            .doubleValue() <= maxValue.doubleValue());
                 } else {
-                    return ((Number) fieldValue).doubleValue() > minValue.doubleValue()
-                            && ((Number) fieldValue).doubleValue() < maxValue.doubleValue();
+                    return !(((Number) fieldValue).doubleValue() > minValue.doubleValue() && ((Number) fieldValue)
+                            .doubleValue() < maxValue.doubleValue());
                 }
             }
         }

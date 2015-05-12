@@ -406,6 +406,110 @@ public class CriteriaTest {
         assertThat(filteredList).onProperty("lastName").contains("Wolf", "Hunt", "Sky");
     }
 
+    @Test
+    public void shouldFilterGivenCollectionByNotBetweenRestriction() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.notBetween("age", 27, 33)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("Marry", "Peter");
+        assertThat(filteredList).onProperty("lastName").contains("Duke", "Hunt");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByNotBetweenRestriction2() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.notBetween("age", 27, 27)));
+
+        // then
+        assertThat(filteredList).hasSize(3);
+        assertThat(filteredList).onProperty("name").contains("John", "Marry", "Peter");
+
+        assertThat(filteredList).onProperty("lastName").contains("Sky", "Duke", "Hunt");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByNotBetweenRestriction3() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.notBetween("age", Integer.MIN_VALUE, Integer.MAX_VALUE)));
+
+        // then
+        assertThat(filteredList).hasSize(0);
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByNotBetweenRestriction4() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.notBetween("age", 27, 41, false, false)));
+
+        // then
+        assertThat(filteredList).hasSize(3);
+        assertThat(filteredList).onProperty("name").contains("John", "Marry", "Peter");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf", "Duke", "Hunt");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByNotBetweenRestriction5() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.notBetween("age", 27, 41, true, false)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("Marry", "Peter");
+        assertThat(filteredList).onProperty("lastName").contains("Duke", "Hunt");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByNotBetweenRestriction6() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.notBetween("age", 27, 41, false, true)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("John", "Marry");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf", "Duke");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByNotBetweenRestriction7() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.notBetween("age", 27, 41, true, true)));
+
+        // then
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("name").contains("Marry");
+        assertThat(filteredList).onProperty("lastName").contains("Duke");
+    }
+
     private List<Person> prepareListOfPeople() {
         List<Person> people = Collections.newArrayList();
 

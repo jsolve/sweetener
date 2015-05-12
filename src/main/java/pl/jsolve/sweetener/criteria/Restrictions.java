@@ -9,6 +9,7 @@ import pl.jsolve.sweetener.criteria.restriction.GreaterOrEquals;
 import pl.jsolve.sweetener.criteria.restriction.Less;
 import pl.jsolve.sweetener.criteria.restriction.LessOrEquals;
 import pl.jsolve.sweetener.criteria.restriction.Like;
+import pl.jsolve.sweetener.criteria.restriction.NotBetween;
 import pl.jsolve.sweetener.criteria.restriction.NotContains;
 import pl.jsolve.sweetener.criteria.restriction.NotEquals;
 import pl.jsolve.sweetener.criteria.restriction.NotLike;
@@ -65,6 +66,15 @@ public class Restrictions {
     public static Restriction between(String field, Number minValue, Number maxValue, boolean leftInclusive,
             boolean rightInclusive) {
         return new Between(field, minValue, maxValue, leftInclusive, rightInclusive);
+    }
+
+    public static Restriction notBetween(String field, Number minValue, Number maxValue) {
+        return new NotBetween(field, minValue, maxValue);
+    }
+
+    public static Restriction notBetween(String field, Number minValue, Number maxValue, boolean leftInclusive,
+            boolean rightInclusive) {
+        return new NotBetween(field, minValue, maxValue, leftInclusive, rightInclusive);
     }
 
     public static Restriction like(String field, String value) {
