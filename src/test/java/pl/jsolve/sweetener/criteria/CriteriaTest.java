@@ -510,6 +510,64 @@ public class CriteriaTest {
         assertThat(filteredList).onProperty("lastName").contains("Duke");
     }
 
+    @Test
+    public void shouldFilterGivenCollectionByInRestriction() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.in("name", "John", "Tom", "Lucas")));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("John", "John");
+        assertThat(filteredList).onProperty("lastName").contains("Sky", "Wolf");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByInRestriction2() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.in("age", 25, 26, 27, 28, 29, 30, 31)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("John", "John");
+        assertThat(filteredList).onProperty("lastName").contains("Sky", "Wolf");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByInRestriction3() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections
+                .filter(people, Criteria.newCriteria().add(Restrictions.in("age")));
+
+        // then
+        assertThat(filteredList).isEmpty();
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByInRestriction4() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.in("company", new Object[] {null})));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("name").contains("John", "Peter");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf", "Hunt");
+    }
+
     private List<Person> prepareListOfPeople() {
         List<Person> people = Collections.newArrayList();
 

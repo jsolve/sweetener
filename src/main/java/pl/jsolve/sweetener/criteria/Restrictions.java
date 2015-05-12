@@ -6,6 +6,7 @@ import pl.jsolve.sweetener.criteria.restriction.Contains;
 import pl.jsolve.sweetener.criteria.restriction.Equals;
 import pl.jsolve.sweetener.criteria.restriction.Greater;
 import pl.jsolve.sweetener.criteria.restriction.GreaterOrEquals;
+import pl.jsolve.sweetener.criteria.restriction.In;
 import pl.jsolve.sweetener.criteria.restriction.Less;
 import pl.jsolve.sweetener.criteria.restriction.LessOrEquals;
 import pl.jsolve.sweetener.criteria.restriction.Like;
@@ -99,6 +100,10 @@ public class Restrictions {
 
     public static Restriction notContainsAny(String field, Object... values) {
         return new NotContains(field, false, values);
+    }
+
+    public static Restriction in(String field, Object... values) {
+        return new In(field, values);
     }
 
     public static Restriction or(Restriction... restrictions) {
