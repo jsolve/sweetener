@@ -13,6 +13,7 @@ import pl.jsolve.sweetener.criteria.restriction.Like;
 import pl.jsolve.sweetener.criteria.restriction.NotBetween;
 import pl.jsolve.sweetener.criteria.restriction.NotContains;
 import pl.jsolve.sweetener.criteria.restriction.NotEquals;
+import pl.jsolve.sweetener.criteria.restriction.NotIn;
 import pl.jsolve.sweetener.criteria.restriction.NotLike;
 import pl.jsolve.sweetener.criteria.restriction.NotNull;
 import pl.jsolve.sweetener.criteria.restriction.Null;
@@ -104,6 +105,10 @@ public class Restrictions {
 
     public static Restriction in(String field, Object... values) {
         return new In(field, values);
+    }
+
+    public static Restriction notIn(String field, Object... values) {
+        return new NotIn(field, values);
     }
 
     public static Restriction or(Restriction... restrictions) {
