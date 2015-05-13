@@ -1,8 +1,14 @@
 package pl.jsolve.sweetener.criteria;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import pl.jsolve.sweetener.criteria.restriction.After;
 import pl.jsolve.sweetener.criteria.restriction.AndRestriction;
+import pl.jsolve.sweetener.criteria.restriction.Before;
 import pl.jsolve.sweetener.criteria.restriction.Between;
 import pl.jsolve.sweetener.criteria.restriction.Contains;
+import pl.jsolve.sweetener.criteria.restriction.DateExtractor;
 import pl.jsolve.sweetener.criteria.restriction.Equals;
 import pl.jsolve.sweetener.criteria.restriction.Greater;
 import pl.jsolve.sweetener.criteria.restriction.GreaterOrEquals;
@@ -20,6 +26,16 @@ import pl.jsolve.sweetener.criteria.restriction.Null;
 import pl.jsolve.sweetener.criteria.restriction.OrRestriction;
 
 public class Restrictions {
+
+    private static Map<Class<?>, DateExtractor> dateExtractors = new HashMap<Class<?>, DateExtractor>();
+
+    public static <T> void registerDateExtractor(Class<T> clazz, DateExtractor<T> extractor) {
+        dateExtractors.put(clazz, extractor);
+    }
+
+    public static void clearDateExtractors() {
+        dateExtractors.clear();
+    }
 
     public static Restriction equals(String field, Object value) {
         return new Equals(field, value);
@@ -109,6 +125,14 @@ public class Restrictions {
 
     public static Restriction notIn(String field, Object... values) {
         return new NotIn(field, values);
+    }
+
+    public static Restriction before(String field, Object value) {
+        return new Before(field, value, dateExtractors);
+    }
+
+    public static Restriction after(String field, Object value) {
+        return new After(field, value, dateExtractors);
     }
 
     public static Restriction or(Restriction... restrictions) {
