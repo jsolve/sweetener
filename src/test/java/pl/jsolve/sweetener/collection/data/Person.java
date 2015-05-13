@@ -11,16 +11,19 @@ public class Person {
     private int age;
     private Company company;
     private List<String> categoriesOfDrivingLicense = Collections.newArrayList();
+    private String[] children;
 
     public Person() {
     }
 
-    public Person(String name, String lastName, int age, Company company, List<String> categoriesOfDrivingLicense) {
+    public Person(String name, String lastName, int age, Company company, List<String> categoriesOfDrivingLicense,
+            String[] children) {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
         this.company = company;
         this.categoriesOfDrivingLicense = categoriesOfDrivingLicense;
+        this.children = children;
     }
 
     public String getName() {
@@ -61,6 +64,14 @@ public class Person {
 
     public void setCategoryOfDrivingLicense(List<String> categoryOfDrivingLicense) {
         this.categoriesOfDrivingLicense = categoryOfDrivingLicense;
+    }
+
+    public String[] getChildren() {
+        return children;
+    }
+
+    public void setChildren(String[] children) {
+        this.children = children;
     }
 
     @Override

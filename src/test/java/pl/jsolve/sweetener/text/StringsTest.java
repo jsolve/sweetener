@@ -59,9 +59,9 @@ public class StringsTest {
     public void shouldJoinCollectionOfPeople() {
         // given
         List<Person> people = new ArrayList<Person>();
-        people.add(new Person("John", "Deep", 19, null, null));
+        people.add(new Person("John", "Deep", 19, null, null, null));
         people.add(null);
-        people.add(new Person("Marry", "Duke", 21, null, null));
+        people.add(new Person("Marry", "Duke", 21, null, null, null));
 
         // when
         String result = Strings.join(", ", people);

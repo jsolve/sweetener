@@ -205,7 +205,7 @@ public class CriteriaTest {
     }
 
     @Test
-    public void shouldFilterGivenCollectionByContains() {
+    public void shouldFilterGivenCollectionByContainsForList() {
         // given
         List<Person> people = prepareListOfPeople();
 
@@ -217,6 +217,21 @@ public class CriteriaTest {
         assertThat(filteredList).hasSize(3);
         assertThat(filteredList).onProperty("name").contains("John", "Marry", "Peter");
         assertThat(filteredList).onProperty("lastName").contains("Sky", "Duke", "Hunt");
+    }
+
+    @Test
+    public void shouldFilterGivenCollectionByContainsForArray() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.containsAny("children", "Aston")));
+
+        // then
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("name").contains("Peter");
+        assertThat(filteredList).onProperty("lastName").contains("Hunt");
     }
 
     @Test
@@ -629,12 +644,12 @@ public class CriteriaTest {
     private List<Person> prepareListOfPeople() {
         List<Person> people = Collections.newArrayList();
 
-        people.add(new Person("John", "Wolf", 27, null, null));
+        people.add(new Person("John", "Wolf", 27, null, null, null));
         people.add(new Person("John", "Sky", 31, new Company("EA", new Address("street1", "city1")),
-                prepareListOfCategories("B")));
+                prepareListOfCategories("B"), new String[] {"Kate"}));
         people.add(new Person("Marry", "Duke", 45, new Company("Oracle", new Address("street2", null)),
-                prepareListOfCategories("A", "B")));
-        people.add(new Person("Peter", "Hunt", 41, null, prepareListOfCategories("B", "D")));
+                prepareListOfCategories("A", "B"), new String[] {"Ainsley", "Ash"}));
+        people.add(new Person("Peter", "Hunt", 41, null, prepareListOfCategories("B", "D"), new String[] {"Aston"}));
         return people;
     }
 
