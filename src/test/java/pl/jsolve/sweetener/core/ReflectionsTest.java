@@ -90,7 +90,7 @@ public class ReflectionsTest {
         List<Field> fields = Reflections.getFields(person);
 
         // then
-        assertThat(fields).hasSize(6);
+        assertThat(fields).hasSize(7);
     }
 
     @Test
@@ -178,7 +178,7 @@ public class ReflectionsTest {
         List<Method> methods = Reflections.getMethods(person);
 
         // then
-        assertThat(methods).hasSize(13);
+        assertThat(methods).hasSize(15);
     }
 
     @Test
