@@ -8,12 +8,12 @@ import pl.jsolve.sweetener.criteria.ComplexRestriction;
 import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.criteria.Restriction;
 
-public class OrRestriction implements ComplexRestriction {
+public class Or implements ComplexRestriction {
     // Dodac IN, BETWEEN do restrykcji
 
     private List<Restriction> restrictions;
 
-    public OrRestriction(Restriction... restrictions) {
+    public Or(Restriction... restrictions) {
         this.restrictions = Collections.newArrayList(restrictions);
     }
 

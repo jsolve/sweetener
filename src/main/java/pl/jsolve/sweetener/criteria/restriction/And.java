@@ -8,11 +8,11 @@ import pl.jsolve.sweetener.criteria.ComplexRestriction;
 import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.criteria.Restriction;
 
-public class AndRestriction implements ComplexRestriction {
+public class And implements ComplexRestriction {
 
     private List<Restriction> restrictions;
 
-    public AndRestriction(Restriction... restrictions) {
+    public And(Restriction... restrictions) {
         this.restrictions = Collections.newArrayList(restrictions);
     }
 

@@ -11,7 +11,7 @@ class CollectionExecutor {
     public boolean perform(Object elements, Executor executor) {
 
         if (!(elements instanceof Collection) && !(elements.getClass().isArray())) {
-            throw new AccessToFieldException("Type mismatch. Expected Collection or Array but was "
+            throw new AccessToFieldException("Type mismatch. Expected Collection, Map or Array but was "
                     + elements.getClass().getCanonicalName());
         }
         // check whether elements are collection

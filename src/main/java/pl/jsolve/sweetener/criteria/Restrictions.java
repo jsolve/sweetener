@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.jsolve.sweetener.criteria.restriction.After;
-import pl.jsolve.sweetener.criteria.restriction.AndRestriction;
+import pl.jsolve.sweetener.criteria.restriction.And;
 import pl.jsolve.sweetener.criteria.restriction.Before;
 import pl.jsolve.sweetener.criteria.restriction.Between;
 import pl.jsolve.sweetener.criteria.restriction.Contains;
@@ -23,7 +23,7 @@ import pl.jsolve.sweetener.criteria.restriction.NotIn;
 import pl.jsolve.sweetener.criteria.restriction.NotLike;
 import pl.jsolve.sweetener.criteria.restriction.NotNull;
 import pl.jsolve.sweetener.criteria.restriction.Null;
-import pl.jsolve.sweetener.criteria.restriction.OrRestriction;
+import pl.jsolve.sweetener.criteria.restriction.Or;
 
 public class Restrictions {
 
@@ -136,11 +136,11 @@ public class Restrictions {
     }
 
     public static Restriction or(Restriction... restrictions) {
-        return new OrRestriction(restrictions);
+        return new Or(restrictions);
     }
 
     public static Restriction and(Restriction... restrictions) {
-        return new AndRestriction(restrictions);
+        return new And(restrictions);
     }
 
 }
