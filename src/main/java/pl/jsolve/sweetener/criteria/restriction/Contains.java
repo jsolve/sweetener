@@ -1,9 +1,11 @@
 package pl.jsolve.sweetener.criteria.restriction;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import pl.jsolve.sweetener.criteria.FieldRestriction;
-import pl.jsolve.sweetener.exception.AccessToFieldException;
+import pl.jsolve.sweetener.criteria.restriction.CollectionExecutor.Executor;
 
 public class Contains implements FieldRestriction {
 
@@ -40,24 +42,38 @@ public class Contains implements FieldRestriction {
         if (fieldValue == null) {
             return false;
         }
-        if (!(fieldValue instanceof Collection) && !(fieldValue.getClass().isArray())) {
-            throw new AccessToFieldException("Type mismatch. Expected Collection or Array but was "
-                    + value.getClass().getCanonicalName());
-        }
-        if (fieldValue instanceof Collection) {
-            Collection<?> fieldValueAsCollection = ((Collection<?>) fieldValue);
-            if (exactlyAllObjects) {
-                return forExactlyAllObjects(fieldValueAsCollection);
+
+        CollectionExecutor executor = new CollectionExecutor();
+        return executor.perform(fieldValue, new Executor() {
+
+            @Override
+            public boolean execute(Object[] elements) {
+                if (exactlyAllObjects) {
+                    return forExactlyAllObjects(elements);
+                } else {
+                    return forAnyObject(elements);
+                }
             }
-            return forAnyObject(fieldValueAsCollection);
-        } else if (fieldValue.getClass().isArray()) {
-            Object[] fieldValueAsArray = (Object[]) fieldValue;
-            if (exactlyAllObjects) {
-                return forExactlyAllObjects(fieldValueAsArray);
+
+            @Override
+            public boolean execute(Collection elements) {
+                if (exactlyAllObjects) {
+                    return forExactlyAllObjects(elements);
+                } else {
+                    return forAnyObject(elements);
+                }
             }
-            return forAnyObject(fieldValueAsArray);
-        }
-        return false;
+
+            @Override
+            public boolean execute(Map elements) {
+                if (exactlyAllObjects) {
+                    return forExactlyAllObjects(elements);
+                } else {
+                    return forAnyObject(elements);
+                }
+            }
+        });
+
     }
 
     private boolean forAnyObject(Object[] fieldValueAsArray) {
@@ -98,5 +114,15 @@ public class Contains implements FieldRestriction {
             }
         }
         return false;
+    }
+
+    private boolean forExactlyAllObjects(Map<?, ?> fieldValueAsMap) {
+        Set<?> keySet = fieldValueAsMap.keySet();
+        return forExactlyAllObjects(keySet);
+    }
+
+    private boolean forAnyObject(Map<?, ?> fieldValueAsMap) {
+        Set<?> keySet = fieldValueAsMap.keySet();
+        return forAnyObject(keySet);
     }
 }

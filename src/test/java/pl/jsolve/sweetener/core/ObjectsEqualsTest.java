@@ -16,9 +16,9 @@ public class ObjectsEqualsTest {
 
     @Before
     public void setUp() {
-        firstPerson = new Person("John", "Sky", 31, new Company("Jsolve", new Address("street1", "city1")), null, null);
+        firstPerson = new Person("John", "Sky", 31, new Company("Jsolve", new Address("street1", "city1")), null, null, null);
         secondPerson = new Person("Marry", "Duke", 45, new Company("Oracle", new Address("street1", "Jsolve")), null,
-                null);
+                null, null);
 
     }
 

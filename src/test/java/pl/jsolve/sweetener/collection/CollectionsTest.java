@@ -325,9 +325,9 @@ public class CollectionsTest {
     public void shouldReturnGroups() {
         // given
         List<Person> people = Collections.newArrayList();
-        people.add(new Person("John", "Deep", 23, null, null, null));
-        people.add(new Person("Marry", "Deep", 32, null, null, null));
-        people.add(new Person("John", "Knee", 37, null, null, null));
+        people.add(new Person("John", "Deep", 23, null, null, null, null));
+        people.add(new Person("Marry", "Deep", 32, null, null, null, null));
+        people.add(new Person("John", "Knee", 37, null, null, null, null));
 
         // when
         Map<GroupKey, List<Person>> groups = Collections.group(people, "lastName");
@@ -370,9 +370,9 @@ public class CollectionsTest {
     public void shouldReturnDuplicates() {
         // given
         List<Person> people = Collections.newArrayList();
-        people.add(new Person("John", "Deep", 23, null, null, null));
-        people.add(new Person("Marry", "Deep", 32, null, null, null));
-        people.add(new Person("John", "Knee", 37, null, null, null));
+        people.add(new Person("John", "Deep", 23, null, null, null, null));
+        people.add(new Person("Marry", "Deep", 32, null, null, null, null));
+        people.add(new Person("John", "Knee", 37, null, null, null, null));
 
         // when
         Map<GroupKey, List<Person>> duplicates = Collections.duplicates(people, "lastName");
@@ -386,9 +386,9 @@ public class CollectionsTest {
     public void shouldReturnUniques() {
         // given
         List<Person> people = Collections.newArrayList();
-        people.add(new Person("John", "Deep", 23, null, null, null));
-        people.add(new Person("Marry", "Deep", 32, null, null, null));
-        people.add(new Person("John", "Knee", 37, null, null, null));
+        people.add(new Person("John", "Deep", 23, null, null, null, null));
+        people.add(new Person("Marry", "Deep", 32, null, null, null, null));
+        people.add(new Person("John", "Knee", 37, null, null, null, null));
 
         // when
         List<Person> uniques = Collections.uniques(people, "lastName");

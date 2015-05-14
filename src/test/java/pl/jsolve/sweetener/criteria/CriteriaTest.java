@@ -235,6 +235,21 @@ public class CriteriaTest {
     }
 
     @Test
+    public void shouldFilterGivenCollectionByContainsForPrimitiveArray() {
+        // given
+        List<Person> people = prepareListOfPeople();
+
+        // when
+        Collection<Person> filteredList = Collections.filter(people,
+                Criteria.newCriteria().add(Restrictions.containsAny("luckyNumbers", 15)));
+
+        // then
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("name").contains("John");
+        assertThat(filteredList).onProperty("lastName").contains("Sky");
+    }
+
+    @Test
     public void shouldFilterGivenCollectionByContainsForAnyObject() {
         // given
         List<Person> people = prepareListOfPeople();
@@ -271,12 +286,12 @@ public class CriteriaTest {
 
         // when
         Collection<Person> filteredList = Collections.filter(people,
-                Criteria.newCriteria().add(Restrictions.notContains("categoriesOfDrivingLicense", "A", "B")));
+                Criteria.newCriteria().add(Restrictions.notContainsAny("categoriesOfDrivingLicense", "A", "B")));
 
         // then
-        assertThat(filteredList).hasSize(3);
-        assertThat(filteredList).onProperty("name").contains("John", "John");
-        assertThat(filteredList).onProperty("lastName").contains("Wolf", "Sky");
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("name").contains("John");
+        assertThat(filteredList).onProperty("lastName").contains("Wolf");
     }
 
     @Test
@@ -644,12 +659,13 @@ public class CriteriaTest {
     private List<Person> prepareListOfPeople() {
         List<Person> people = Collections.newArrayList();
 
-        people.add(new Person("John", "Wolf", 27, null, null, null));
+        people.add(new Person("John", "Wolf", 27, null, null, null, new int[] {7, 11, 16}));
         people.add(new Person("John", "Sky", 31, new Company("EA", new Address("street1", "city1")),
-                prepareListOfCategories("B"), new String[] {"Kate"}));
+                prepareListOfCategories("B"), new String[] {"Kate"}, new int[] {7, 15}));
         people.add(new Person("Marry", "Duke", 45, new Company("Oracle", new Address("street2", null)),
-                prepareListOfCategories("A", "B"), new String[] {"Ainsley", "Ash"}));
-        people.add(new Person("Peter", "Hunt", 41, null, prepareListOfCategories("B", "D"), new String[] {"Aston"}));
+                prepareListOfCategories("A", "B"), new String[] {"Ainsley", "Ash"}, new int[] {13}));
+        people.add(new Person("Peter", "Hunt", 41, null, prepareListOfCategories("B", "D"), new String[] {"Aston"},
+                null));
         return people;
     }
 

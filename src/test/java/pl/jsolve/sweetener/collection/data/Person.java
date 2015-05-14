@@ -12,18 +12,20 @@ public class Person {
     private Company company;
     private List<String> categoriesOfDrivingLicense = Collections.newArrayList();
     private String[] children;
+    private int[] luckyNumbers;
 
     public Person() {
     }
 
     public Person(String name, String lastName, int age, Company company, List<String> categoriesOfDrivingLicense,
-            String[] children) {
+            String[] children, int[] luckyNumbers) {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
         this.company = company;
         this.categoriesOfDrivingLicense = categoriesOfDrivingLicense;
         this.children = children;
+        this.luckyNumbers = luckyNumbers;
     }
 
     public String getName() {
@@ -68,6 +70,14 @@ public class Person {
 
     public String[] getChildren() {
         return children;
+    }
+
+    public int[] getLuckyNumbers() {
+        return luckyNumbers;
+    }
+
+    public void setLuckyNumbers(int[] luckyNumbers) {
+        this.luckyNumbers = luckyNumbers;
     }
 
     public void setChildren(String[] children) {

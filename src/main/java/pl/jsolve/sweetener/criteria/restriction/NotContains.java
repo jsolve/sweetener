@@ -1,8 +1,11 @@
 package pl.jsolve.sweetener.criteria.restriction;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 import pl.jsolve.sweetener.criteria.FieldRestriction;
+import pl.jsolve.sweetener.criteria.restriction.CollectionExecutor.Executor;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
 
 public class NotContains implements FieldRestriction {
@@ -22,10 +25,6 @@ public class NotContains implements FieldRestriction {
         return fieldName;
     }
 
-    public boolean isExactlyAllObjects() {
-        return exactlyAllObjects;
-    }
-
     public Object[] getValue() {
         return value;
     }
@@ -41,17 +40,9 @@ public class NotContains implements FieldRestriction {
             // contain any objects
             return true;
         }
-        if (!(fieldValue instanceof Collection)) {
-            throw new AccessToFieldException("Type mismatch. Expected Collection but was "
-                    + value.getClass().getCanonicalName());
-        }
-        Collection<?> fieldValueAsCollection = ((Collection<?>) fieldValue);
-        int numberOfObject = 0;
-        for (Object o : value) {
-            if (fieldValueAsCollection.contains(o)) {
-                numberOfObject++;
-            }
-        }
-        return numberOfObject != value.length;
+
+        Contains contains = new Contains(fieldName, exactlyAllObjects, value);
+        return !contains.satisfies(fieldValue);
     }
+
 }
