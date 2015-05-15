@@ -12,10 +12,10 @@ import org.joda.time.LocalTime;
 import org.junit.Test;
 
 import pl.jsolve.sweetener.collection.Collections;
-import pl.jsolve.sweetener.collection.data.ObjectWithDate;
-import pl.jsolve.sweetener.collection.data.ObjectWithLocalDate;
-import pl.jsolve.sweetener.collection.data.ObjectWithLocalDateTime;
-import pl.jsolve.sweetener.collection.data.ObjectWithLocalTime;
+import pl.jsolve.sweetener.criteria.data.ObjectWithDate;
+import pl.jsolve.sweetener.criteria.data.ObjectWithLocalDate;
+import pl.jsolve.sweetener.criteria.data.ObjectWithLocalDateTime;
+import pl.jsolve.sweetener.criteria.data.ObjectWithLocalTime;
 import pl.jsolve.sweetener.criteria.restriction.DateExtractor;
 
 public class CriteriaDateTest {

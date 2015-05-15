@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.jsolve.sweetener.criteria.restriction.After;
+import pl.jsolve.sweetener.criteria.restriction.AggregationRange;
 import pl.jsolve.sweetener.criteria.restriction.And;
+import pl.jsolve.sweetener.criteria.restriction.Avg;
 import pl.jsolve.sweetener.criteria.restriction.Before;
 import pl.jsolve.sweetener.criteria.restriction.Between;
 import pl.jsolve.sweetener.criteria.restriction.Contains;
@@ -133,6 +135,14 @@ public class Restrictions {
 
     public static Restriction after(String field, Object value) {
         return new After(field, value, dateExtractors);
+    }
+
+    public static Restriction avg(String field, Double avg, AggregationRange aggregationRange) {
+        return new Avg(field, avg, null, aggregationRange);
+    }
+
+    public static Restriction avg(String field, Double leftRange, Double rightRange, AggregationRange aggregationRange) {
+        return new Avg(field, leftRange, rightRange, aggregationRange);
     }
 
     public static Restriction or(Restriction... restrictions) {

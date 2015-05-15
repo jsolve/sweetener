@@ -1,13 +1,13 @@
-package pl.jsolve.sweetener.collection.data;
+package pl.jsolve.sweetener.criteria.data;
 
-import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 
-public class ObjectWithLocalDateTime {
+public class ObjectWithLocalTime {
 
     private int index;
-    private LocalDateTime now;
+    private LocalTime now;
 
-    public ObjectWithLocalDateTime(int index, LocalDateTime date) {
+    public ObjectWithLocalTime(int index, LocalTime date) {
         this.index = index;
         now = date;
     }
@@ -16,7 +16,7 @@ public class ObjectWithLocalDateTime {
         return index;
     }
 
-    public LocalDateTime getNow() {
+    public LocalTime getNow() {
         return now;
     }
 

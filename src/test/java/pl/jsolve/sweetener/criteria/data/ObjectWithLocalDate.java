@@ -1,4 +1,4 @@
-package pl.jsolve.sweetener.collection.data;
+package pl.jsolve.sweetener.criteria.data;
 
 import org.joda.time.LocalDate;
 
