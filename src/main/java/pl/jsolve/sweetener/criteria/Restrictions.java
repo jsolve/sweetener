@@ -10,6 +10,7 @@ import pl.jsolve.sweetener.criteria.restriction.Avg;
 import pl.jsolve.sweetener.criteria.restriction.Before;
 import pl.jsolve.sweetener.criteria.restriction.Between;
 import pl.jsolve.sweetener.criteria.restriction.Contains;
+import pl.jsolve.sweetener.criteria.restriction.Count;
 import pl.jsolve.sweetener.criteria.restriction.DateExtractor;
 import pl.jsolve.sweetener.criteria.restriction.Equals;
 import pl.jsolve.sweetener.criteria.restriction.Greater;
@@ -143,6 +144,15 @@ public class Restrictions {
 
     public static Restriction avg(String field, Double leftRange, Double rightRange, AggregationRange aggregationRange) {
         return new Avg(field, leftRange, rightRange, aggregationRange);
+    }
+
+    public static Restriction count(String field, Integer count, AggregationRange aggregationRange) {
+        return new Count(field, count, null, aggregationRange);
+    }
+
+    public static Restriction count(String field, Integer leftRange, Integer rightRange,
+            AggregationRange aggregationRange) {
+        return new Count(field, leftRange, rightRange, aggregationRange);
     }
 
     public static Restriction or(Restriction... restrictions) {

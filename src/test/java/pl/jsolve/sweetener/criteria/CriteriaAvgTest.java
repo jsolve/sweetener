@@ -13,7 +13,7 @@ import pl.jsolve.sweetener.collection.Collections;
 import pl.jsolve.sweetener.criteria.data.ObjectWithCollectionOfNumbers;
 import pl.jsolve.sweetener.criteria.restriction.AggregationRange;
 
-public class CriteriaAggregationFunctionTest {
+public class CriteriaAvgTest {
 
     // As list
 

@@ -8,14 +8,14 @@ import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.criteria.restriction.CollectionExecutor.Executor;
 import pl.jsolve.sweetener.exception.AccessToFieldException;
 
-public class Avg implements FieldRestriction {
+public class Count implements FieldRestriction {
 
     private final String fieldName;
-    private final Double leftRange;
+    private final Integer leftRange;
     private final AggregationRange aggregationRange;
-    private final Double rightRange;
+    private final Integer rightRange;
 
-    public Avg(String fieldName, Double leftRange, Double rightRange, AggregationRange aggregationRange) {
+    public Count(String fieldName, Integer leftRange, Integer rightRange, AggregationRange aggregationRange) {
         this.fieldName = fieldName;
         this.leftRange = leftRange;
         this.rightRange = rightRange == null ? leftRange : rightRange;
@@ -25,10 +25,6 @@ public class Avg implements FieldRestriction {
     @Override
     public String getFieldName() {
         return fieldName;
-    }
-
-    public Double getValue() {
-        return leftRange;
     }
 
     @Override
@@ -64,47 +60,23 @@ public class Avg implements FieldRestriction {
     }
 
     private boolean forArray(Object[] fieldValueAsArray) {
-        double sum = 0.0;
-        for (int i = 0; i < fieldValueAsArray.length; i++) {
-            if (!(fieldValueAsArray[i] instanceof Number)) {
-                throw new AccessToFieldException("Type mismatch. Expected Number but was "
-                        + fieldValueAsArray[i].getClass().getCanonicalName());
-            }
-            sum += ((Number) fieldValueAsArray[i]).doubleValue();
-        }
-        double avg = sum / fieldValueAsArray.length;
-        if (Double.isNaN(avg)) {
-            avg = 0;
-        }
-        return checkAvg(avg);
+        return checkCount(fieldValueAsArray.length);
     }
 
     private boolean forCollection(Collection<?> fieldValueAsCollection) {
-        double sum = 0.0;
-        for (Object o : fieldValueAsCollection) {
-            if (!(o instanceof Number)) {
-                throw new AccessToFieldException("Type mismatch. Expected Number but was "
-                        + o.getClass().getCanonicalName());
-            }
-            sum += ((Number) o).doubleValue();
-        }
-        double avg = sum / fieldValueAsCollection.size();
-        if (Double.isNaN(avg)) {
-            avg = 0;
-        }
-        return checkAvg(avg);
+        return checkCount(fieldValueAsCollection.size());
     }
 
-    private boolean checkAvg(double avg) {
+    private boolean checkCount(double count) {
         switch (aggregationRange) {
         case LESS:
-            return avg < leftRange;
+            return count < leftRange;
         case GREATER:
-            return avg > leftRange;
+            return count > leftRange;
         case BETWEEN:
-            return avg >= leftRange && avg <= rightRange;
+            return count >= leftRange && count <= rightRange;
         case NOT_BETWEEN:
-            return avg < leftRange || avg > rightRange;
+            return count < leftRange || count > rightRange;
         }
         return false;
     }
