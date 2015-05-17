@@ -27,6 +27,7 @@ import pl.jsolve.sweetener.criteria.restriction.NotLike;
 import pl.jsolve.sweetener.criteria.restriction.NotNull;
 import pl.jsolve.sweetener.criteria.restriction.Null;
 import pl.jsolve.sweetener.criteria.restriction.Or;
+import pl.jsolve.sweetener.criteria.restriction.Sum;
 
 public class Restrictions {
 
@@ -144,6 +145,14 @@ public class Restrictions {
 
     public static Restriction avg(String field, Double leftRange, Double rightRange, AggregationRange aggregationRange) {
         return new Avg(field, leftRange, rightRange, aggregationRange);
+    }
+
+    public static Restriction sum(String field, Double avg, AggregationRange aggregationRange) {
+        return new Sum(field, avg, null, aggregationRange);
+    }
+
+    public static Restriction sum(String field, Double leftRange, Double rightRange, AggregationRange aggregationRange) {
+        return new Sum(field, leftRange, rightRange, aggregationRange);
     }
 
     public static Restriction count(String field, Integer count, AggregationRange aggregationRange) {
