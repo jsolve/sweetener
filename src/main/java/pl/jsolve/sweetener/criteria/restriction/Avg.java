@@ -57,7 +57,7 @@ public class Avg implements FieldRestriction {
 
             @Override
             public boolean execute(Map elements) {
-                throw new AccessToFieldException("Type mismatch. Expected List or Array but was "
+                throw new AccessToFieldException("Type mismatch. Expected List, Set or Array but was "
                         + elements.getClass().getCanonicalName());
             }
         });
@@ -72,7 +72,11 @@ public class Avg implements FieldRestriction {
             }
             sum += ((Number) fieldValueAsArray[i]).doubleValue();
         }
-        return checkAvg(sum / fieldValueAsArray.length);
+        double avg = sum / fieldValueAsArray.length;
+        if (Double.isNaN(avg)) {
+            avg = 0;
+        }
+        return checkAvg(avg);
     }
 
     private boolean forAnyObject(Collection<?> fieldValueAsCollection) {
@@ -84,7 +88,11 @@ public class Avg implements FieldRestriction {
             }
             sum += ((Number) o).doubleValue();
         }
-        return checkAvg(sum / fieldValueAsCollection.size());
+        double avg = sum / fieldValueAsCollection.size();
+        if (Double.isNaN(avg)) {
+            avg = 0;
+        }
+        return checkAvg(avg);
     }
 
     private boolean checkAvg(double avg) {

@@ -8,6 +8,8 @@ public class ObjectWithCollectionOfNumbers {
     private int index;
     private List<Integer> gradesAsList;
     private Set<Integer> gradesAsSet;
+    private Integer[] gradesAsInteger;
+    private int[] gradesAsInt;
 
     public int getIndex() {
         return index;
@@ -33,6 +35,22 @@ public class ObjectWithCollectionOfNumbers {
         this.gradesAsSet = gradesAsSet;
     }
 
+    public Integer[] getGradesAsInteger() {
+        return gradesAsInteger;
+    }
+
+    public void setGradesAsInteger(Integer[] gradesAsInteger) {
+        this.gradesAsInteger = gradesAsInteger;
+    }
+
+    public int[] getGradesAsInt() {
+        return gradesAsInt;
+    }
+
+    public void setGradesAsInt(int[] gradesAsInt) {
+        this.gradesAsInt = gradesAsInt;
+    }
+
     @Override
     public String toString() {
         return "ObjectWithCollectionOfNumbers [index=" + index + ", gradesAsList=" + gradesAsList + "]";
@@ -56,8 +74,18 @@ public class ObjectWithCollectionOfNumbers {
             return this;
         }
 
-        public ObjectWithCollectionOfNumbersBuilder withGradesAsList(Set<Integer> grades) {
+        public ObjectWithCollectionOfNumbersBuilder withGradesAsSet(Set<Integer> grades) {
             object.setGradesAsSet(grades);
+            return this;
+        }
+
+        public ObjectWithCollectionOfNumbersBuilder withGradesAsArrayOfInteger(Integer[] grades) {
+            object.setGradesAsInteger(grades);
+            return this;
+        }
+
+        public ObjectWithCollectionOfNumbersBuilder withGradesAsArrayOfInt(int[] grades) {
+            object.setGradesAsInt(grades);
             return this;
         }
 
