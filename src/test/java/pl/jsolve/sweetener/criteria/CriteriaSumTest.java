@@ -75,7 +75,7 @@ public class CriteriaSumTest {
     }
 
     @Test
-    public void shouldFilterCollectionByCountRestrictionForList4() {
+    public void shouldFilterCollectionBySumRestrictionForList4() {
         // given
         List<ObjectWithCollectionOfNumbers> data = Collections.newArrayList();
         data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(1)
@@ -94,4 +94,43 @@ public class CriteriaSumTest {
         assertThat(filteredList).onProperty("index").contains(1);
     }
 
+    @Test
+    public void shouldFilterCollectionBySumRestrictionForList5() {
+        // given
+        List<ObjectWithCollectionOfNumbers> data = Collections.newArrayList();
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(1)
+                .withGradesAsList(newArrayList(1, 1, 4, 3, 3, 4, 5, 2, 3, 4, 5)).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(2)
+                .withGradesAsList(newArrayList(2, 1, 1, 4)).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(3)
+                .withGradesAsList(newArrayList(5, 5)).build());
+
+        // when
+        Collection<ObjectWithCollectionOfNumbers> filteredList = Collections.filter(data,
+                Criteria.newCriteria().add(Restrictions.sum("gradesAsList", 8.0, AggregationRange.EQUALS)));
+
+        // then
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("index").contains(2);
+    }
+
+    @Test
+    public void shouldFilterCollectionBySumRestrictionForList6() {
+        // given
+        List<ObjectWithCollectionOfNumbers> data = Collections.newArrayList();
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(1)
+                .withGradesAsList(newArrayList(1, 1, 4, 3, 3, 4, 5, 2, 3, 4, 5)).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(2)
+                .withGradesAsList(newArrayList(2, 1, 1, 4)).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(3)
+                .withGradesAsList(newArrayList(5, 5)).build());
+
+        // when
+        Collection<ObjectWithCollectionOfNumbers> filteredList = Collections.filter(data,
+                Criteria.newCriteria().add(Restrictions.sum("gradesAsList", 8.0, AggregationRange.NOT_EQUALS)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("index").contains(1, 3);
+    }
 }

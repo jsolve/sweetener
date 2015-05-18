@@ -364,4 +364,44 @@ public class CriteriaAvgTest {
         assertThat(filteredList).hasSize(3);
         assertThat(filteredList).onProperty("index").contains(1, 2, 3);
     }
+
+    @Test
+    public void shouldFilterCollectionByAvgRestrictionForArrayOfInt6() {
+        // given
+        List<ObjectWithCollectionOfNumbers> data = Collections.newArrayList();
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(1)
+                .withGradesAsArrayOfInt(new int[] {1, 2, 3, 4, 5}).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(2)
+                .withGradesAsArrayOfInt(new int[] {1, 2, 3}).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(3)
+                .withGradesAsArrayOfInt(new int[] {3, 4, 5, 5}).build());
+
+        // when
+        Collection<ObjectWithCollectionOfNumbers> filteredList = Collections.filter(data,
+                Criteria.newCriteria().add(Restrictions.avg("gradesAsInt", 4.25, AggregationRange.EQUALS)));
+
+        // then
+        assertThat(filteredList).hasSize(1);
+        assertThat(filteredList).onProperty("index").contains(3);
+    }
+
+    @Test
+    public void shouldFilterCollectionByAvgRestrictionForArrayOfInt7() {
+        // given
+        List<ObjectWithCollectionOfNumbers> data = Collections.newArrayList();
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(1)
+                .withGradesAsArrayOfInt(new int[] {1, 2, 3, 4, 5}).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(2)
+                .withGradesAsArrayOfInt(new int[] {1, 2, 3}).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(3)
+                .withGradesAsArrayOfInt(new int[] {3, 4, 5, 5}).build());
+
+        // when
+        Collection<ObjectWithCollectionOfNumbers> filteredList = Collections.filter(data,
+                Criteria.newCriteria().add(Restrictions.avg("gradesAsInt", 4.25, AggregationRange.NOT_EQUALS)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("index").contains(1, 2);
+    }
 }

@@ -102,6 +102,8 @@ public class Max implements FieldRestriction {
             return maxValue < leftRange.doubleValue() || maxValue > rightRange.doubleValue();
         case EQUALS:
             return Math.abs(maxValue - leftRange.doubleValue()) <= DELTA;
+        case NOT_EQUALS:
+            return Math.abs(maxValue - leftRange.doubleValue()) > DELTA;
         }
         return false;
     }

@@ -67,7 +67,7 @@ public class Count implements FieldRestriction {
         return checkCount(fieldValueAsCollection.size());
     }
 
-    private boolean checkCount(double count) {
+    private boolean checkCount(int count) {
         switch (aggregationRange) {
         case LESS:
             return count < leftRange;
@@ -77,6 +77,10 @@ public class Count implements FieldRestriction {
             return count >= leftRange && count <= rightRange;
         case NOT_BETWEEN:
             return count < leftRange || count > rightRange;
+        case EQUALS:
+            return count == leftRange;
+        case NOT_EQUALS:
+            return count != leftRange;
         }
         return false;
     }

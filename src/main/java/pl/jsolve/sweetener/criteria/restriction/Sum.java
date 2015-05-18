@@ -9,12 +9,13 @@ import pl.jsolve.sweetener.exception.AccessToFieldException;
 
 public class Sum implements FieldRestriction {
 
+    private final static Double DELTA = 0.000001;
     private final String fieldName;
-    private final Double leftRange;
+    private final Number leftRange;
     private final AggregationRange aggregationRange;
-    private final Double rightRange;
+    private final Number rightRange;
 
-    public Sum(String fieldName, Double leftRange, Double rightRange, AggregationRange aggregationRange) {
+    public Sum(String fieldName, Number leftRange, Number rightRange, AggregationRange aggregationRange) {
         this.fieldName = fieldName;
         this.leftRange = leftRange;
         this.rightRange = rightRange == null ? leftRange : rightRange;
@@ -24,10 +25,6 @@ public class Sum implements FieldRestriction {
     @Override
     public String getFieldName() {
         return fieldName;
-    }
-
-    public Double getValue() {
-        return leftRange;
     }
 
     @Override
@@ -89,13 +86,17 @@ public class Sum implements FieldRestriction {
     private boolean checkSum(double sum) {
         switch (aggregationRange) {
         case LESS:
-            return sum < leftRange;
+            return sum < leftRange.doubleValue();
         case GREATER:
-            return sum > leftRange;
+            return sum > leftRange.doubleValue();
         case BETWEEN:
-            return sum >= leftRange && sum <= rightRange;
+            return sum >= leftRange.doubleValue() && sum <= rightRange.doubleValue();
         case NOT_BETWEEN:
-            return sum < leftRange || sum > rightRange;
+            return sum < leftRange.doubleValue() || sum > rightRange.doubleValue();
+        case EQUALS:
+            return Math.abs(sum - leftRange.doubleValue()) <= DELTA;
+        case NOT_EQUALS:
+            return Math.abs(sum - leftRange.doubleValue()) > DELTA;
         }
         return false;
     }

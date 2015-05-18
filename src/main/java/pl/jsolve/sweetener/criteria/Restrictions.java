@@ -148,11 +148,11 @@ public class Restrictions {
         return new Avg(field, leftRange, rightRange, aggregationRange);
     }
 
-    public static Restriction sum(String field, Double avg, AggregationRange aggregationRange) {
-        return new Sum(field, avg, null, aggregationRange);
+    public static Restriction sum(String field, Number sum, AggregationRange aggregationRange) {
+        return new Sum(field, sum, null, aggregationRange);
     }
 
-    public static Restriction sum(String field, Double leftRange, Double rightRange, AggregationRange aggregationRange) {
+    public static Restriction sum(String field, Number leftRange, Number rightRange, AggregationRange aggregationRange) {
         return new Sum(field, leftRange, rightRange, aggregationRange);
     }
 

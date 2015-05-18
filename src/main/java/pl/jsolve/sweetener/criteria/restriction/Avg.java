@@ -2,7 +2,6 @@ package pl.jsolve.sweetener.criteria.restriction;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
 
 import pl.jsolve.sweetener.criteria.FieldRestriction;
 import pl.jsolve.sweetener.criteria.restriction.CollectionExecutor.Executor;
@@ -10,6 +9,7 @@ import pl.jsolve.sweetener.exception.AccessToFieldException;
 
 public class Avg implements FieldRestriction {
 
+    private final static Double DELTA = 0.000001;
     private final String fieldName;
     private final Double leftRange;
     private final AggregationRange aggregationRange;
@@ -105,6 +105,10 @@ public class Avg implements FieldRestriction {
             return avg >= leftRange && avg <= rightRange;
         case NOT_BETWEEN:
             return avg < leftRange || avg > rightRange;
+        case EQUALS:
+            return Math.abs(avg - leftRange.doubleValue()) <= DELTA;
+        case NOT_EQUALS:
+            return !(Math.abs(avg - leftRange.doubleValue()) <= DELTA);
         }
         return false;
     }

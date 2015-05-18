@@ -114,4 +114,24 @@ public class CriteriaMaxTest {
         assertThat(filteredList).onProperty("index").contains(2, 3);
     }
 
+    @Test
+    public void shouldFilterCollectionByMaxRestrictionForList6() {
+        // given
+        List<ObjectWithCollectionOfNumbers> data = Collections.newArrayList();
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(1)
+                .withGradesAsList(newArrayList(1, 2, 3, 4)).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(2)
+                .withGradesAsList(newArrayList(3, 5)).build());
+        data.add(ObjectWithCollectionOfNumbers.ObjectWithCollectionOfNumbersBuilder.aBuilder(3)
+                .withGradesAsList(newArrayList(4, 5)).build());
+
+        // when
+        Collection<ObjectWithCollectionOfNumbers> filteredList = Collections.filter(data,
+                Criteria.newCriteria().add(Restrictions.max("gradesAsList", 4, AggregationRange.NOT_EQUALS)));
+
+        // then
+        assertThat(filteredList).hasSize(2);
+        assertThat(filteredList).onProperty("index").contains(2, 3);
+    }
+
 }
