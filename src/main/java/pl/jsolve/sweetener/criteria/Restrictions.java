@@ -20,6 +20,7 @@ import pl.jsolve.sweetener.criteria.restriction.Less;
 import pl.jsolve.sweetener.criteria.restriction.LessOrEquals;
 import pl.jsolve.sweetener.criteria.restriction.Like;
 import pl.jsolve.sweetener.criteria.restriction.Max;
+import pl.jsolve.sweetener.criteria.restriction.Min;
 import pl.jsolve.sweetener.criteria.restriction.NotBetween;
 import pl.jsolve.sweetener.criteria.restriction.NotContains;
 import pl.jsolve.sweetener.criteria.restriction.NotEquals;
@@ -171,6 +172,14 @@ public class Restrictions {
 
     public static Restriction max(String field, Number leftRange, Number rightRange, AggregationRange aggregationRange) {
         return new Max(field, leftRange, rightRange, aggregationRange);
+    }
+
+    public static Restriction min(String field, Number count, AggregationRange aggregationRange) {
+        return new Min(field, count, null, aggregationRange);
+    }
+
+    public static Restriction min(String field, Number leftRange, Number rightRange, AggregationRange aggregationRange) {
+        return new Min(field, leftRange, rightRange, aggregationRange);
     }
 
     public static Restriction or(Restriction... restrictions) {
