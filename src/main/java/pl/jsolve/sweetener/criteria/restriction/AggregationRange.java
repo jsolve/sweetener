@@ -2,5 +2,5 @@ package pl.jsolve.sweetener.criteria.restriction;
 
 public enum AggregationRange {
 
-    LESS, GREATER, BETWEEN, NOT_BETWEEN
+    LESS, GREATER, EQUALS, BETWEEN, NOT_BETWEEN
 }
