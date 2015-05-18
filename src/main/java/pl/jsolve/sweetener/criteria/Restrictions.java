@@ -11,6 +11,7 @@ import pl.jsolve.sweetener.criteria.restriction.Before;
 import pl.jsolve.sweetener.criteria.restriction.Between;
 import pl.jsolve.sweetener.criteria.restriction.Contains;
 import pl.jsolve.sweetener.criteria.restriction.Count;
+import pl.jsolve.sweetener.criteria.restriction.CustomRestriction;
 import pl.jsolve.sweetener.criteria.restriction.DateExtractor;
 import pl.jsolve.sweetener.criteria.restriction.Equals;
 import pl.jsolve.sweetener.criteria.restriction.Greater;

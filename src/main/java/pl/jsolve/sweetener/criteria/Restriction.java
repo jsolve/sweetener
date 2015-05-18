@@ -14,5 +14,5 @@ public interface Restriction {
 
     public RestrictionLevel getRestrictionLevel();
 
-    public boolean satisfies(Object fieldName);
+    public boolean satisfies(Object fieldValue);
 }
