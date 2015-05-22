@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pl.jsolve</groupId>
 	<artifactId>sweetener</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>sweetener</name>
 	<description>Sweetener provides a set of classes to facilitate the work with the Java language.</description>
 	<url>https://github.com/jsolve/sweetener</url>
