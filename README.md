@@ -3,6 +3,16 @@ Sweetener [![Build Status](https://travis-ci.org/jsolve/sweetener.png)](https://
 
 Sweetener is a project created by Jsolve group. It provides a set of classes to facilitate the work with the Java language.
 
+The recommended way to get started using sweetener in your project is with a dependency management system – the snippet below can be copied and pasted into your build.
+
+``` xml
+<dependency>
+    <groupId>pl.jsolve</groupId>
+    <artifactId>sweetener</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
 Main categories:
 * collection
     * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
@@ -25,14 +35,5 @@ For unit tests:
 * [ThrowableAssertions](https://github.com/jsolve/sweetener/wiki/ThrowableAssertions)
     
 <br>
-
-## Sweetener in Maven Central
-```
-<dependency>
-    <groupId>pl.jsolve</groupId>
-    <artifactId>sweetener</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
 ___
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jsolve/sweetener/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
