@@ -6,6 +6,7 @@ Sweetener is a project created by Jsolve group. It provides a set of classes to 
 Main categories:
 * collection
     * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
+    * [Criteria / Restrictions] (http://jsolve.github.io/tag/#criteria),
 * comparer
     * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
 * core
@@ -24,5 +25,14 @@ For unit tests:
 * [ThrowableAssertions](https://github.com/jsolve/sweetener/wiki/ThrowableAssertions)
     
 <br>
+
+## Sweetener in Maven Central
+```
+<dependency>
+    <groupId>pl.jsolve</groupId>
+    <artifactId>sweetener</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 ___
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jsolve/sweetener/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
