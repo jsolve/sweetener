@@ -104,7 +104,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
 				<version>1.6.3</version>
@@ -141,7 +141,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			 <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 				<version>1.5</version>
@@ -154,7 +154,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 		</plugins>
 		<extensions>
 			<extension>
@@ -189,7 +189,8 @@
 			</roles>
 		</developer>
 	</developers>
-	<distributionManagement>
+
+<!-- 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -199,6 +200,5 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-	<!-- <distributionManagement> <repository> <id>jsolve-maven</id> <url>ftp://ftp.kurylek.pl/www/maven2</url> 
-		</repository> </distributionManagement> -->
+ -->
 </project>
