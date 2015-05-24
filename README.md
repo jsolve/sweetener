@@ -28,7 +28,7 @@ Main categories:
     * [Resources] (https://github.com/jsolve/sweetener/wiki/Resources)
 * text
     * [Strings] (https://github.com/jsolve/sweetener/wiki/Strings)
-    * [Escapes] (https://github.com/jsolve/sweetener/wiki/Escapes)
+    * [Escapes] (http://jsolve.github.io/java/strings-escape/)
 
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
