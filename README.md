@@ -15,7 +15,7 @@ The recommended way to get started using sweetener in your project is with a dep
 
 Main categories:
 * collection
-    * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
+    * [Collections](http://jsolve.github.io/java/collection-new-methods/)
     * [Criteria / Restrictions] (http://jsolve.github.io/tag/#criteria),
 * comparer
     * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
