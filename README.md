@@ -20,7 +20,7 @@ Main categories:
 * comparer
     * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
 * core
-    * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
+    * [Objects](http://jsolve.github.io/java/objects/)
     * [Reflections] (https://github.com/jsolve/sweetener/wiki/Reflections)
 * maths
     * [Maths](https://github.com/jsolve/sweetener/wiki/Maths)
