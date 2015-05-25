@@ -28,6 +28,10 @@ public final class Reflections {
         return field.getField().getType();
     }
 
+    public static <T> T getFieldValue(Object object, String stringOfFieldsName, Class<T> clazz) {
+        return clazz.cast(getFieldValue(object, stringOfFieldsName));
+    }
+
     public static Object getFieldValue(Object object, String stringOfFieldsName) {
         FieldWithOwner field = getLastNestedField(object, stringOfFieldsName);
         throwExceptonWhenFieldIsNotPresent(field, stringOfFieldsName);

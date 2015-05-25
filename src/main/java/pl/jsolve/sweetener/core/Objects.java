@@ -27,7 +27,7 @@ public final class Objects {
         }
     }
 
-    public static void initialObjectMapper() {
+    private static void initialObjectMapper() {
         if (mapper == null) {
             mapper = new ObjectMapper();
         }
