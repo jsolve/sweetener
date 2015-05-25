@@ -15,12 +15,12 @@ The recommended way to get started using sweetener in your project is with a dep
 
 Main categories:
 * collection
-    * [Collections](https://github.com/jsolve/sweetener/wiki/Collections)
+    * [Collections](http://jsolve.github.io/java/collection-new-methods/)
     * [Criteria / Restrictions] (http://jsolve.github.io/tag/#criteria),
 * comparer
     * [Comparer](https://github.com/jsolve/sweetener/wiki/Comparer)
 * core
-    * [Objects](https://github.com/jsolve/sweetener/wiki/Objects)
+    * [Objects](http://jsolve.github.io/java/objects/)
     * [Reflections] (https://github.com/jsolve/sweetener/wiki/Reflections)
 * maths
     * [Maths](https://github.com/jsolve/sweetener/wiki/Maths)
@@ -28,7 +28,7 @@ Main categories:
     * [Resources] (https://github.com/jsolve/sweetener/wiki/Resources)
 * text
     * [Strings] (https://github.com/jsolve/sweetener/wiki/Strings)
-    * [Escapes] (https://github.com/jsolve/sweetener/wiki/Escapes)
+    * [Escapes] (http://jsolve.github.io/java/strings-escape/)
 
 For unit tests:
 * [ExceptionCatcher](https://github.com/jsolve/sweetener/wiki/ExceptionCatcher)
