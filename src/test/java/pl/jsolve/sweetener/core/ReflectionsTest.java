@@ -1,6 +1,7 @@
 package pl.jsolve.sweetener.core;
 
 import org.junit.*;
+
 import pl.jsolve.sweetener.collection.data.*;
 import pl.jsolve.sweetener.tests.stub.constructors.*;
 import pl.jsolve.sweetener.tests.stub.hero.*;
@@ -10,6 +11,7 @@ import java.lang.reflect.*;
 import java.util.*;
 
 import static org.fest.assertions.Assertions.*;
+import static org.junit.Assert.*;
 import static pl.jsolve.sweetener.tests.stub.hero.HeroBuilder.*;
 
 public class ReflectionsTest {
@@ -239,5 +241,18 @@ public class ReflectionsTest {
         // then
         assertThat(instance).isNotNull();
         assertThat(instance.getValue()).isEqualTo(parameter);
+    }
+
+    @Test
+    public void shouldGetFieldValue() throws Exception {
+        // given
+        Person person = new Person();
+        person.setCompany(new Company("jsolve", null));
+        
+        // when
+        String companyName = Reflections.getFieldValue(person, "company.name", String.class);
+
+        // then
+        assertThat(companyName).isEqualTo("jsolve");
     }
 }
